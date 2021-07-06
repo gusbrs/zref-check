@@ -1,0 +1,26 @@
+# Core pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+
+# pdf output too
+*.pdf
+
+# Bibliography auxiliary files (biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# AUCTeX auto folder:
+auto/
+.auctex-auto/
+
+# Build tool auxiliary files:
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
