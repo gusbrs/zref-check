@@ -1,0 +1,52 @@
+
+\ProvidesExplPackage {zrefcheck} {2021-07-06} {alpha}
+  {Cross-references with relative position checks based on zref}
+
+\RequirePackage { zref-user }
+\RequirePackage { zref-abspage }
+\RequirePackage { zref-savepos }
+
+
+% We need 'zref's label commands to issue '\zref@savepos' every time, and not
+% just when using the 'savepos' module's commands, because we want every
+% 'zlabel' to have proper coordinates.  For this reason, we have to run a call
+% to '\zref@savepos' on a "before hook" to '\ZREF@label'.  However, since the
+% required information (position on the page of the text to which the label
+% refers to) is only known at shipout, we do this call under a dummy (writes
+% nothing) call to '\protected@write' to execute '\zref@savepos' right before
+% '\ZREF@label's job is done, emulating what this command does in this regard.
+% I think this is somewhat institutionalized, see David Carlile's comment at
+% https://tex.stackexchange.com/a/98810 regarding the '#2' argument of
+% '\protected@write'.  See also the discussion in egreg's answer to the same
+% question.  Of course, that is also what '\ZREF@label' itself does and,
+% ideally, we'd just place '\zref@savepos' inside it.
+\hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck } {
+  \if@filesw
+    \begingroup
+      \protected@write \@auxout {
+        \zref@savepos
+      }{}
+    \endgroup
+  \fi
+}
+
+
+% Add 'posx'/'posy' to the 'main' list properties, so that the labels created
+% with the standard '\zlabel' from the 'user' module carries the position
+% information.
+\zref@addprops { main } { posx , posy }
+
+\zref@require@unique
+
+
+
+\NewDocumentCommand \zrefcheck { O { } m  m }
+  {
+    \global\advance\c@zref@unique\ltx@one
+    \mode_leave_vertical:
+    \group_begin:
+    \zref@labelbyprops { \thezref@unique -check-beg } { abspage , posx , posy }
+    #2%
+    \zref@labelbyprops { \thezref@unique -check-end } { abspage , posx , posy }
+    \group_end:
+  }

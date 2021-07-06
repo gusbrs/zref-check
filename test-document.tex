@@ -1,0 +1,111 @@
+\documentclass[draft]{book}
+
+\usepackage{econlipsum}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+% \usepackage{etoolbox}
+
+\usepackage[absolute]{textpos}
+\usepackage{xcolor}
+
+% https://tex.stackexchange.com/a/298900
+\newcommand*{\showlabel}[1]{%
+  \begin{textblock*}{1cm}[0,1](\zposx{#1}sp, \dimexpr\paperheight - \zposy{#1}sp)
+    {\noindent\color{red}here}%
+  \end{textblock*}}
+
+\usepackage[user,counter,titleref,savepos]{zref}
+% \usepackage{zref-abspos}
+\usepackage{zrefcheck}
+
+
+\begin{document}
+
+\frontmatter
+
+\tableofcontents{}
+
+\chapter*{Preface}
+\zlabel{cha:preface}
+
+Hello World!
+
+
+\mainmatter
+
+\chapter*{Introduction}
+\zlabel{cha:introduction}
+
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+
+\econ[1]
+
+\clearpage{}
+
+\begin{figure}[b]
+  \centering
+  \includegraphics[width=\textwidth,height=20em]{"teste.jpg"}
+  \caption{Figure 1}
+  \zlabel{fig:figure-1}
+\end{figure}
+
+\zrefcheck{}{}
+
+Teste1\phantomsection\zlabel{test1}.
+Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
+
+
+\zrefcheck{}{}
+
+\showlabel{fig:figure-1}
+
+
+\chapter{Chapter 2}
+\zlabel{cha:chapter-2}
+
+\econ[2]
+
+\zrefcheck{fff}{}
+\showlabel{zref@3-check-beg}
+\showlabel{zref@3-check-end}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth,height=20em]{"teste.jpg"}
+  \caption{Figure 2}
+  \zlabel{fig:figure-2}
+\end{figure}
+
+
+\chapter{Chapter 3}
+\zlabel{cha:chapter-3}
+
+\econ[3]
+
+
+
+
+
+\chapter{Chapter 4}
+\zlabel{cha:chapter-4}
+
+\econ[4]
+
+
+
+
+\backmatter
+
+
+
+\chapter{Bibliography}
+\zlabel{cha:bibliography}
+
+
+
+
+
+\end{document}
