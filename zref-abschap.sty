@@ -1,0 +1,31 @@
+
+
+\ProvidesExplPackage {zref-abschap} {2021-07-06} {alpha}
+  {Module abschap for zref}
+
+
+\int_new:N \g__zrefabschap_chapter
+\int_new:N \g__zrefabschap_section
+
+% If the documentclass does not define ‘\chapter’ the only thing that happens
+% is that the chapter counter is never incremented, and the section one never
+% reset.
+\hook_gput_code:nnn { cmd / chapter / before } { zref-abschap }
+  {
+    \int_gincr:N \g__zrefabschap_chapter
+    \int_zero:N \g__zrefabschap_section
+  }
+
+\zref@newprop { abschap } [0] { \int_use:N \g__zrefabschap_chapter }
+
+\zref@addprop \ZREF@mainlist { abschap }
+
+
+\hook_gput_code:nnn { cmd / section / before } { zref-abschap }
+  { \int_gincr:N \g__zrefabschap_section }
+
+\zref@newprop { abssec } [0] { \int_use:N \g__zrefabschap_section }
+
+\zref@addprop \ZREF@mainlist { abssec }
+
+

@@ -1,10 +1,13 @@
 
+
 \ProvidesExplPackage {zrefcheck} {2021-07-06} {alpha}
-  {Cross-references with relative position checks based on zref}
+  {Flexible cross-references with relative position checks based on zref}
 
 \RequirePackage { zref-user }
 \RequirePackage { zref-abspage }
 \RequirePackage { zref-savepos }
+
+\RequirePackage { zref-abschap }
 
 
 % We need 'zref's label commands to issue '\zref@savepos' every time, and not
@@ -34,19 +37,56 @@
 % Add 'posx'/'posy' to the 'main' list properties, so that the labels created
 % with the standard '\zlabel' from the 'user' module carries the position
 % information.
-\zref@addprops { main } { posx , posy }
-
-\zref@require@unique
-
+\zref@addprop \ZREF@mainlist { posx }
+\zref@addprop \ZREF@mainlist { posy }
 
 
-\NewDocumentCommand \zrefcheck { O { } m  m }
+% Alternate method for determining relative position: the sequence in which
+% the labels get shipped out.  Sort of getting the sequence in which the
+% labels occur in the .aux file.
+%
+% The idea is apparently good and "simple", but I really cannot get to control
+% expansion correctly for this.  If I put the counter increment in
+% 'zref@newprop' (where I think it should go) it does not get expanded, if I
+% put it in the hook for 'ZREF@label' the counter runs for all labels in a
+% page for each shipout, and we get the same number for all labels in that
+% page.
+%
+% \int_new:N \g__zrefcheck_zlabel_shipoutseq_int
+%
+% \hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck } {
+%   \if@filesw
+%     \begingroup
+%       \protected@write \@auxout {
+%         \int_gincr:N \g__zrefcheck_zlabel_shipoutseq_int
+%       }{}
+%     \endgroup
+%   \fi
+% }
+%
+% \zref@newprop* { shipoutseq } [0]
+%   {
+%     \int_gincr:N \g__zrefcheck_zlabel_shipoutseq_int
+%     \int_use:N \g__zrefcheck_zlabel_shipoutseq_int
+%   }
+%
+% \zref@addprop \ZREF@mainlist { shipoutseq }
+
+
+\int_new:N \g__zrefcheck_id_int
+
+\NewDocumentCommand \zrefcheck { s O { } m O { } +m }
   {
-    \global\advance\c@zref@unique\ltx@one
+    \int_gincr:N \g__zrefcheck_id_int
     \mode_leave_vertical:
     \group_begin:
-    \zref@labelbyprops { \thezref@unique -check-beg } { abspage , posx , posy }
-    #2%
-    \zref@labelbyprops { \thezref@unique -check-end } { abspage , posx , posy }
+      \zref@labelbyprops
+        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg }
+        { abspage , abschap , abssec , posx , posy }
+      #5 ~ #3
+      \clist_map_inline:nn {#4} {~\emph{##1}}
+      \zref@labelbyprops
+        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @end }
+        { abspage , abschap , abssec , posx , posy }
     \group_end:
   }
