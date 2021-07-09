@@ -2,9 +2,8 @@
 
 \usepackage{econlipsum}
 
-\usepackage{hyperref}
+\usepackage[final]{hyperref}
 \usepackage{graphicx}
-% \usepackage{etoolbox}
 
 \usepackage[absolute]{textpos}
 \usepackage{xcolor}
@@ -49,6 +48,7 @@ Hello World!
   \includegraphics[width=\textwidth,height=20em]{"teste.jpg"}
   \caption{Figure 1}
   \zlabel{fig:figure-1}
+  \label{fig:figure-1}
 \end{figure}
 
 \zrefcheck{}{}
@@ -61,6 +61,8 @@ Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 
 \showlabel{fig:figure-1}
 
+\zref{fig:figure-1}
+\zrefcheck{fig:figure-1}[chk1,chk2,chk3]{alguma coisa e tal}
 
 \chapter{Chapter 2}
 \zlabel{cha:chapter-2}
@@ -108,7 +110,7 @@ Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 \zlabel{cha:bibliography}
 
 
-
+\showalllabels
 
 
 \end{document}

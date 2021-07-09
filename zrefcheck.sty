@@ -23,15 +23,16 @@
 % '\protected@write'.  See also the discussion in egreg's answer to the same
 % question.  Of course, that is also what '\ZREF@label' itself does and,
 % ideally, we'd just place '\zref@savepos' inside it.
-\hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck } {
-  \if@filesw
-    \begingroup
-      \protected@write \@auxout {
-        \zref@savepos
-      }{}
-    \endgroup
-  \fi
-}
+\hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck }
+  {
+    \if@filesw
+      \begingroup
+        \protected@write \@auxout {
+          \zref@savepos
+        }{}
+      \endgroup
+    \fi
+  }
 
 
 % Add 'posx'/'posy' to the 'main' list properties, so that the labels created
@@ -44,33 +45,39 @@
 % Alternate method for determining relative position: the sequence in which
 % the labels get shipped out.  Sort of getting the sequence in which the
 % labels occur in the .aux file.
-%
-% The idea is apparently good and "simple", but I really cannot get to control
-% expansion correctly for this.  If I put the counter increment in
-% 'zref@newprop' (where I think it should go) it does not get expanded, if I
-% put it in the hook for 'ZREF@label' the counter runs for all labels in a
-% page for each shipout, and we get the same number for all labels in that
-% page.
-%
-% \int_new:N \g__zrefcheck_zlabel_shipoutseq_int
-%
-% \hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck } {
-%   \if@filesw
-%     \begingroup
-%       \protected@write \@auxout {
-%         \int_gincr:N \g__zrefcheck_zlabel_shipoutseq_int
-%       }{}
-%     \endgroup
-%   \fi
-% }
-%
-% \zref@newprop* { shipoutseq } [0]
-%   {
-%     \int_gincr:N \g__zrefcheck_zlabel_shipoutseq_int
-%     \int_use:N \g__zrefcheck_zlabel_shipoutseq_int
-%   }
-%
-% \zref@addprop \ZREF@mainlist { shipoutseq }
+
+\seq_new:N \g__zrefcheck_auxfile_labelseq_seq
+
+% Thanks to Ulrike Fischer: https://tex.stackexchange.com/q/604265
+\cs_gset_protected:Npn \zref@newlabel #1#2
+  {
+    \seq_gput_right:Nn \g__zrefcheck_auxfile_labelseq_seq {#1}
+    \@newl@bel {\ZREF@RefPrefix} {#1} {#2}
+  }
+
+\prop_new:N \g__zrefcheck_auxfile_labelseq_prop
+
+\cs_new_protected:Npn \__zrefcheck_process_labelseq:
+  {
+    \prop_gclear:N \g__zrefcheck_auxfile_labelseq_prop
+    \group_begin:
+      \int_zero:N \l_tmpa_int
+      \seq_map_inline:Nn \g__zrefcheck_auxfile_labelseq_seq
+        {
+          \int_incr:N \l_tmpa_int
+          \prop_gput:Nnx \g__zrefcheck_auxfile_labelseq_prop
+            { ##1 } { \int_use:N \l_tmpa_int }
+        }
+    \group_end:
+  }
+
+\hook_gput_code:nnn { begindocument } { zrefcheck }
+  { \__zrefcheck_process_labelseq: }
+
+\NewDocumentCommand \showalllabels { } {
+  \prop_show:N \g__zrefcheck_auxfile_labelseq_prop
+}
+
 
 
 \int_new:N \g__zrefcheck_id_int
@@ -82,11 +89,11 @@
     \group_begin:
       \zref@labelbyprops
         { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg }
-        { abspage , abschap , abssec , posx , posy }
+        { default, counter, abspage , abschap , abssec , posx , posy }
       #5 ~ #3
       \clist_map_inline:nn {#4} {~\emph{##1}}
       \zref@labelbyprops
         { zrefcheck@ \int_use:N \g__zrefcheck_id_int @end }
-        { abspage , abschap , abssec , posx , posy }
+        { default, counter, abspage , abschap , abssec , posx , posy }
     \group_end:
   }
