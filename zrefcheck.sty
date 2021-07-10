@@ -137,23 +137,43 @@
 % A convenience function to retrieve property values from labels.  Uses
 % '\g__zrefcheck_auxfile_labelseq_prop' for "labelseq", and calls
 % '\zref@extract' for everything else.
-%
-% FIXME Not working! Can't make it expand twice as '\zref@extract'...
-%
-% {<label>}{<prop>}
-% \cs_new:Npn \__zrefcheck_get:nn #1#2
-%   {
-%     % \tl_clear:N \l_tmpa_tl % not expandable?
-%     \tl_if_eq:nnTF { #2 } { labelseq } % \tl_if_eq:nnTF is not expandable!
-%       {
-%         \prop_get:NnNTF % not expandable either!
-%           \g__zrefcheck_auxfile_labelseq_prop { #1 } \l_tmpa_tl
-%             { \tl_use:N \l_tmpa_tl }
-%             { 0 }
-%       }
-%       { \zref@extract { #1 } { #2 } }
-%   }
 
+% We cannot use the return value of '\__zrefcheck_get:' directly, because we
+% need to use the retrieved property values as arguments in the checks,
+% however we use here a number of non-expandable operations.  Hence, we
+% receive a local tl variable ('\l__zrefcheck_prop_value_tl' is provided for
+% that) as third argument and set that, so that it is available (and
+% expandable) at the place of use.  For this reason, we do not group here,
+% because we are passing a local variable around, but it is expected this
+% function will be called within a group.
+\tl_new:N \l__zrefcheck_prop_value_tl
+
+% {<label>}{<prop>}{<tl var>}
+\cs_new:Npn \__zrefcheck_get_astl:nnn #1#2#3
+  {
+    \tl_clear:N \l_tmpa_tl
+    \tl_clear:N #3
+    \tl_if_eq:nnTF {#2} { labelseq }
+      {
+        \prop_get:NnNTF
+          \g__zrefcheck_auxfile_labelseq_prop {#1} \l_tmpa_tl
+            { \tl_set:NV #3 \l_tmpa_tl }
+            { \tl_set:Nn #3 0 }
+      }
+      { \tl_set:Nx #3 { \zref@extract {#1} {#2} } }
+  }
+
+% {<label>}{<prop>}{<int var>}
+\cs_new:Npn \__zrefcheck_get_asint:nnn #1#2#3
+  {
+    \__zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_prop_value_tl }
+    % Make it an integer data type
+    % FIXME We are not actually *checking* this conversion step succeeded in
+    % any way.  We rely then on the use of this function to retrieve
+    % properties which "we know" (!) to have integer values.  See if I can
+    % introduce some verification and/or warning in case this step fails.
+    \int_set:Nn #3 { \int_value:w \l__zrefcheck_prop_value_tl }
+  }
 
 
 
@@ -164,13 +184,15 @@
 %
 % First, a conditional/predicate function defined with:
 %
-% \prg_new_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { p , T , F , TF }
+% \prg_new_protected_conditional:Npnn \__zrefcheck_check_<check>:nn #1#2 { T , F , TF }
 %
 % where "<check>", it the name of the check, the first argument is the "label"
 % and the second the "reference".  The existence of the check is verified by
 % the existence of the function with this name-scheme (and signatures).  Of
 % course, this function must return either '\prg_return_true:' or
-% '\prg_return_false:'.
+% '\prg_return_false:'. (It doesn-t *need* to be 'protected' if the content of
+% the test does not require it, but the package does not expect the
+% '\__zrefcheck_check_<check>_p:nn' variant to exist).
 %
 % Note that the naming convention of the checks adopts the perspective of the
 % "reference".  That is, the "before" check should return true if the "label"
@@ -213,13 +235,11 @@
 \int_new:N \l__zrefcheck_ref_b_int
 
 
-\prg_new_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { p , T , F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { T , F , TF }
   {
     \group_begin:
-      \int_set:Nn \l__zrefcheck_lbl_int
-        { \int_value:w \zref@extract { #1 } { abspage } }
-      \int_set:Nn \l__zrefcheck_ref_int
-        { \int_value:w \zref@extract { #2 } { abspage } }
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_if:nTF
         {
           \int_compare_p:nNn
@@ -231,12 +251,7 @@
           ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
        }
-       {
-         \group_end:
-         \prg_return_true:
-       }
-       {
-         \group_end:
-         \prg_return_false:
-       }
+       { \group_insert_after:N \prg_return_true:  }
+       { \group_insert_after:N \prg_return_false: }
+    \group_end:
   }
