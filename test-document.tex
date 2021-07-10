@@ -1,25 +1,26 @@
-\documentclass[draft]{book}
-
-\usepackage{econlipsum}
-
-\usepackage[final]{hyperref}
-\usepackage{graphicx}
-
-\usepackage[absolute]{textpos}
-\usepackage{xcolor}
-
-% https://tex.stackexchange.com/a/298900
-\newcommand*{\showlabel}[1]{%
-  \begin{textblock*}{1cm}[0,1](\zposx{#1}sp, \dimexpr\paperheight - \zposy{#1}sp)
-    {\noindent\color{red}here}%
-  \end{textblock*}}
+\documentclass{book}
 
 \usepackage[user,counter,titleref,savepos]{zref}
 % \usepackage{zref-abspos}
 \usepackage{zrefcheck}
 
+\usepackage{graphicx}
+\usepackage{econlipsum}
+\usepackage{hyperref}
+
+% Just to be able to visually check the position of the labels
+% https://tex.stackexchange.com/a/298900
+\usepackage[absolute]{textpos}
+\usepackage{xcolor}
+\newcommand*{\showlabel}[1]{%
+  \begin{textblock*}{1cm}[0,1](\zposx{#1}sp, \dimexpr\paperheight - \zposy{#1}sp)
+    {\noindent\color{red}here}%
+  \end{textblock*}}
+
 
 \begin{document}
+
+\zlabel{firstthing}
 
 \frontmatter
 
@@ -45,24 +46,24 @@ Hello World!
 
 \begin{figure}[b]
   \centering
-  \includegraphics[width=\textwidth,height=20em]{"teste.jpg"}
+  \includegraphics[width=.6\textwidth]{example-image-a}
   \caption{Figure 1}
   \zlabel{fig:figure-1}
   \label{fig:figure-1}
 \end{figure}
 
-\zrefcheck{}{}
+% \zrefcheck{}{}
 
 Teste1\phantomsection\zlabel{test1}.
 Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 
 
-\zrefcheck{}{}
+% \zrefcheck{}{}
 
 \showlabel{fig:figure-1}
 
 \zref{fig:figure-1}
-\zrefcheck{fig:figure-1}[chk1,chk2,chk3]{alguma coisa e tal}
+\zrefcheck{fig:figure-1}[thispage]{alguma coisa e tal}
 
 \chapter{Chapter 2}
 \zlabel{cha:chapter-2}
@@ -72,14 +73,15 @@ Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 \section{section-2-1}
 \label{sec:section-2-1}
 
-\zrefcheck{cha:chapter-2}[chk1,chk2,chk3]{alguma coisa e tal}
+\clearpage{}
+\zrefcheck{cha:chapter-2}[thispage]{alguma coisa e tal}
 \showlabel{zrefcheck@3@beg}
 \showlabel{zrefcheck@3@end}
 
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth,height=20em]{"teste.jpg"}
+  \includegraphics[width=.6\textwidth]{example-image-b}
   \caption{Figure 2}
   \zlabel{fig:figure-2}
 \end{figure}

@@ -42,9 +42,29 @@
 \zref@addprop \ZREF@mainlist { posy }
 
 
+% This is the list of properties to be used by the '\zrefcheck' command.
+\zref@newlist { zrefcheck }
+\zref@addprops { zrefcheck }
+  {
+    % minimum set needed
+    abspage ,
+    abschap ,
+    abssec ,
+    % if page position is being used
+    posx ,
+    posy ,
+    % for use in warning messages
+    page
+  }
+
+
 % Alternate method for determining relative position: the sequence in which
 % the labels get shipped out.  Sort of getting the sequence in which the
 % labels occur in the .aux file.
+
+% Some relevant info about the sequence of things:
+% https://tex.stackexchange.com/a/120978 and 'texdoc lthooks', section "Hooks
+% provided by \begin{document}".
 
 \seq_new:N \g__zrefcheck_auxfile_labelseq_seq
 
@@ -57,7 +77,7 @@
 
 \prop_new:N \g__zrefcheck_auxfile_labelseq_prop
 
-\cs_new_protected:Npn \__zrefcheck_process_labelseq:
+\cs_new:Npn \__zrefcheck_process_labelseq:
   {
     \prop_gclear:N \g__zrefcheck_auxfile_labelseq_prop
     \group_begin:
@@ -80,20 +100,143 @@
 
 
 
-\int_new:N \g__zrefcheck_id_int
+%% The main user-facing command
 
+\int_new:N \g__zrefcheck_id_int
+\tl_new:N \l__zrefcheck_refbeg_tl
+\tl_new:N \l__zrefcheck_refend_tl
+
+% *[<options>]{<labels>}[<checks>]{<text>}
 \NewDocumentCommand \zrefcheck { s O { } m O { } +m }
   {
     \int_gincr:N \g__zrefcheck_id_int
     \mode_leave_vertical:
     \group_begin:
-      \zref@labelbyprops
-        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg }
-        { default, counter, abspage , abschap , abssec , posx , posy }
-      #5 ~ #3
-      \clist_map_inline:nn {#4} {~\emph{##1}}
-      \zref@labelbyprops
+      \tl_set:Nn \l__zrefcheck_refbeg_tl
+        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg}
+      \tl_set:Nn \l__zrefcheck_refend_tl
         { zrefcheck@ \int_use:N \g__zrefcheck_id_int @end }
-        { default, counter, abspage , abschap , abssec , posx , posy }
+      % Set start label
+      \zref@labelbylist { \l__zrefcheck_refbeg_tl } { zrefcheck }
+      % Typeset "<text>"
+      #5
+      % Set end label
+      \zref@labelbylist { \l__zrefcheck_refend_tl } { zrefcheck }
+      % Now we do the checking
+
+      \__zrefcheck_do_check:nnx { thispage } {#3} { \l__zrefcheck_refbeg_tl }
+
     \group_end:
+  }
+
+
+
+%% Auxiliary functions
+
+
+% A convenience function to retrieve property values from labels.  Uses
+% '\g__zrefcheck_auxfile_labelseq_prop' for "labelseq", and calls
+% '\zref@extract' for everything else.
+%
+% FIXME Not working! Can't make it expand twice as '\zref@extract'...
+%
+% {<label>}{<prop>}
+% \cs_new:Npn \__zrefcheck_get:nn #1#2
+%   {
+%     % \tl_clear:N \l_tmpa_tl % not expandable?
+%     \tl_if_eq:nnTF { #2 } { labelseq } % \tl_if_eq:nnTF is not expandable!
+%       {
+%         \prop_get:NnNTF % not expandable either!
+%           \g__zrefcheck_auxfile_labelseq_prop { #1 } \l_tmpa_tl
+%             { \tl_use:N \l_tmpa_tl }
+%             { 0 }
+%       }
+%       { \zref@extract { #1 } { #2 } }
+%   }
+
+
+
+
+%% Checks
+
+
+% What is needed for a check to work?
+%
+% First, a conditional/predicate function defined with:
+%
+% \prg_new_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { p , T , F , TF }
+%
+% where "<check>", it the name of the check, the first argument is the "label"
+% and the second the "reference".  The existence of the check is verified by
+% the existence of the function with this name-scheme (and signatures).  Of
+% course, this function must return either '\prg_return_true:' or
+% '\prg_return_false:'.
+%
+% Note that the naming convention of the checks adopts the perspective of the
+% "reference".  That is, the "before" check should return true if the "label"
+% occurs before the "reference".
+%
+% The checks it does are expected to retrieve 'zref's label information with
+% '\__zrefcheck_get:nn' (zref extract infrastructure is, naturally, also an
+% alternative for the regular properties).  Also, technically speaking, the
+% "reference" argument is also a label, actually a pair of them, as set by
+% '\zrefcheck'.  For the "labels", any 'zref' property in 'zref's main list is
+% available, the "references" store the properties in the 'zrefcheck' list.
+% Besides those, there is also the 'labelseq' (fake) property (for either
+% "labels" or "references"), as provided by '\__zrefcheck_process_labelseq:',
+% and stored in '\g__zrefcheck_auxfile_labelseq_prop'.
+%
+% Second, the required properties of labels and references must be duly
+% registered for 'zref'.  This can be done with '\zref@newprop',
+% '\zref@addprop' and friends, as usual.
+
+
+
+% {<check>}{<label>}{<reference>}
+\cs_new:Npn \__zrefcheck_do_check:nnn #1#2#3
+  {
+    \use:c { __zrefcheck_check_ #1 :nnF } {#2} {#3}
+      { \msg_warning:nnnn { zrefcheck } { check-failed } {#1} {#2} }
+  }
+
+\cs_generate_variant:Nn \__zrefcheck_do_check:nnn { nnx }
+
+
+\msg_new:nnn { zrefcheck } { check-failed }
+  { The~check~'#1'~for~label~'#2'~has~failed.}
+
+
+% More readable scratch variables for the tests
+\int_new:N \l__zrefcheck_lbl_int
+\int_new:N \l__zrefcheck_ref_int
+\int_new:N \l__zrefcheck_lbl_b_int
+\int_new:N \l__zrefcheck_ref_b_int
+
+
+\prg_new_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { p , T , F , TF }
+  {
+    \group_begin:
+      \int_set:Nn \l__zrefcheck_lbl_int
+        { \int_value:w \zref@extract { #1 } { abspage } }
+      \int_set:Nn \l__zrefcheck_ref_int
+        { \int_value:w \zref@extract { #2 } { abspage } }
+      \bool_if:nTF
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int } &&
+          % '0' is the default value of 'abspage' property, and this value
+          % should not happen normally for this property, since even the first
+          % page, after it gets shipped out, will store '1'.  So, if we do
+          % find '0' here, better signal something is wrong.
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+       }
+       {
+         \group_end:
+         \prg_return_true:
+       }
+       {
+         \group_end:
+         \prg_return_false:
+       }
   }
