@@ -1,6 +1,6 @@
 \documentclass{book}
 
-\usepackage[user,counter,titleref,savepos]{zref}
+\usepackage[user,counter,hyperref,titleref,savepos]{zref}
 % \usepackage{zref-abspos}
 \usepackage{zrefcheck}
 
@@ -44,26 +44,37 @@ Hello World!
 
 \clearpage{}
 
-\begin{figure}[b]
+\begin{figure}
   \centering
   \includegraphics[width=.6\textwidth]{example-image-a}
   \caption{Figure 1}
   \zlabel{fig:figure-1}
-  \label{fig:figure-1}
 \end{figure}
 
-% \zrefcheck{}{}
 
 Teste1\phantomsection\zlabel{test1}.
 Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 
-
-% \zrefcheck{}{}
+\clearpage{}
 
 \showlabel{fig:figure-1}
 
-\zref{fig:figure-1}
-\zrefcheck{fig:figure-1}[thispage]{alguma coisa e tal}
+% É assim que constrói um hyperlink pra uma zlabel! Essa macro aparece na
+% documentação do hyperref, mas sem explicação alguma. O primeiro argumento é
+% a ‘anchor’, propriedade que o módulo zref-hyperref disponibiliza.  :-)
+\hyperlink{figure.1.1}{\zref{fig:figure-1}}
+
+
+\zrefcheck{fig:figure-1}[facing]{alguma coisa e tal}
+
+\clearpage{}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{example-image-c}
+  \caption{Figure 3}
+  \zlabel{fig:figure-3}
+\end{figure}
 
 \chapter{Chapter 2}
 \zlabel{cha:chapter-2}
@@ -71,7 +82,7 @@ Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 \econ[2]
 
 \section{section-2-1}
-\label{sec:section-2-1}
+\zlabel{sec:section-2-1}
 
 \clearpage{}
 \zrefcheck{cha:chapter-2}[thispage]{alguma coisa e tal}
@@ -111,8 +122,6 @@ Teste2\phantomsection\zlabel{test2}. Test3\zsavepos{test3}.
 \chapter{Bibliography}
 \zlabel{cha:bibliography}
 
-
-\showalllabels
 
 
 \end{document}
