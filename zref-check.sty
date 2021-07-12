@@ -17,6 +17,23 @@
 \RequirePackage { zref-abschap }
 
 
+
+% Constructed label formats
+
+% {<check id int>}
+\cs_new:Npn \__zrefcheck_checkbeg_lblfmt:n #1
+  { zrefcheck@ \int_use:N #1 @beg }
+
+% {<check id int>}
+\cs_new:Npn \__zrefcheck_checkend_lblfmt:n #1
+  { zrefcheck@ \int_use:N #1 @end }
+
+% {<label tl>}
+\cs_new:Npn \__zrefcheck_labelpos_lblfmt:n #1
+  { zrefcheck@ #1 @pos }
+
+
+
 % We need 'zref's label commands to issue '\zref@savepos' every time, and not
 % just when using the 'savepos' module's commands, because we want every
 % 'zlabel' to have proper coordinates.  For this reason, we have to run a call
@@ -30,23 +47,44 @@
 % '\protected@write'.  See also the discussion in egreg's answer to the same
 % question.  Of course, that is also what '\ZREF@label' itself does and,
 % ideally, we'd just place '\zref@savepos' inside it.
-\hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck }
-  {
-    \if@filesw
-      \begingroup
-        \protected@write \@auxout {
-          \zref@savepos
-        }{}
-      \endgroup
-    \fi
-  }
-
-
+% \hook_gput_code:nnn { cmd / ZREF@label / before } { zrefcheck }
+%   {
+%     \if@filesw
+%       \begingroup
+%         \protected@write \@auxout {
+%           \zref@savepos
+%         }{}
+%       \endgroup
+%     \fi
+%   }
+%
 % Add 'posx'/'posy' to the 'main' list properties, so that the labels created
 % with the standard '\zlabel' from the 'user' module carries the position
 % information.
-\zref@addprop \ZREF@mainlist { posx }
-\zref@addprop \ZREF@mainlist { posy }
+% \zref@addprop \ZREF@mainlist { posx }
+% \zref@addprop \ZREF@mainlist { posy }
+
+
+% An alternate method to get the labels position is to hook into '\zref@label'
+% instead, and from there call '\zsavepos' with a constructed label, which can
+% later be retrieved.  This is better in all regards than the previous attempt
+% of hooking on to '\ZREF@label' to run '\zref@savepos'.  I'm still patching a
+% function I'd prefer not to, but it is less lower level and affects only
+% '\zref@label' and '\zlabel' and not the rest of the programming API of
+% 'zref'.  The problem with patching is, of course, that it reintroduces the
+% old load order problems...  The hook to 'begindocument' should mitigate this
+% a little, but certainly does not eliminate the issue.  Using 'zref's
+% machinery not to mix the interfaces at this point.
+\hook_gput_code:nnn { begindocument } { zrefcheck }
+  {
+    \ZREF@patch{zref@label}{
+      \ZREF@Robust\def\zref@label#1{
+        \zsavepos{ \__zrefcheck_labelpos_lblfmt:n {#1} }
+        \ZREF@org@zref@label{#1}
+      }
+    }
+  }
+
 
 
 % This is the list of properties to be used by the '\zrefcheck' command.
@@ -108,36 +146,56 @@
 % own.  A more precise redefinition for '\zref@newlabel' is then the following
 % (I have no idea how to do '\edef' in L3 syntax, it seems everything revolves
 % around the expansion of the arguments.  There must be, I just don't know.)
+%
+% \ZREF@Robust\edef\zref@newlabel#1{
+%   \noexpand\seq_gput_right:Nn \noexpand\g__zrefcheck_auxfile_labelseq_seq {#1}
+%   \noexpand\@newl@bel{\ZREF@RefPrefix}{#1}
+% }
+
+
+% Even better, just read it from the aux file directly, no need to redefine
+% anything.  Adapted from (poor man's version...) David Carlile's answer
+% https://tex.stackexchange.com/a/147705.  This has actually been converted
+% into the package 'listlbls' by Norbert Melzer, but it is made to work with
+% regular labels, not with 'zref's.  And it also does not really expose the
+% information in a retrievable way, as far as I can tell.  See
+% https://tex.stackexchange.com/a/604744.
 
 \seq_new:N \g__zrefcheck_auxfile_labelseq_seq
-
-\ZREF@Robust\edef\zref@newlabel#1{
-  \noexpand\seq_gput_right:Nn \noexpand\g__zrefcheck_auxfile_labelseq_seq {#1}
-  \noexpand\@newl@bel{\ZREF@RefPrefix}{#1}
-}
-
-% Finally, at the 'begindocument' hook, we map through
-% '\g__zrefcheck_auxfile_labelseq_seq' and store the information in a property
-% list, so that the sequence can be retrieved in key-value fashion.
-
 \prop_new:N \g__zrefcheck_auxfile_labelseq_prop
 
-\cs_new:Npn \__zrefcheck_process_labelseq:
+\tl_set:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
+\file_if_exist:nT { \g_tmpa_tl }
   {
-    \prop_gclear:N \g__zrefcheck_auxfile_labelseq_prop
+    % Retrieve the information from the .aux file, and store it (in sequence)
+    % in '\g__zrefcheck_auxfile_labelseq_seq'.
+    \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
+    \group_begin:
+      \ior_map_inline:Nn \g_tmpa_ior
+        {
+          \tl_set:Nn \l_tmpa_tl { \zref@newlabel }
+          \tl_set:Nx \l_tmpb_tl { \tl_item:nn {#1} { 1 } }
+          \tl_if_eq:NNT \l_tmpa_tl \l_tmpb_tl
+            {
+              \tl_set:Nx \l_tmpa_tl { \tl_item:nn {#1} { 2 } }
+              \seq_gput_right:NV \g__zrefcheck_auxfile_labelseq_seq \l_tmpa_tl
+            }
+        }
+    \group_end:
+    \ior_close:N \g_tmpa_ior
+    % Then map through '\g__zrefcheck_auxfile_labelseq_seq' and store the
+    % information in a property list, so that the sequence can be retrieved in
+    % key-value fashion.
     \group_begin:
       \int_zero:N \l_tmpa_int
       \seq_map_inline:Nn \g__zrefcheck_auxfile_labelseq_seq
         {
           \int_incr:N \l_tmpa_int
           \prop_gput:Nnx \g__zrefcheck_auxfile_labelseq_prop
-            { ##1 } { \int_use:N \l_tmpa_int }
+            { #1 } { \int_use:N \l_tmpa_int }
         }
     \group_end:
   }
-
-\hook_gput_code:nnn { begindocument } { zrefcheck }
-  { \__zrefcheck_process_labelseq: }
 
 
 
@@ -148,8 +206,8 @@
   { \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
 
 \int_new:N \g__zrefcheck_id_int
-\tl_new:N \l__zrefcheck_refbeg_tl
-\tl_new:N \l__zrefcheck_refend_tl
+\tl_new:N \l__zrefcheck_checkbeg_tl
+\tl_new:N \l__zrefcheck_checkend_tl
 
 % An intermediate internal function, which places "labels" as first argument,
 % so that it can be protected by '\zref@wrapper@babel'.  This is more or less
@@ -161,19 +219,23 @@
     \mode_leave_vertical:
     \group_begin:
       % Names of the labels for this zrefcheck call
-      \tl_set:Nn \l__zrefcheck_refbeg_tl
-        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg }
-      \tl_set:Nn \l__zrefcheck_refend_tl
-        { zrefcheck@ \int_use:N \g__zrefcheck_id_int @end }
+      \tl_set:Nn \l__zrefcheck_checkbeg_tl
+        { \__zrefcheck_checkbeg_lblfmt:n { \g__zrefcheck_id_int } }
+      \tl_set:Nn \l__zrefcheck_checkend_tl
+        { \__zrefcheck_checkend_lblfmt:n { \g__zrefcheck_id_int } }
+      % \tl_set:Nn \l__zrefcheck_checkbeg_tl
+      %   { zrefcheck@ \int_use:N \g__zrefcheck_id_int @beg }
+      % \tl_set:Nn \l__zrefcheck_checkend_tl
+      %   { zrefcheck@ \int_use:N \g__zrefcheck_id_int @end }
       % Set start label
-      \zref@labelbylist { \l__zrefcheck_refbeg_tl } { zrefcheck }
+      \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
       % Typeset "<text>"
       \__zrefcheck_get_astl:nnn {#1} { anchor } { \l_tmpa_tl }
       \hyperlink { \l_tmpa_tl } {#5}
       % Set end label
-      \zref@labelbylist { \l__zrefcheck_refend_tl } { zrefcheck }
+      \zref@labelbylist { \l__zrefcheck_checkend_tl } { zrefcheck }
       % Now we do the checking
-      \__zrefcheck_do_check:nnv {#4} {#1} { l__zrefcheck_refbeg_tl }
+      \__zrefcheck_do_check:nnv {#4} {#1} { l__zrefcheck_checkbeg_tl }
     \group_end:
   }
 
