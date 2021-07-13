@@ -1,11 +1,4 @@
 
-% TODO Some info to check:
-%
-% About what are valid characters for use in labels:
-% https://tex.stackexchange.com/a/18312.  About some problems with active
-% colons: https://tex.stackexchange.com/a/89470
-
-
 \ProvidesExplPackage {zref-check} {2021-07-06} { }
   {Flexible cross-references with relative position checks based on zref}
 
@@ -161,33 +154,63 @@
 % information in a retrievable way, as far as I can tell.  See
 % https://tex.stackexchange.com/a/604744.
 %
-% NOTE I'm not really sure this approach makes it safe for us to read the
-% labels at this point without '\zref@wrapper@babel'.  The common wisdom is
-% that babel's shorthands are only active after '\begin{document}' (e.g,
-% https://tex.stackexchange.com/a/98897).  Alas, it is more complicated than
-% that.  Babel's documentation says (in section 9.5 Shorthands): "To prevent
-% problems with the loading of other packages after babel we reset the catcode
-% of the character to the original one at the end of the package and of each
-% language file (except with KeepShorthandsActive). It is re-activate again
-% at \begin{document}. We also need to make sure that the shorthands are
-% active during the processing of the .aux file. Otherwise some citations may
-% give unexpected results in the printout when a shorthand was used in the
-% optional argument of \bibitem for example."  This is done with
-% '\AtBeginDocument{...\if@filesw \immediate\write\@mainaux{...}...}'.  In
-% other words, the catcode change is written in the .aux file itself!
-% Besides, of course, there is still "except with KeepShorthandsActive".
+% NOTE There is some subtlety here as to whether this approach makes it safe
+% for us to read the labels at this point without '\zref@wrapper@babel'.  The
+% common wisdom is that babel's shorthands are only active after
+% '\begin{document}' (e.g, https://tex.stackexchange.com/a/98897).  Alas, it
+% is more complicated than that.  Babel's documentation says (in section 9.5
+% Shorthands): "To prevent problems with the loading of other packages after
+% babel we reset the catcode of the character to the original one at the end
+% of the package and of each language file (except with
+% KeepShorthandsActive). It is re-activate again at \begin{document}. We also
+% need to make sure that the shorthands are active during the processing of
+% the .aux file. Otherwise some citations may give unexpected results in the
+% printout when a shorthand was used in the optional argument of \bibitem for
+% example."  This is done with '\AtBeginDocument{...\if@filesw
+% \immediate\write\@mainaux{...}...}'.  In other words, the catcode change is
+% written in the .aux file itself!  Indeed, if you inspect the file, you'll
+% find them there.  Besides there is still the ominous "except with
+% KeepShorthandsActive".
+%
 % However, the *method* I'm using here is not quite the same as the usual run
-% of the .aux file, because I'm skipping the lines for which the first token
-% is not equal to '\zref@newlabel'.  I have tested the famous sensitive case
-% for this: 'babel' with 'french' and labels with colons.  And I was able to
-% retrieve the information as expected.  Well, *if* 'KeepShorthandsActive' is
-% enabled with 'french' *and* we load the package *after babel* things do
-% break, but not quite because of the colons in the labels.  Even 'siunitx'
-% breaks in the same conditions...
+% of the .aux file, because I'm actively discarding the lines for which the
+% first token is not equal to '\zref@newlabel'.  I have tested the famous
+% sensitive case for this: 'babel' with 'french' and labels with colons.  And
+% I was able to retrieve the information as expected.  Well, *if*
+% 'KeepShorthandsActive' is enabled with 'french' *and* we load the package
+% *after babel* things do break, but not quite because of the colons in the
+% labels.  Even 'siunitx' breaks in the same conditions...
+%
+% For reference: About what are valid characters for use in labels:
+% https://tex.stackexchange.com/a/18312.  About some problems with active
+% colons: https://tex.stackexchange.com/a/89470
+
 
 \prop_new:N \g__zrefcheck_auxfile_labelseq_prop
 
 \tl_set:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
+% \file_if_exist:nT { \g_tmpa_tl }
+%   {
+%     % Retrieve the information from the .aux file, and store it in a property
+%     % list, so that the sequence can be retrieved in key-value fashion.
+%     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
+%     \group_begin:
+%       \int_zero:N \l_tmpa_int
+%       \ior_map_inline:Nn \g_tmpa_ior
+%         {
+%           \tl_set:Nn \l_tmpa_tl { \zref@newlabel }
+%           \tl_set:Nx \l_tmpb_tl { \tl_item:nn {#1} { 1 } }
+%           \tl_if_eq:NNT \l_tmpa_tl \l_tmpb_tl
+%             {
+%               \tl_set:Nx \l_tmpa_tl { \tl_item:nn {#1} { 2 } }
+%               \int_incr:N \l_tmpa_int
+%               \prop_gput:Nxx \g__zrefcheck_auxfile_labelseq_prop
+%                 { \l_tmpa_tl } { \int_use:N \l_tmpa_int }
+%             }
+%         }
+%     \group_end:
+%     \ior_close:N \g_tmpa_ior
+%   }
 \file_if_exist:nT { \g_tmpa_tl }
   {
     % Retrieve the information from the .aux file, and store it in a property
@@ -195,16 +218,35 @@
     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
     \group_begin:
       \int_zero:N \l_tmpa_int
-      \ior_map_inline:Nn \g_tmpa_ior
+      \bool_set_false:N \l_tmpa_bool
+      \ior_map_variable:NNn \g_tmpa_ior \l_tmpa_tl
         {
-          \tl_set:Nn \l_tmpa_tl { \zref@newlabel }
-          \tl_set:Nx \l_tmpb_tl { \tl_item:nn {#1} { 1 } }
-          \tl_if_eq:NNT \l_tmpa_tl \l_tmpb_tl
+          \tl_map_variable:NNn \l_tmpa_tl \l_tmpb_tl
             {
-              \tl_set:Nx \l_tmpa_tl { \tl_item:nn {#1} { 2 } }
-              \int_incr:N \l_tmpa_int
-              \prop_gput:Nxx \g__zrefcheck_auxfile_labelseq_prop
-                { \l_tmpa_tl } { \int_use:N \l_tmpa_int }
+              \tl_if_eq:NnTF \l_tmpb_tl { \zref@newlabel }
+                {
+                  % Found a zref@label, signal it.
+                  \bool_set_true:N \l_tmpa_bool
+                }
+                {
+                  \bool_if:NTF \l_tmpa_bool
+                    {
+                      \bool_set_false:N \l_tmpa_bool
+                      \int_incr:N \l_tmpa_int
+                      \prop_gput:Nxx \g__zrefcheck_auxfile_labelseq_prop
+                        { \l_tmpb_tl } { \int_use:N \l_tmpa_int }
+                    }
+                    {
+                      % If there is not a match of the first token with
+                      % '\zref@newlabel', break the loop and discard the rest
+                      % of the line, to ensure (?) no babel calls to
+                      % '\catcode' in the .aux file get expanded.  This also
+                      % breaks and discards the rest of the '\zref@newlabel'
+                      % lines after we got the label we wanted, since we reset
+                      % '\l_tmpa_bool' in the 'T' branch.
+                      \tl_map_break:
+                    }
+                }
             }
         }
     \group_end:
