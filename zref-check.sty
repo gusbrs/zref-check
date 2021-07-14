@@ -7,8 +7,7 @@
 \RequirePackage { zref-user }
 \RequirePackage { zref-abspage }
 
-% TODO move these two to Options
-\RequirePackage { zref-savepos }
+% TODO move this to Options
 \RequirePackage { zref-hyperref }
 
 
@@ -48,10 +47,6 @@
     abspage ,
     abschap ,
     abssec ,
-    % if page position is being used
-    % TODO Move these two to Options
-    posx ,
-    posy ,
     % for use in warning messages CHECK am I really using it ?
     page
   }
@@ -68,98 +63,23 @@
 
 %% chapter{Plumbing}
 
-%%% section{Savepos support}
+%%% section{Position on page}
 
-% We need 'zref's label commands to issue '\zref@savepos' every time, and not
-% just when using the 'savepos' module's commands, because we want every
-% 'zlabel' to have proper coordinates.  For this reason, we have to run a call
-% to '\zref@savepos' on a "before hook" to '\ZREF@label'.  However, since the
-% required information (position on the page of the text to which the label
-% refers to) is only known at shipout, we do this call under a dummy (writes
-% nothing) call to '\protected@write' to execute '\zref@savepos' right before
-% '\ZREF@label's job is done, emulating what this command does in this regard.
-% I think this is somewhat institutionalized, see David Carlisle's comment at
-% https://tex.stackexchange.com/a/98810 regarding the '#2' argument of
-% '\protected@write'.  See also the discussion in egreg's answer to the same
-% question.  Of course, that is also what '\ZREF@label' itself does.  Take
-% care though, since what we get is the position of the *label itself*, not
-% that of the object to which it refers to (e.g., the caption, see
-% https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).
-%
-% \hook_gput_code:nnn { cmd / ZREF@label / before } { zref-check }
-%   {
-%     \if@filesw
-%       \begingroup
-%         \protected@write \@auxout {
-%           \zref@savepos
-%         }{}
-%       \endgroup
-%     \fi
-%   }
-%
-% Add 'posx'/'posy' to the 'main' list properties, so that the labels created
-% with the standard '\zlabel' from the 'user' module carries the position
-% information.
-% \zref@addprop \ZREF@mainlist { posx }
-% \zref@addprop \ZREF@mainlist { posy }
-
-
-% An alternate method to get the labels position is to hook into '\zref@label'
-% instead, and from there call '\zsavepos' with a constructed label, which can
-% later be retrieved.  This is better in all regards than the previous attempt
-% of hooking on to '\ZREF@label' to run '\zref@savepos'.  I'm still patching a
-% function I'd prefer not to, but it is less lower level and affects only
-% '\zref@label' and '\zlabel' and not the rest of the programming API of
-% 'zref'.  The problem with patching is, of course, that it reintroduces the
-% old load order problems...  The hook to 'begindocument' should mitigate this
-% a little, but certainly does not eliminate the issue.  Using 'zref's
-% machinery not to mix the interfaces at this point.  Hopefully, this feature
-% request I made about this gets in: https://github.com/ho-tex/zref/issues/12.
-% If this happens, this patch can be removed, and I can also remove the
-% special handling for this procedure at '\__zrefcheck_get_astl:nnn' and
-% '\_zrefcheck:nnnnn' (search for all occurrences of
-% '\__zrefcheck_labelpos_lblfmt:n').
-\hook_gput_code:nnn { begindocument } { zref-check }
-  {
-    \ZREF@patch{zref@label}{
-      \ZREF@Robust\def\zref@label#1{
-        \zsavepos{ \__zrefcheck_labelpos_lblfmt:n {#1} }
-        \ZREF@org@zref@label{#1}
-      }
-    }
-  }
-
-
-% NOTE The use of 'zref's 'savepos' module to infer relative position of
-% elements of text is somewhat limited, we could even say "flawed".  Ulrike
-% Fischer is quite right when she says that "structure and position are two
-% different beasts"
-% (https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).  Which
-% means that using this information for regular labels will depend to some
-% degree on not too odd placements of '\zlabel'.  It should do it's job for
-% floats as long as long as the label is within the float environment, it
-% should do a good job too for sections if the label is placed in sequence (as
-% usual, but not guaranteed or enforced).  It does an exact job for the
-% dedicated target macros of this package.
-
-
-%%% section{Label sequence}
-
-% Method for determining relative position: the sequence in which the labels
-% get shipped out, inferred from the sequence in which the labels occur in the
-% .aux file.
+% Method for determining relative position within the page: the sequence in
+% which the labels get shipped out, inferred from the sequence in which the
+% labels occur in the .aux file.
 %
 % Some relevant info about the sequence of things:
 % https://tex.stackexchange.com/a/120978 and 'texdoc lthooks', section "Hooks
 % provided by \begin{document}".
 
 
-% One first attempt at this is to use '\zref@newlabel', which is the macro
-% 'zref' uses to store label information in the aux file.  When the .aux file
-% is read at the beginning of the compilation, this macro is expanded for each
-% of the labels.  So, by redefining this macro we can feed a variable (a L3
-% sequence), and then do what it usually does, which is to define each label
-% with the internal macro '\@newl@bel', when the .aux file is read.
+% One first attempt at this was to use '\zref@newlabel', which is the macro in
+% which 'zref' stores the label information in the aux file.  When the .aux
+% file is read at the beginning of the compilation, this macro is expanded for
+% each of the labels.  So, by redefining this macro we can feed a variable (a
+% L3 sequence), and then do what it usually does, which is to define each
+% label with the internal macro '\@newl@bel', when the .aux file is read.
 %
 % Patching this macro for this is not possible.  First, '\zref@newlabel' is
 % one of those "commands that look ahead" mentioned in 'ltcmdhooks'
@@ -168,27 +88,8 @@
 % ahead.  Second, the 'ltcmdhooks' hooks are not actually available when the
 % .aux file is read, they come only after '\begin{document}'.  Hence,
 % redefinition would be the only alternative.  My attempts at this ended up
-% registered at https://tex.stackexchange.com/a/604744.
-%
-% Ulrike Fischer (in the comments to https://tex.stackexchange.com/q/604265)
-% suggested something like the below for this purpose.
-%
-% \cs_gset_protected:Npn \zref@newlabel #1#2
-%   {
-%     \seq_gput_right:Nn \g__zrefcheck_auxfile_lblseq_seq {#1}
-%     \@newl@bel {\ZREF@RefPrefix} {#1} {#2}
-%   }
-%
-% However, though this works, this is not exactly equivalent to the original
-% definition.  The difference being that '\ZREF@RefPrefix' is actually not
-% expanded at the definition, it is expanded later, when the macro is called.
-% And that difference is precisely the reason for the use of '\edef' there in
-% the first place.  If anyone were to redefine '\ZREF@RefPrefix' somewhere,
-% things would go sour.  Ulrike certainly considered it, and actually
-% suggested to hardcode "Z@R" there instead, but that poses problems of its
-% own.  A more precise redefinition for '\zref@newlabel' is then the following
-% (I have no idea how to do '\edef' in L3 syntax, it seems everything revolves
-% around the expansion of the arguments.  There must be, I just don't know.)
+% registered at https://tex.stackexchange.com/a/604744.  But the best result
+% in these lines was:
 %
 % \ZREF@Robust\edef\zref@newlabel#1{
 %   \noexpand\seq_gput_right:Nn \noexpand\g__zrefcheck_auxfile_lblseq_seq {#1}
@@ -196,12 +97,14 @@
 % }
 
 
-% Better than the above is just read it from the aux file directly, no need to
-% redefine anything.  Adapted from (poor man's version...) David Carlisle's
-% answer https://tex.stackexchange.com/a/147705.  This answer has actually
+% However, better than the above is to just read it from the .aux file
+% directly, no need to redefine anything.  That's what David Carlisle's answer
+% at https://tex.stackexchange.com/a/147705 does.  This answer has actually
 % been converted into the package 'listlbls' by Norbert Melzer, but it is made
 % to work with regular labels, not with 'zref's.  And it also does not really
-% expose the information in a retrievable way, as far as I can tell.
+% expose the information in a retrievable way (as far as I can tell).  So, the
+% below is adapted from Carlisle's answer's technique (a poor man's version of
+% it...).
 %
 % NOTE There is some subtlety here as to whether this approach makes it safe
 % for us to read the labels at this point without '\zref@wrapper@babel'.  The
@@ -233,15 +136,14 @@
 % https://tex.stackexchange.com/a/18312.  About some problems with active
 % colons: https://tex.stackexchange.com/a/89470.
 %
-% About the difference between L3 strings and token lists
+% About the difference between L3 strings and token lists, see
 % https://tex.stackexchange.com/a/446381, in particular Joseph Wright's
 % comment: "Strings are for data that will never be typeset, for example file
 % names, identifiers, etc.: if the material may be used in typesetting, it
 % should be a token list."  See also moewe's (CW) answer in the same lines.
 % Which suggests using L3 strings for the reference labels might be a good
 % catch all approach, and possibly more robust.  David Carlisle's comment
-% about 'inputenc' is a caveat, but I'm not sure it holds now that pdflatex
-% has also built-in utf-8 (see
+% about 'inputenc' is a caveat (see
 % https://tex.stackexchange.com/q/446123#comment1516961_446381).
 % Still... let's stick to tradition as long as it works, 'zref' already does a
 % great job here anyway.
@@ -294,6 +196,23 @@
   }
 
 
+% NOTE The alternate method I had considered (more than that...) for this was
+% using yx coordinates supplied by 'zref's 'savepos' module.  However, this
+% approach brought in a number of complexities, including the need to patch
+% either '\zref@label' or '\ZREF@label'.  In addition, the technique was at
+% the bottom fundamentally flawed.  Ulrike Fischer was very much right when
+% she said that "structure and position are two different beasts"
+% (https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).  It is
+% true that the tests behaved decently, in normal circumstances, and except
+% for outrageous label placement by the user, it would return the expected
+% results.  We don't really need exact coordinates to decide "above/below".
+% Besides, it would do an exact job for the dedicated target macros of this
+% package.  However, I could not conceive a situation where the 'yx' criterion
+% would perform clearly better than the 'labeseq' one.  And, if that's the
+% case, and considering the complications it brings, this check was a slippery
+% slope.  All in all, I've decided to drop it.
+
+
 %%% section{Label formats}
 
 % {<check id int>}
@@ -303,10 +222,6 @@
 % {<check id int>}
 \cs_new:Npn \__zrefcheck_checkend_lblfmt:n #1
   { zrefcheck@ \int_use:N #1 @end }
-
-% {<label tl>}
-\cs_new:Npn \__zrefcheck_labelpos_lblfmt:n #1
-  { #1 @zrckpos }
 
 
 %%% section{Property values}
@@ -328,8 +243,6 @@
 % '\tl_clear:N' does).  This can also
 
 
-\tl_new:N \l__zrefcheck_get_label_tl
-
 % {<label>}{<prop>}{<tl var>}
 \cs_new:Npn \__zrefcheck_get_astl:nnn #1#2#3
   {
@@ -343,20 +256,6 @@
           }
       }
       {
-        % Handle the special case of savepos labels (can be removed if feature
-        % request https://github.com/ho-tex/zref/issues/12 is implemented).
-        \tl_set:Nn \l__zrefcheck_get_label_tl {#1}
-        \tl_if_eq:nnT {#2} { posx }
-          {
-            \tl_set:Nx \l__zrefcheck_get_label_tl
-              { \__zrefcheck_labelpos_lblfmt:n {#1} }
-          }
-        \tl_if_eq:nnT {#2} { posy }
-          {
-            \tl_set:Nx \l__zrefcheck_get_label_tl
-              { \__zrefcheck_labelpos_lblfmt:n {#1} }
-          }
-
         % There are three things we need to check to ensure the information we
         % are trying to retrieve here exists: the existence of "label", the
         % existence of "property", and whether the particular label being
@@ -372,27 +271,20 @@
         % fresh compilation round.  The other two are more "internal"
         % problems, either some problem with the checks, or with the
         % configuration of 'zref' for their consumption.
-        \zref@ifrefundefined { \l__zrefcheck_get_label_tl }
+        \zref@ifrefundefined {#1}
           {}
           {
             \zref@ifpropundefined {#2}
+              { \msg_warning:nnnn { zref-check } { property-undefined } {#2} }
               {
-                \msg_warning:nnnn { zref-check }
-                  { property-undefined } {#2}
-              }
-              {
-                \zref@ifrefcontainsprop { \l__zrefcheck_get_label_tl } {#2}
+                \zref@ifrefcontainsprop {#1} {#2}
                   {
                     \tl_set:Nx #3
-                      {
-                        \zref@extractdefault { \l__zrefcheck_get_label_tl }
-                          {#2} { \c_empty_tl }
-                      }
+                      { \zref@extractdefault {#1} {#2} { \c_empty_tl } }
                   }
                   {
-                    \exp_args:Nnnx \msg_warning:nnnn
-                      { zref-check } { property-not-in-label }
-                      { \l__zrefcheck_get_label_tl } {#2}
+                    \msg_warning:nnnn
+                      { zref-check } { property-not-in-label } {#1} {#2}
                   }
               }
           }
@@ -494,9 +386,8 @@
       \tl_set:Nx \l__zrefcheck_checkend_tl
         { \__zrefcheck_checkend_lblfmt:n { \g__zrefcheck_id_int } }
 
-      % Set start label and save pos
+      % Set start label
       \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
-      \zsavepos{ \__zrefcheck_labelpos_lblfmt:n { \l__zrefcheck_checkbeg_tl } }
 
       % Typeset "<text>" (with hyperref!)
       % For hyperlinking, we must check if the reference is defined or not,
@@ -505,9 +396,8 @@
       \__zrefcheck_get_astl:xnn { \tl_item:nn {#1} {1} } { anchor } { \l_tmpb_tl }
       \hyperlink { \l_tmpb_tl } {#5}
 
-      % Set end label and save pos
+      % Set end label
       \zref@labelbylist { \l__zrefcheck_checkend_tl } { zrefcheck }
-      \zsavepos{ \__zrefcheck_labelpos_lblfmt:n { \l__zrefcheck_checkend_tl } }
 
       % Now we do the checking
 
@@ -545,14 +435,12 @@
 % occurs before the "reference".
 %
 % The checks it does are expected to retrieve 'zref's label information with
-% '\__zrefcheck_get_astl:nnn' or '\__zrefcheck_get_asint:nnn' (zref extract
-% infrastructure is, naturally, also an alternative for the regular
-% properties).  Also, technically speaking, the "reference" argument is also a
-% label, actually a pair of them, as set by '\zrefcheck'.  For the "labels",
-% any 'zref' property in 'zref's main list is available, the "references"
-% store the properties in the 'zrefcheck' list.  Besides those, there is also
-% the 'lblseq' (fake) property (for either "labels" or "references"), as
-% provided by '\__zrefcheck_process_lblseq:', and stored in
+% '\__zrefcheck_get_astl:nnn' or '\__zrefcheck_get_asint:nnn'.  Also,
+% technically speaking, the "reference" argument is also a label, actually a
+% pair of them, as set by '\zrefcheck'.  For the "labels", any 'zref' property
+% in 'zref's main list is available, the "references" store the properties in
+% the 'zrefcheck' list.  Besides those, there is also the 'lblseq' (fake)
+% property (for either "labels" or "references"), stored in
 % '\g__zrefcheck_auxfile_lblseq_prop'.
 %
 % Second, the required properties of labels and references must be duly
@@ -604,145 +492,10 @@
 % More readable scratch variables for the tests
 \int_new:N \l__zrefcheck_lbl_int
 \int_new:N \l__zrefcheck_ref_int
-\int_new:N \l__zrefcheck_lbl_a_int
-\int_new:N \l__zrefcheck_ref_a_int
 
 
-%%%% subsection{Within page}
 
-% TODO Move these booleans to Options
-% option 'pagepos': values 'both', 'yx', 'labelseq', 'warn'
-% preamble only option
-\bool_new:N \l__zrefcheck_pagepos_yx_bool
-\bool_new:N \l__zrefcheck_pagepos_lblseq_bool
-\bool_set_true:N \l__zrefcheck_pagepos_yx_bool
-\bool_set_true:N \l__zrefcheck_pagepos_lblseq_bool
-
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_above:nn #1#2 { F , TF }
-  {
-    \group_begin:
-      \bool_set_true:N \l_tmpa_bool
-      \bool_if:nT { \l__zrefcheck_pagepos_yx_bool }
-        {
-          \__zrefcheck_check_above_yx:nnF {#1} {#2}
-            { \bool_set_false:N \l_tmpa_bool }
-        }
-      \bool_if:nT { \l__zrefcheck_pagepos_lblseq_bool }
-        {
-          \__zrefcheck_check_above_lblseq:nnF {#1} {#2}
-            { \bool_set_false:N \l_tmpa_bool }
-        }
-      \bool_if:nF
-        % 'warn' option
-        { \l__zrefcheck_pagepos_yx_bool || \l__zrefcheck_pagepos_lblseq_bool }
-        { \bool_set_false:N \l_tmpa_bool }
-      \bool_if:nTF { \l_tmpa_bool }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_below:nn #1#2 { F , TF }
-  {
-    \bool_if:nTF
-      { \l__zrefcheck_pagepos_yx_bool || \l__zrefcheck_pagepos_lblseq_bool }
-      {
-        \__zrefcheck_check_above:nnTF {#1} {#2}
-          { \prg_return_false: }
-          { \prg_return_true:  }
-      }
-      % 'warn' option
-      { \prg_return_false: }
-  }
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_above_yx:nn #1#2 { F }
-  {
-    \group_begin:
-      \__zrefcheck_check_thispage:nnTF {#1} {#2}
-        {
-          \bool_set_true:N \l__zrefcheck_integer_bool
-          \__zrefcheck_get_asint:nnn {#1} { posy } { \l__zrefcheck_lbl_int }
-          \__zrefcheck_get_asint:nnn {#2} { posy } { \l__zrefcheck_ref_int }
-          \__zrefcheck_get_asint:nnn {#1} { posx } { \l__zrefcheck_lbl_a_int }
-          \__zrefcheck_get_asint:nnn {#2} { posx } { \l__zrefcheck_ref_a_int }
-          \bool_lazy_and:nnTF
-            { \l__zrefcheck_integer_bool }
-            {
-              (
-                \int_compare_p:nNn
-                  { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } ||
-                (
-                  \int_compare_p:nNn
-                    { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int } &&
-                  \int_compare_p:nNn
-                    { \l__zrefcheck_lbl_a_int } < { \l__zrefcheck_ref_a_int }
-                )
-              ) &&
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_a_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_a_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
-        }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_above_lblseq:nn #1#2 { F }
-  {
-    \group_begin:
-      \__zrefcheck_check_thispage:nnTF {#1} {#2}
-        {
-          \bool_set_true:N \l__zrefcheck_integer_bool
-          \__zrefcheck_get_asint:nnn {#1} { lblseq } { \l__zrefcheck_lbl_int }
-          \__zrefcheck_get_asint:nnn {#2} { lblseq } { \l__zrefcheck_ref_int }
-          \bool_lazy_and:nnTF
-            { \l__zrefcheck_integer_bool }
-            {
-              \int_compare_p:nNn
-                { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
-        }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
-
-%%%% subsection{Before / After}
-
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_before:nn #1#2 { F }
-  {
-    \__zrefcheck_check_pagesbefore:nnTF {#1} {#2}
-      { \prg_return_true: }
-      {
-        \__zrefcheck_check_above:nnTF {#1} {#2}
-          { \prg_return_true:  }
-          { \prg_return_false: }
-      }
-  }
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_after:nn #1#2 { F }
-  {
-    \__zrefcheck_check_pagesafter:nnTF {#1} {#2}
-      { \prg_return_true: }
-      {
-        \__zrefcheck_check_below:nnTF {#1} {#2}
-          { \prg_return_true:  }
-          { \prg_return_false: }
-      }
-  }
-
-
-%%%% subsection{Between pages}
-
+%%%% subsection{This page}
 
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { F , TF }
   {
@@ -768,6 +521,66 @@
     \group_end:
   }
 
+
+%%%% subsection{On page}
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_above:nn #1#2 { F , TF }
+  {
+    \group_begin:
+      \__zrefcheck_check_thispage:nnTF {#1} {#2}
+        {
+          \bool_set_true:N \l__zrefcheck_integer_bool
+          \__zrefcheck_get_asint:nnn {#1} { lblseq } { \l__zrefcheck_lbl_int }
+          \__zrefcheck_get_asint:nnn {#2} { lblseq } { \l__zrefcheck_ref_int }
+          \bool_lazy_and:nnTF
+            { \l__zrefcheck_integer_bool }
+            {
+              \int_compare_p:nNn
+                { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
+              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+            }
+            { \group_insert_after:N \prg_return_true:  }
+            { \group_insert_after:N \prg_return_false: }
+        }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_below:nn #1#2 { F , TF }
+  {
+    \__zrefcheck_check_above:nnTF {#1} {#2}
+      { \prg_return_false: }
+      { \prg_return_true:  }
+  }
+
+
+%%%% subsection{Before / After}
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_before:nn #1#2 { F }
+  {
+    \__zrefcheck_check_pagesbefore:nnTF {#1} {#2}
+      { \prg_return_true: }
+      {
+        \__zrefcheck_check_above:nnTF {#1} {#2}
+          { \prg_return_true:  }
+          { \prg_return_false: }
+      }
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_after:nn #1#2 { F }
+  {
+    \__zrefcheck_check_pagesafter:nnTF {#1} {#2}
+      { \prg_return_true: }
+      {
+        \__zrefcheck_check_below:nnTF {#1} {#2}
+          { \prg_return_true:  }
+          { \prg_return_false: }
+      }
+  }
+
+
+%%%% subsection{Pages}
 
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_nextpage:nn #1#2 { F }
   {
@@ -886,6 +699,8 @@
     \group_end:
   }
 
+
+%%%% subsection{Close / Far}
 
 % TODO Move this variable to Options
 \int_new:N \l__zrefcheck_close_range_int
@@ -1132,5 +947,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
+
 
 %% chapter{Targets}
