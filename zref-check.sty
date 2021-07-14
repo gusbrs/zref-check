@@ -2,29 +2,15 @@
 \ProvidesExplPackage {zref-check} {2021-07-06} { }
   {Flexible cross-references with relative position checks based on zref}
 
+
+%% chapter{Zref setup}
+
 \RequirePackage { zref-user }
 \RequirePackage { zref-abspage }
 \RequirePackage { zref-savepos }
 \RequirePackage { zref-hyperref }
 
 \RequirePackage { zref-abschap }
-
-
-
-% Constructed label formats
-
-% {<check id int>}
-\cs_new:Npn \__zrefcheck_checkbeg_lblfmt:n #1
-  { zrefcheck@ \int_use:N #1 @beg }
-
-% {<check id int>}
-\cs_new:Npn \__zrefcheck_checkend_lblfmt:n #1
-  { zrefcheck@ \int_use:N #1 @end }
-
-% {<label tl>}
-\cs_new:Npn \__zrefcheck_labelpos_lblfmt:n #1
-  { zrefcheck@ #1 @pos }
-
 
 
 % We need 'zref's label commands to issue '\zref@savepos' every time, and not
@@ -96,6 +82,10 @@
   }
 
 
+
+%% chapter{Label sequence .aux file}
+
+
 % Alternate method for determining relative position: the sequence in which
 % the labels get shipped out.  Sort of getting the sequence in which the
 % labels occur in the .aux file.
@@ -157,60 +147,49 @@
 % NOTE There is some subtlety here as to whether this approach makes it safe
 % for us to read the labels at this point without '\zref@wrapper@babel'.  The
 % common wisdom is that babel's shorthands are only active after
-% '\begin{document}' (e.g, https://tex.stackexchange.com/a/98897).  Alas, it
+% '\begin{document}' (e.g., https://tex.stackexchange.com/a/98897).  Alas, it
 % is more complicated than that.  Babel's documentation says (in section 9.5
 % Shorthands): "To prevent problems with the loading of other packages after
 % babel we reset the catcode of the character to the original one at the end
-% of the package and of each language file (except with
-% KeepShorthandsActive). It is re-activate again at \begin{document}. We also
-% need to make sure that the shorthands are active during the processing of
-% the .aux file. Otherwise some citations may give unexpected results in the
-% printout when a shorthand was used in the optional argument of \bibitem for
-% example."  This is done with '\AtBeginDocument{...\if@filesw
-% \immediate\write\@mainaux{...}...}'.  In other words, the catcode change is
-% written in the .aux file itself!  Indeed, if you inspect the file, you'll
-% find them there.  Besides there is still the ominous "except with
-% KeepShorthandsActive".
+% of the package and of each language file (except with KeepShorthandsActive).
+% It is re-activate[d] again at \begin{document}.  We also need to make sure
+% that the shorthands are active during the processing of the .aux file.
+% Otherwise some citations may give unexpected results in the printout when a
+% shorthand was used in the optional argument of \bibitem for example."  This
+% is done with '\if@filesw \immediate\write\@mainaux{...}'.  In other words,
+% the catcode change is written in the .aux file itself!  Indeed, if you
+% inspect the file, you'll find them there.  Besides, there is still the
+% ominous "except with KeepShorthandsActive".
 %
 % However, the *method* I'm using here is not quite the same as the usual run
 % of the .aux file, because I'm actively discarding the lines for which the
 % first token is not equal to '\zref@newlabel'.  I have tested the famous
 % sensitive case for this: 'babel' with 'french' and labels with colons.  And
 % I was able to retrieve the information as expected.  Well, *if*
-% 'KeepShorthandsActive' is enabled with 'french' *and* we load the package
+% 'KeepShorthandsActive' is enabled *with 'french'* and we load the package
 % *after babel* things do break, but not quite because of the colons in the
 % labels.  Even 'siunitx' breaks in the same conditions...
 %
 % For reference: About what are valid characters for use in labels:
 % https://tex.stackexchange.com/a/18312.  About some problems with active
-% colons: https://tex.stackexchange.com/a/89470
-
+% colons: https://tex.stackexchange.com/a/89470.
+%
+% About the difference between L3 strings and token lists
+% https://tex.stackexchange.com/a/446381, in particular Joseph Wright's
+% comment: "Strings are for data that will never be typeset, for example file
+% names, identifiers, etc.: if the material may be used in typesetting, it
+% should be a token list."  See also moewe's (CW) answer in the same lines.
+% Which suggests using L3 strings for the reference labels might be a good
+% catch all approach, and possibly more robust.  David Carlisle's comment
+% about 'inputenc' is a caveat, but I'm not sure it holds now that pdflatex
+% has also built-in utf-8 (see
+% https://tex.stackexchange.com/q/446123#comment1516961_446381).
+% Still... let's stick to tradition as long as it works, 'zref' already does a
+% great job here anyway.
 
 \prop_new:N \g__zrefcheck_auxfile_labelseq_prop
 
 \tl_set:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
-% \file_if_exist:nT { \g_tmpa_tl }
-%   {
-%     % Retrieve the information from the .aux file, and store it in a property
-%     % list, so that the sequence can be retrieved in key-value fashion.
-%     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
-%     \group_begin:
-%       \int_zero:N \l_tmpa_int
-%       \ior_map_inline:Nn \g_tmpa_ior
-%         {
-%           \tl_set:Nn \l_tmpa_tl { \zref@newlabel }
-%           \tl_set:Nx \l_tmpb_tl { \tl_item:nn {#1} { 1 } }
-%           \tl_if_eq:NNT \l_tmpa_tl \l_tmpb_tl
-%             {
-%               \tl_set:Nx \l_tmpa_tl { \tl_item:nn {#1} { 2 } }
-%               \int_incr:N \l_tmpa_int
-%               \prop_gput:Nxx \g__zrefcheck_auxfile_labelseq_prop
-%                 { \l_tmpa_tl } { \int_use:N \l_tmpa_int }
-%             }
-%         }
-%     \group_end:
-%     \ior_close:N \g_tmpa_ior
-%   }
 \file_if_exist:nT { \g_tmpa_tl }
   {
     % Retrieve the information from the .aux file, and store it in a property
@@ -218,6 +197,8 @@
     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
     \group_begin:
       \int_zero:N \l_tmpa_int
+      \tl_clear:N \l_tmpa_tl
+      \tl_clear:N \l_tmpb_tl
       \bool_set_false:N \l_tmpa_bool
       \ior_map_variable:NNn \g_tmpa_ior \l_tmpa_tl
         {
@@ -239,10 +220,10 @@
                     {
                       % If there is not a match of the first token with
                       % '\zref@newlabel', break the loop and discard the rest
-                      % of the line, to ensure (?) no babel calls to
-                      % '\catcode' in the .aux file get expanded.  This also
-                      % breaks and discards the rest of the '\zref@newlabel'
-                      % lines after we got the label we wanted, since we reset
+                      % of the line, to ensure no babel calls to '\catcode' in
+                      % the .aux file get expanded.  This also breaks the loop
+                      % and discards the rest of the '\zref@newlabel' lines
+                      % after we got the label we wanted, since we reset
                       % '\l_tmpa_bool' in the 'T' branch.
                       \tl_map_break:
                     }
@@ -255,11 +236,48 @@
 
 
 
-%% The main user-facing command
+%% chapter{Plumbing}
+
+%%% section{Constructed label formats}
+
+% {<check id int>}
+\cs_new:Npn \__zrefcheck_checkbeg_lblfmt:n #1
+  { zrefcheck@ \int_use:N #1 @beg }
+
+% {<check id int>}
+\cs_new:Npn \__zrefcheck_checkend_lblfmt:n #1
+  { zrefcheck@ \int_use:N #1 @end }
+
+% {<label tl>}
+\cs_new:Npn \__zrefcheck_labelpos_lblfmt:n #1
+  { #1 @zrckpos }
+
+
+
+%%% section{Options}
+
+
+
+
+
+
+
+
+
+%% chapter{zrefcheck: main user-facing command}
 
 % *[<options>]{<labels>}[<checks>]{<text>}
-\NewDocumentCommand \zrefcheck { s O { } m O { } +m }
-  { \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
+\NewDocumentCommand \zrefcheck
+  {
+    > { \ReverseBoolean } s % "true" -> "with hyperlink"
+    O { }
+    > { \SplitList { , } } m
+    > { \SplitList { , } } O { }
+    +m
+  }
+  {
+    \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5}
+  }
 
 \int_new:N \g__zrefcheck_id_int
 \tl_new:N \l__zrefcheck_checkbeg_tl
@@ -279,26 +297,33 @@
         { \__zrefcheck_checkbeg_lblfmt:n { \g__zrefcheck_id_int } }
       \tl_set:Nx \l__zrefcheck_checkend_tl
         { \__zrefcheck_checkend_lblfmt:n { \g__zrefcheck_id_int } }
-      % Set start label
+
+      % Set start label and save pos
       \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
+      \zsavepos{ \__zrefcheck_labelpos_lblfmt:n { \l__zrefcheck_checkbeg_tl } }
+
       % Typeset "<text>" (with hyperref!)
-      \__zrefcheck_get_astl:nnn {#1} { anchor } { \l_tmpa_tl }
-      \hyperlink { \l_tmpa_tl } {#5}
-      % Set end label
+      \__zrefcheck_get_astl:xnn { \tl_item:nn {#1} {1} } { anchor } { \l_tmpb_tl }
+      \hyperlink { \l_tmpb_tl } {#5}
+
+      % Set end label and save pos
       \zref@labelbylist { \l__zrefcheck_checkend_tl } { zrefcheck }
+      \zsavepos{ \__zrefcheck_labelpos_lblfmt:n { \l__zrefcheck_checkend_tl } }
+
       % Now we do the checking
 
       % Check definition here, as appropriate, \__zrefcheck_get_astl:nnn
       % assumes the label is defined. Use:
       % \zref@ifrefundefined {#1} { } { }
 
-      \__zrefcheck_do_check:nnv {#4} {#1} { l__zrefcheck_checkbeg_tl }
+      \__zrefcheck_run_checks:nnv {#4} {#1} { l__zrefcheck_checkbeg_tl }
+
     \group_end:
   }
 
 
 
-%% Auxiliary functions
+%% chapter{Retrieving property values}
 
 
 % A convenience function to retrieve property values from labels.  Uses
@@ -318,6 +343,8 @@
 % '\tl_clear:N' does).  This can also
 
 
+\tl_new:N \l__zrefcheck_get_label_tl
+
 % {<label>}{<prop>}{<tl var>}
 \cs_new:Npn \__zrefcheck_get_astl:nnn #1#2#3
   {
@@ -331,6 +358,19 @@
           }
       }
       {
+        % Handle the special case of savepos labels
+        \tl_set:Nn \l__zrefcheck_get_label_tl {#1}
+        \tl_if_eq:nnT {#2} { posx }
+          {
+            \tl_set:Nx \l__zrefcheck_get_label_tl
+              { \__zrefcheck_labelpos_lblfmt:n {#1} }
+          }
+        \tl_if_eq:nnT {#2} { posy }
+          {
+            \tl_set:Nx \l__zrefcheck_get_label_tl
+              { \__zrefcheck_labelpos_lblfmt:n {#1} }
+          }
+
         % There are three things we need to check to ensure the information we
         % are trying to retrieve here exists: the existence of "label", the
         % existence of "property", and whether the particular label being
@@ -346,8 +386,7 @@
         % fresh compilation round.  The other two are more "internal"
         % problems, either some problem with the checks, or with the
         % configuration of 'zref' for their consumption.
-
-        \zref@ifrefundefined {#1}
+        \zref@ifrefundefined { \l__zrefcheck_get_label_tl }
           {}
           {
             \zref@ifpropundefined {#2}
@@ -356,19 +395,25 @@
                   { property-undefined } {#2}
               }
               {
-                \zref@ifrefcontainsprop {#1} {#2}
+                \zref@ifrefcontainsprop { \l__zrefcheck_get_label_tl } {#2}
                   {
                     \tl_set:Nx #3
-                      { \zref@extractdefault {#1} {#2} { \c_empty_tl } }
+                      {
+                        \zref@extractdefault { \l__zrefcheck_get_label_tl }
+                          {#2} { \c_empty_tl }
+                      }
                   }
                   {
-                    \msg_warning:nnnn { zrefcheck }
-                      { property-not-in-label } {#1} {#2}
+                    \exp_args:Nnnx \msg_warning:nnnn
+                      { zrefcheck } { property-not-in-label }
+                      { \l__zrefcheck_get_label_tl } {#2}
                   }
               }
           }
       }
   }
+
+\cs_generate_variant:Nn \__zrefcheck_get_astl:nnn { xnn }
 
 \msg_new:nnn { zrefcheck } { property-undefined }
   { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
@@ -377,15 +422,30 @@
   { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
 
 
+% '\__zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
+% general '\__zrefcheck_get_astl:nnn', since almost always we'll be wanting to
+% compare numbers in the checks.  However, it is quite hard for it to ensure
+% an integer is *always* returned, even in the case of errors.  And those do
+% occur, even in a well structured document (e.g., in a first round of
+% compilation).  To complicate things, the L3 integer predicates are *very*
+% sensible to receiving any other kind of data, and they *scream*.  To handle
+% this '\__zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use
+% this function always set '\l__zrefcheck_integer_bool' to true first, then
+% call it as much as you need.  If any of these calls got some kind of error,
+% '\l__zrefcheck_integer_bool' will have been set to false, and you should
+% check that this hasn't happened before actually comparing the integers
+% ('\bool_lazy_and:nnTF' is your friend).
 \bool_new:N \l__zrefcheck_integer_bool
+
+\tl_new:N \l__zrefcheck_propval_tl
 
 % {<label>}{<prop>}{<int var>}
 \cs_new:Npn \__zrefcheck_get_asint:nnn #1#2#3
   {
-    \__zrefcheck_get_astl:nnn {#1} {#2} { \l_tmpa_tl }
+    \__zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_propval_tl }
     % Make it an integer data type
-    \is_integer:nTF { \l_tmpa_tl }
-      { \int_set:Nn #3 { \int_eval:n { \l_tmpa_tl } } }
+    \is_integer:nTF { \l__zrefcheck_propval_tl }
+      { \int_set:Nn #3 { \int_eval:n { \l__zrefcheck_propval_tl } } }
       {
         \bool_set_false:N \l__zrefcheck_integer_bool
         % Keep silent if ref is undefined to reduce irrelevant warnings in a
@@ -415,22 +475,25 @@
 
 
 
-%% Checks
+%% chapter{Checks}
+
+%%% section{Running checks}
 
 
 % What is needed for a check to work?
 %
 % First, a conditional/predicate function defined with:
 %
-% \prg_new_protected_conditional:Npnn \__zrefcheck_check_<check>:nn #1#2 { T , F , TF }
+% \prg_new_conditional:Npnn \__zrefcheck_check_<check>:nn #1#2 { F }
 %
 % where "<check>", it the name of the check, the first argument is the "label"
 % and the second the "reference".  The existence of the check is verified by
 % the existence of the function with this name-scheme (and signatures).  Of
 % course, this function must return either '\prg_return_true:' or
-% '\prg_return_false:'. (It doesn't *need* to be 'protected' if the content of
-% the test does not require it, but the package does not expect the
-% '\__zrefcheck_check_<check>_p:nn' variant to exist).
+% '\prg_return_false:'.  Of course, you can define other variants if you need
+% internally, and may do a protected definition, if it is needed for the
+% content of the check, just what the package does expect and verifies is
+% existence of the ':nnF' variant.
 %
 % Note that the naming convention of the checks adopts the perspective of the
 % "reference".  That is, the "before" check should return true if the "label"
@@ -452,15 +515,31 @@
 % '\zref@addprop' and friends, as usual.
 
 
+% {<list of checks>}{<list of labels>}{<reference>}
+\cs_new:Npn \__zrefcheck_run_checks:nnn #1#2#3
+  {
+    \group_begin:
+      \tl_map_inline:nn {#2}
+        {
+          \tl_map_inline:nn {#1}
+            { \__zrefcheck_do_check:nnn {####1} {##1} {#3} }
+        }
+    \group_end:
+  }
+
+\cs_generate_variant:Nn \__zrefcheck_run_checks:nnn { nnv }
+
 % {<check>}{<label>}{<reference>}
 \cs_new:Npn \__zrefcheck_do_check:nnn #1#2#3
   {
-    \cs_if_exist:cTF { __zrefcheck_check_ #1 :nnF }
-      {
-        \use:c { __zrefcheck_check_ #1 :nnF } {#2} {#3}
-          { \msg_warning:nnnn { zrefcheck } { check-failed } {#1} {#2} }
-      }
-      { \msg_warning:nnn { zrefcheck } { check-missing } {#1} }
+    \group_begin:
+      \cs_if_exist:cTF { __zrefcheck_check_ #1 :nnF }
+        {
+          \use:c { __zrefcheck_check_ #1 :nnF } {#2} {#3}
+            { \msg_warning:nnnn { zrefcheck } { check-failed } {#1} {#2} }
+        }
+        { \msg_warning:nnn { zrefcheck } { check-missing } {#1} }
+    \group_end:
   }
 
 \cs_generate_variant:Nn \__zrefcheck_do_check:nnn { nnv }
@@ -473,13 +552,8 @@
   { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
 
 
-% {<list of checks>}{<label>}{<reference>}
-\cs_new:Npn \__zrefcheck_do_check_list:nnn #1#2#3
-  {
 
-  }
-
-
+%%% section{Checks definitions}
 
 
 % More readable scratch variables for the tests
@@ -487,53 +561,90 @@
 \int_new:N \l__zrefcheck_ref_int
 \int_new:N \l__zrefcheck_lbl_a_int
 \int_new:N \l__zrefcheck_ref_a_int
-\int_new:N \l__zrefcheck_lbl_b_int
-\int_new:N \l__zrefcheck_ref_b_int
 
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { T , F , TF }
+
+%%%% subsection{Within page checks}
+
+% TODO Move these booleans to Options
+% option 'pagepos': values 'both', 'yx', 'labelseq', 'warn'
+% preamble only option
+\bool_new:N \l__zrefcheck_pagepos_yx_bool
+\bool_new:N \l__zrefcheck_pagepos_labelseq_bool
+\bool_set_true:N \l__zrefcheck_pagepos_yx_bool
+\bool_set_true:N \l__zrefcheck_pagepos_labelseq_bool
+
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_above:nn #1#2 { F , TF }
   {
     \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
+      \bool_set_true:N \l_tmpa_bool
+      \bool_if:nT { \l__zrefcheck_pagepos_yx_bool }
         {
-          \bool_if:nTF
-            {
-              \int_compare_p:nNn
-                { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int } &&
-                % '0' is the default value of 'abspage' property, and this
-                % value should not happen normally for this property, since
-                % even the first page, after it gets shipped out, will store
-                % '1'.  So, if we do find '0' here, better signal something is
-                % wrong.
-                ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-                ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
+          \__zrefcheck_check_above_yx:nnF {#1} {#2}
+            { \bool_set_false:N \l_tmpa_bool }
         }
+      \bool_if:nT { \l__zrefcheck_pagepos_labelseq_bool }
+        {
+          \__zrefcheck_check_above_labelseq:nnF {#1} {#2}
+            { \bool_set_false:N \l_tmpa_bool }
+        }
+      % 'warn' option
+      \bool_if:nF
+        {
+          \l__zrefcheck_pagepos_yx_bool ||
+          \l__zrefcheck_pagepos_labelseq_bool
+        }
+        { \bool_set_false:N \l_tmpa_bool }
+      \bool_if:nTF { \l_tmpa_bool }
+        { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_below:nn #1#2 { F , TF }
+  {
+    \bool_if:nTF
+      {
+        \l__zrefcheck_pagepos_yx_bool ||
+        \l__zrefcheck_pagepos_labelseq_bool
+      }
+      {
+        \__zrefcheck_check_above:nnTF {#1} {#2}
+          { \prg_return_false: }
+          { \prg_return_true:  }
+      }
+      % 'warn' option
+      { \prg_return_false: }
+  }
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_nextpage:nn #1#2 { T , F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_above_yx:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
+      \__zrefcheck_check_thispage:nnTF {#1} {#2}
         {
-          \bool_if:nTF
+          \bool_set_true:N \l__zrefcheck_integer_bool
+          \__zrefcheck_get_asint:nnn {#1} { posy } { \l__zrefcheck_lbl_int }
+          \__zrefcheck_get_asint:nnn {#2} { posy } { \l__zrefcheck_ref_int }
+          \__zrefcheck_get_asint:nnn {#1} { posx } { \l__zrefcheck_lbl_a_int }
+          \__zrefcheck_get_asint:nnn {#2} { posx } { \l__zrefcheck_ref_a_int }
+          \bool_lazy_and:nnTF
+            { \l__zrefcheck_integer_bool }
             {
-              \int_compare_p:nNn
-                { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 } &&
-              % Ditto
+              (
+                \int_compare_p:nNn
+                  { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } ||
+                (
+                  \int_compare_p:nNn
+                    { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int } &&
+                  \int_compare_p:nNn
+                    { \l__zrefcheck_lbl_a_int } > { \l__zrefcheck_ref_a_int }
+                )
+              ) &&
               ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 } &&
+              ! \int_compare_p:nNn { \l__zrefcheck_lbl_a_int } = { 0 } &&
+              ! \int_compare_p:nNn { \l__zrefcheck_ref_a_int } = { 0 }
             }
             { \group_insert_after:N \prg_return_true:  }
             { \group_insert_after:N \prg_return_false: }
@@ -542,112 +653,240 @@
     \group_end:
   }
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_prevpage:nn #1#2 { T , F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_above_labelseq:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
+      \__zrefcheck_check_thispage:nnTF {#1} {#2}
         {
-          \bool_if:nTF
-            {
-              \int_compare_p:nNn
-                { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int - 1 } &&
-              % Ditto
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
-        }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_pagesbefore:nn #1#2 { T , F , TF }
-  {
-    \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
-        {
-          \bool_if:nTF
+          \bool_set_true:N \l__zrefcheck_integer_bool
+          \__zrefcheck_get_asint:nnn {#1} { labelseq } { \l__zrefcheck_lbl_int }
+          \__zrefcheck_get_asint:nnn {#2} { labelseq } { \l__zrefcheck_ref_int }
+          \bool_lazy_and:nnTF
+            { \l__zrefcheck_integer_bool }
             {
               \int_compare_p:nNn
                 { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
-              % Ditto
               ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
               ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
             }
             { \group_insert_after:N \prg_return_true:  }
             { \group_insert_after:N \prg_return_false: }
         }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+
+%%%% subsection{Before / After}
+
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_before:nn #1#2 { F }
+  {
+    \__zrefcheck_check_pagesbefore:nnTF {#1} {#2}
+      { \prg_return_true: }
+      {
+        \__zrefcheck_check_above:nnTF {#1} {#2}
+          { \prg_return_true:  }
+          { \prg_return_false: }
+      }
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_after:nn #1#2 { F }
+  {
+    \__zrefcheck_check_pagesafter:nnTF {#1} {#2}
+      { \prg_return_true: }
+      {
+        \__zrefcheck_check_below:nnTF {#1} {#2}
+          { \prg_return_true:  }
+          { \prg_return_false: }
+      }
+  }
+
+
+%%%% subsection{Between pages checks}
+
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { F , TF }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int } &&
+            % '0' is the default value of 'abspage' property, and this
+            % value should not happen normally for this property, since
+            % even the first page, after it gets shipped out, will store
+            % '1'.  So, if we do find '0' here, better signal something is
+            % wrong.
+            ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+            ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_nextpage:nn #1#2 { F }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 } &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_prevpage:nn #1#2 { F }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int - 1 } &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_pagesbefore:nn #1#2 { F , TF }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 
 \cs_new_eq:NN \__zrefcheck_check_ppbefore:nnF \__zrefcheck_check_pagesbefore:nnF
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_pagesafter:nn #1#2 { T , F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_pagesafter:nn #1#2 { F , TF }
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
       \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
       \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
         {
-          \bool_if:nTF
-            {
-              \int_compare_p:nNn
-                { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } &&
-              % Ditto
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
         }
+        { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 
 \cs_new_eq:NN \__zrefcheck_check_ppafter:nnF \__zrefcheck_check_pagesafter:nnF
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_facing:nn #1#2 { T , F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_facing:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
       \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
       \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
-      \bool_if:NTF \l__zrefcheck_integer_bool
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
         {
-          \bool_if:nTF
-            {
-              % There exists no "facing" page if the document is not twoside
-              \legacy_if_p:n { @twoside } &&
-              % Now we test "facing"
-              (
-                (
-                  \int_if_odd_p:n { \l__zrefcheck_ref_int } &&
-                  \int_compare_p:nNn
-                    { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int - 1 }
-                ) ||
-                (
-                  \int_if_even_p:n { \l__zrefcheck_ref_int } &&
-                  \int_compare_p:nNn
-                    { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 }
-                )
-              ) &&
-              % Ditto
-              ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
+          % There exists no "facing" page if the document is not twoside
+          \legacy_if_p:n { @twoside } &&
+          % Now we test "facing"
+          (
+            (
+              \int_if_odd_p:n { \l__zrefcheck_ref_int } &&
+              \int_compare_p:nNn
+                { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int - 1 }
+            ) ||
+            (
+              \int_if_even_p:n { \l__zrefcheck_ref_int } &&
+              \int_compare_p:nNn
+                { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 }
+            )
+          ) &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
         }
+        { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
+
+
+% TODO Move this variable to Options
+\int_new:N \l__zrefcheck_close_range_int
+\int_set:Nn \l__zrefcheck_close_range_int { 5 }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_close:nn #1#2 { F , TF }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \int_abs:n { \l__zrefcheck_lbl_int - \l__zrefcheck_ref_int } }
+            <
+            { \l__zrefcheck_close_range_int + 1 } &&
+          % Ditto
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_far:nn #1#2 { F }
+  {
+    \__zrefcheck_check_close:nnTF {#1} {#2}
+      { \prg_return_false: }
+      { \prg_return_true:  }
+  }
+
+
+%%%% subsection{Chapter checks}
+
+
+
+
+%%%% subsection{Section checks}

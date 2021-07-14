@@ -12,9 +12,9 @@
 % https://tex.stackexchange.com/a/298900
 \usepackage[absolute]{textpos}
 \usepackage{xcolor}
-\newcommand*{\showlabel}[1]{%
-  \begin{textblock*}{1cm}[0,1](\zposx{#1}sp, \dimexpr\paperheight - \zposy{#1}sp)
-    {\noindent\color{red}here}%
+\newcommand*{\showlabel}[2][here]{%
+  \begin{textblock*}{1cm}[0,1](\zposx{#2}sp, \dimexpr\paperheight - \zposy{#2}sp)
+    {\noindent\color{red}#1}%
   \end{textblock*}}
 
 \usepackage[french]{babel}
@@ -66,7 +66,11 @@ Teste2\phantomsection\zlabel{test2}.
 \hyperlink{figure.1.1}{\zref{fig:figure-1}}
 
 
-\zrefcheck{fig:figure-1}[facing]{alguma coisa e tal}
+\zrefcheck{fig:figure-1}[
+  facing,
+  % teste
+  prevpage
+  ]{alguma coisa e tal}
 
 \clearpage{}
 
@@ -86,13 +90,12 @@ Teste2\phantomsection\zlabel{test2}.
 \zlabel{sec:section-2-1}
 
 \clearpage{}
-\zrefcheck{cha:chapter-2}[thispage]{alguma coisa e tal}
-\showlabel{zrefcheck@3@beg}
-\showlabel{zrefcheck@3@end}
+\zrefcheck{ fig:figure-2 }[ far ]{alguma coisa e tal}
+\showlabel[fig]{fig:figure-2@zrckpos}
+\showlabel[lab]{zrefcheck@2@end@zrckpos}
 
 
-
-\begin{figure}
+\begin{figure}[hb]
   \centering
   \includegraphics[width=.6\textwidth]{example-image-b}
   \caption{Figure 2}
