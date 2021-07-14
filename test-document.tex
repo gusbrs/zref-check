@@ -53,7 +53,7 @@ Hello World!
 \end{figure}
 
 
-Teste1\phantomsection\zlabel{test1}.
+Teste1\phantomsection\zlabel{test1}. \zrefcheck{test3}[thispage, below, thischap]{mesma linha}.
 Teste2\phantomsection\zlabel{test2}.
 
 \clearpage{}
@@ -90,18 +90,20 @@ Teste2\phantomsection\zlabel{test2}.
 \zlabel{sec:section-2-1}
 
 \clearpage{}
-\zrefcheck{ fig:figure-2 }[ far ]{alguma coisa e tal}
+\zrefcheck{ fig:figure-2 }[ below ]{alguma coisa e tal}
 \showlabel[fig]{fig:figure-2@zrckpos}
 \showlabel[lab]{zrefcheck@2@end@zrckpos}
 
 
 \begin{figure}[hb]
   \centering
-  \includegraphics[width=.6\textwidth]{example-image-b}
   \caption{Figure 2}
+  \includegraphics[width=.6\textwidth]{example-image-b}
   \zlabel{fig:figure-2}
 \end{figure}
 
+
+\hyperlink{figure.2.1}{\zref{fig:figure-2}}
 
 \chapter{Chapter 3}
 \zlabel{cha:chapter-3}
