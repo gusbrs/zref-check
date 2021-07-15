@@ -216,12 +216,12 @@
 %%% section{Label formats}
 
 % {<check id int>}
-\cs_new:Npn \__zrefcheck_checkbeg_lblfmt:n #1
-  { zrefcheck@ \int_use:N #1 @beg }
+\cs_new:Npn \__zrefcheck_check_lblfmt:n #1
+  { zrefcheck@ \int_use:N #1 }
 
-% {<check id int>}
-\cs_new:Npn \__zrefcheck_checkend_lblfmt:n #1
-  { zrefcheck@ \int_use:N #1 @end }
+% {<label>}
+\cs_new:Npn \__zrefcheck_end_lblfmt:n #1
+  { #1 @zrefcheck }
 
 
 %%% section{Property values}
@@ -263,14 +263,13 @@
         % value is passed to the checks, and it's their responsibility to
         % verify the consistency of this value.
         %
-        % The existence of the label is an user facing issue, and a
-        % configurable one, so a warning for this should be placed in
-        % '\_zrefcheck:nnnnn' (and done with '\zref@refused').  We do check
-        % here though for definition with '\zref@ifrefundefined' and silently
-        % do nothing if it is undefined, to reduce irrelevant warnings in a
-        % fresh compilation round.  The other two are more "internal"
-        % problems, either some problem with the checks, or with the
-        % configuration of 'zref' for their consumption.
+        % The existence of the label is an user facing issue, and a warning
+        % for this is placed in '\_zrefcheck:nnnnn' (and done with
+        % '\zref@refused').  We do check here though for definition with
+        % '\zref@ifrefundefined' and silently do nothing if it is undefined,
+        % to reduce irrelevant warnings in a fresh compilation round.  The
+        % other two are more "internal" problems, either some problem with the
+        % checks, or with the configuration of 'zref' for their consumption.
         \zref@ifrefundefined {#1}
           {}
           {
@@ -291,8 +290,6 @@
       }
   }
 
-\cs_generate_variant:Nn \__zrefcheck_get_astl:nnn { xnn }
-
 \msg_new:nnn { zref-check } { property-undefined }
   { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
 
@@ -303,16 +300,16 @@
 % '\__zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
 % general '\__zrefcheck_get_astl:nnn', since almost always we'll be wanting to
 % compare numbers in the checks.  However, it is quite hard for it to ensure
-% an integer is *always* returned, even in the case of errors.  And those do
-% occur, even in a well structured document (e.g., in a first round of
-% compilation).  To complicate things, the L3 integer predicates are *very*
-% sensible to receiving any other kind of data, and they *scream*.  To handle
-% this '\__zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use
-% this function always set '\l__zrefcheck_integer_bool' to true first, then
-% call it as much as you need.  If any of these calls got some kind of error,
-% '\l__zrefcheck_integer_bool' will have been set to false, and you should
-% check that this hasn't happened before actually comparing the integers
-% ('\bool_lazy_and:nnTF' is your friend).
+% an integer is *always* returned in the case of errors.  And those do occur,
+% even in a well structured document (e.g., in a first round of compilation).
+% To complicate things, the L3 integer predicates are *very* sensitive to
+% receiving any other kind of data, and they *scream*.  To handle this
+% '\__zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use this
+% function always set '\l__zrefcheck_integer_bool' to true first, then call it
+% as much as you need.  If any of these calls got is returning anything which
+% is not an integer, '\l__zrefcheck_integer_bool' will have been set to false,
+% and you should check that this hasn't happened before actually comparing the
+% integers ('\bool_lazy_and:nnTF' is your friend).
 \bool_new:N \l__zrefcheck_integer_bool
 
 \tl_new:N \l__zrefcheck_propval_tl
@@ -321,9 +318,11 @@
 \cs_new:Npn \__zrefcheck_get_asint:nnn #1#2#3
   {
     \__zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_propval_tl }
-    % Make it an integer data type
     \is_integer:nTF { \l__zrefcheck_propval_tl }
-      { \int_set:Nn #3 { \int_eval:n { \l__zrefcheck_propval_tl } } }
+      {
+        % Make it an integer data type
+        \int_set:Nn #3 { \int_eval:n { \l__zrefcheck_propval_tl } }
+      }
       {
         \bool_set_false:N \l__zrefcheck_integer_bool
         % Keep silent if ref is undefined to reduce irrelevant warnings in a
@@ -380,33 +379,32 @@
     \int_gincr:N \g__zrefcheck_id_int
     \mode_leave_vertical:
     \group_begin:
+
       % Names of the labels for this zrefcheck call
       \tl_set:Nx \l__zrefcheck_checkbeg_tl
-        { \__zrefcheck_checkbeg_lblfmt:n { \g__zrefcheck_id_int } }
+        { \__zrefcheck_check_lblfmt:n { \g__zrefcheck_id_int } }
       \tl_set:Nx \l__zrefcheck_checkend_tl
-        { \__zrefcheck_checkend_lblfmt:n { \g__zrefcheck_id_int } }
+        { \__zrefcheck_end_lblfmt:n { \l__zrefcheck_checkbeg_tl } }
 
-      % Set start label
+      % Set checkbeg label
       \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
 
       % Typeset "<text>" (with hyperref!)
       % For hyperlinking, we must check if the reference is defined or not,
       % and not only internal options, to avoid hyperref warning in case of
       % undefined anchor ("suppressing link with empty target" warning).
-      \__zrefcheck_get_astl:xnn { \tl_item:nn {#1} {1} } { anchor } { \l_tmpb_tl }
+      \exp_args:Nx \__zrefcheck_get_astl:nnn
+        { \tl_item:nn {#1} {1} } { anchor } { \l_tmpb_tl }
       \hyperlink { \l_tmpb_tl } {#5}
 
-      % Set end label
+      % Set checkend label
       \zref@labelbylist { \l__zrefcheck_checkend_tl } { zrefcheck }
 
-      % Now we do the checking
+      % Check definition
+      \tl_map_function:nN {#1} \zref@refused
 
-      % Check definition here, as appropriate, \__zrefcheck_get_astl:nnn
-      % assumes the label is defined. Use:
-      % \zref@ifrefundefined {#1} { } { }
-
-
-      \__zrefcheck_run_checks:nnv {#4} {#1} { l__zrefcheck_checkbeg_tl }
+      % Run the checks
+      \__zrefcheck_run_checks:nnV {#4} {#1} { \l__zrefcheck_checkbeg_tl }
 
     \group_end:
   }
@@ -462,23 +460,55 @@
     \group_end:
   }
 
-\cs_generate_variant:Nn \__zrefcheck_run_checks:nnn { nnv }
+\cs_generate_variant:Nn \__zrefcheck_run_checks:nnn { nnV }
 
-% {<check>}{<label>}{<reference>}
+
+\bool_new:N \l__zrefcheck_passedcheck_bool
+
+% {<check>}{<label beg>}{<reference beg>}
 \cs_new:Npn \__zrefcheck_do_check:nnn #1#2#3
   {
     \group_begin:
-      \cs_if_exist:cTF { __zrefcheck_check_ #1 :nnF }
+      % "label beg" may be defined or not, it is arbitrary user input.
+      % Whether this is the case is checked in '\_zrefcheck:nnnnn', and due
+      % warning already ensues.  And there is no point in checking "relative
+      % position" of an undefined label.  Hence, in the absence of '#2', we do
+      % nothing at all here.
+      \zref@ifrefundefined {#2}
+        {}
         {
-          \use:c { __zrefcheck_check_ #1 :nnF } {#2} {#3}
-            { \msg_warning:nnnn { zref-check } { check-failed } {#1} {#2} }
+          \bool_set_true:N \l__zrefcheck_passedcheck_bool
+          \cs_if_exist:cTF { __zrefcheck_check_ #1 :nnF }
+            {
+              % "label beg" vs "reference beg"
+              \use:c { __zrefcheck_check_ #1 :nnF }
+                {#2} {#3}
+                { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
+              % "label beg" vs "reference end"
+              \exp_args:Nnnx \use:c { __zrefcheck_check_ #1 :nnF }
+                {#2} { \__zrefcheck_end_lblfmt:n {#3} }
+                { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
+              % "label end" *may* have been created by the target commands
+              \zref@ifrefundefined { \__zrefcheck_end_lblfmt:n {#2} }
+                {}
+                {
+                  % "label end" vs "reference beg"
+                  \exp_args:Nnx \use:c { __zrefcheck_check_ #1 :nnF }
+                    { \__zrefcheck_end_lblfmt:n {#2} } {#3}
+                    { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
+                  % "label end" vs "reference end"
+                  \exp_args:Nnxx \use:c { __zrefcheck_check_ #1 :nnF }
+                    { \__zrefcheck_end_lblfmt:n {#2} }
+                    { \__zrefcheck_end_lblfmt:n {#3} }
+                    { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
+                }
+              \bool_if:NF \l__zrefcheck_passedcheck_bool
+                { \msg_warning:nnnn { zref-check } { check-failed } {#1} {#2} }
+            }
+            { \msg_warning:nnn { zref-check } { check-missing } {#1} }
         }
-        { \msg_warning:nnn { zref-check } { check-missing } {#1} }
     \group_end:
   }
-
-\cs_generate_variant:Nn \__zrefcheck_do_check:nnn { nnv }
-
 
 \msg_new:nnn { zref-check } { check-failed }
   { Check~'#1'~for~label~'#2'~has~failed~on~input~line~\msg_line_number:. }

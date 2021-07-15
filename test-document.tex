@@ -1,23 +1,15 @@
 \documentclass{book}
 
-\usepackage[user,counter,hyperref,titleref,savepos]{zref}
-% \usepackage{zref-abspos}
+\usepackage[user,counter,hyperref,titleref]{zref}
 \usepackage{zref-check}
 
 \usepackage{graphicx}
 \usepackage{econlipsum}
 \usepackage{hyperref}
+\usepackage[all]{hypcap}
 
-% Just to be able to visually check the position of the labels
-% https://tex.stackexchange.com/a/298900
-\usepackage[absolute]{textpos}
-\usepackage{xcolor}
-\newcommand*{\showlabel}[2][here]{%
-  \begin{textblock*}{1cm}[0,1](\zposx{#2}sp, \dimexpr\paperheight - \zposy{#2}sp)
-    {\noindent\color{red}#1}%
-  \end{textblock*}}
 
-\usepackage[french]{babel}
+% \usepackage[french]{babel}
 
 \begin{document}
 
@@ -58,7 +50,6 @@ Teste2\phantomsection\zlabel{test2}.
 
 \clearpage{}
 
-\showlabel{fig:figure-1}
 
 % É assim que constrói um hyperlink pra uma zlabel! Essa macro aparece na
 % documentação do hyperref, mas sem explicação alguma. O primeiro argumento é
@@ -90,9 +81,7 @@ Teste2\phantomsection\zlabel{test2}.
 \zlabel{sec:section-2-1}
 
 \clearpage{}
-\zrefcheck{ fig:figure-2 }[ below ]{alguma coisa e tal}
-\showlabel[fig]{fig:figure-2@zrckpos}
-\showlabel[lab]{zrefcheck@2@end@zrckpos}
+\zrefcheck{ fig:figure-2 }[ above ]{alguma coisa e tal}
 
 
 \begin{figure}[hb]
