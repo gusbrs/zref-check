@@ -8,6 +8,7 @@
 \usepackage{hyperref}
 \usepackage[all]{hypcap}
 
+% \usepackage{cleveref}
 
 % \usepackage[french]{babel}
 
@@ -45,7 +46,7 @@ Hello World!
 \end{figure}
 
 
-Teste1\phantomsection\zlabel{test1}. \zrefcheck{test2}[below]{mesma linha}.
+Teste1\phantomsection\zlabel{test1}. \zrcheck{test2}[below]{mesma linha}.
 Teste2\phantomsection\zlabel{test2}.
 
 \clearpage{}
@@ -57,7 +58,7 @@ Teste2\phantomsection\zlabel{test2}.
 \hyperlink{figure.1.1}{\zref{fig:figure-1}}
 
 
-\zrefcheck{fig:figure-1}[
+\zrcheck{fig:figure-1}[
   facing,
   % teste
   prevpage
@@ -74,6 +75,7 @@ Teste2\phantomsection\zlabel{test2}.
 
 \chapter{Chapter 2}
 \zlabel{cha:chapter-2}
+\label{cha:chapter-2}
 
 \econ[2]
 
@@ -81,7 +83,7 @@ Teste2\phantomsection\zlabel{test2}.
 \zlabel{sec:section-2-1}
 
 \clearpage{}
-\zrefcheck{ fig:figure-2 }[ above ]{alguma coisa e tal}
+\zrcheck{ fig:figure-2 }[ above ]{alguma coisa e tal}
 
 
 \begin{figure}[hb]

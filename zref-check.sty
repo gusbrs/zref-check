@@ -2,14 +2,14 @@
 \ProvidesExplPackage {zref-check} {2021-07-06} { }
   {Flexible cross-references with relative position checks based on zref}
 
-%% chapter{zref setup}
+%% chapter{Dependencies}
 
 \RequirePackage { zref-user }
 \RequirePackage { zref-abspage }
+\RequirePackage { ifdraft }
 
-% TODO move this to Options
-\RequirePackage { zref-hyperref }
 
+%% chapter{zref setup}
 
 % Provide absolute counters for section and chapter, and respective zref
 % properties, so that we can make checks about relation of chapters/sections
@@ -39,16 +39,15 @@
 
 
 % This is the list of properties to be used by the '\zrefcheck' command, that
-% is, the list of properties the *references* store.
+% is, the list of properties the *references* store.  This is the minimum set
+% required, more properties may be added according to options.
 \zref@newlist { zrefcheck }
 \zref@addprops { zrefcheck }
   {
-    % minimum set needed
     abspage ,
     abschap ,
     abssec ,
-    % for use in warning messages CHECK am I really using it ?
-    page
+    page % for messages
   }
 
 
@@ -56,8 +55,32 @@
 
 
 
+% TODO Set options to hyperref
+\RequirePackage { zref-hyperref }
+
+\zref@addprop { zrefcheck } { anchor }
+
+\bool_new:N \l__zrefcheck_hyperref_bool
+\bool_set_true:N \l__zrefcheck_hyperref_bool
 
 
+% TODO Set option for close/far checks
+\int_new:N \l__zrefcheck_close_range_int
+\int_set:Nn \l__zrefcheck_close_range_int { 5 }
+
+
+% TODO Set options for messages
+
+\bool_new:N \l__zrefcheck_msgnone_bool
+\tl_new:N \l__zrefcheck_msglevel_tl
+
+\tl_set:Nn \l__zrefcheck_msglevel_tl { warning }
+
+
+% TODO Set options for onpage
+
+\bool_new:N \l__zrefcheck_msgonpage_bool
+\bool_set_true:N \l__zrefcheck_msgonpage_bool
 
 
 
@@ -106,22 +129,22 @@
 % below is adapted from Carlisle's answer's technique (a poor man's version of
 % it...).
 %
-% NOTE There is some subtlety here as to whether this approach makes it safe
-% for us to read the labels at this point without '\zref@wrapper@babel'.  The
-% common wisdom is that babel's shorthands are only active after
-% '\begin{document}' (e.g., https://tex.stackexchange.com/a/98897).  Alas, it
-% is more complicated than that.  Babel's documentation says (in section 9.5
-% Shorthands): "To prevent problems with the loading of other packages after
-% babel we reset the catcode of the character to the original one at the end
-% of the package and of each language file (except with KeepShorthandsActive).
-% It is re-activate[d] again at \begin{document}.  We also need to make sure
-% that the shorthands are active during the processing of the .aux file.
-% Otherwise some citations may give unexpected results in the printout when a
-% shorthand was used in the optional argument of \bibitem for example."  This
-% is done with '\if@filesw \immediate\write\@mainaux{...}'.  In other words,
-% the catcode change is written in the .aux file itself!  Indeed, if you
-% inspect the file, you'll find them there.  Besides, there is still the
-% ominous "except with KeepShorthandsActive".
+% There is some subtlety here as to whether this approach makes it safe for us
+% to read the labels at this point without '\zref@wrapper@babel'.  The common
+% wisdom is that babel's shorthands are only active after '\begin{document}'
+% (e.g., https://tex.stackexchange.com/a/98897).  Alas, it is more complicated
+% than that.  Babel's documentation says (in section 9.5 Shorthands): "To
+% prevent problems with the loading of other packages after babel we reset the
+% catcode of the character to the original one at the end of the package and
+% of each language file (except with KeepShorthandsActive).  It is
+% re-activate[d] again at \begin{document}.  We also need to make sure that
+% the shorthands are active during the processing of the .aux file.  Otherwise
+% some citations may give unexpected results in the printout when a shorthand
+% was used in the optional argument of \bibitem for example."  This is done
+% with '\if@filesw \immediate\write\@mainaux{...}'.  In other words, the
+% catcode change is written in the .aux file itself!  Indeed, if you inspect
+% the file, you'll find them there.  Besides, there is still the ominous
+% "except with KeepShorthandsActive".
 %
 % However, the *method* I'm using here is not quite the same as the usual run
 % of the .aux file, because I'm actively discarding the lines for which the
@@ -196,12 +219,12 @@
   }
 
 
-% NOTE The alternate method I had considered (more than that...) for this was
-% using yx coordinates supplied by 'zref's 'savepos' module.  However, this
-% approach brought in a number of complexities, including the need to patch
-% either '\zref@label' or '\ZREF@label'.  In addition, the technique was at
-% the bottom fundamentally flawed.  Ulrike Fischer was very much right when
-% she said that "structure and position are two different beasts"
+% The alternate method I had considered (more than that...) for this was using
+% yx coordinates supplied by 'zref's 'savepos' module.  However, this approach
+% brought in a number of complexities, including the need to patch either
+% '\zref@label' or '\ZREF@label'.  In addition, the technique was at the
+% bottom fundamentally flawed.  Ulrike Fischer was very much right when she
+% said that "structure and position are two different beasts"
 % (https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).  It is
 % true that the tests behaved decently, in normal circumstances, and except
 % for outrageous label placement by the user, it would return the expected
@@ -213,6 +236,25 @@
 % slope.  All in all, I've decided to drop it.
 
 
+%%% section{Counter}
+
+% We need a dedicated counter for the labels generated by the checks and
+% targets.  The value of the counter is not relevant, we just need it to be
+% able to set proper anchors with '\refstepcounter'.  And, since I couldn't
+% find a '\refstepcounter' equivalent in L3, we use a standard 2e counter
+% here.  I'm also using the technique to ensure the counter is never reset
+% that is used by 'zref-abspage.sty' and '\zref@require@unique'.  I don't know
+% why it is needed, but if Oberdiek did it, there must be a reason.  In any
+% case, the requirements are the same, we need numbers ensured to be *unique*
+% in the counter.
+
+\begingroup
+  \let \@addtoreset \ltx@gobbletwo
+  \newcounter { zrefcheck }
+\endgroup
+\setcounter { zrefcheck } { 0 }
+
+
 %%% section{Label formats}
 
 % {<check id int>}
@@ -222,6 +264,41 @@
 % {<label>}
 \cs_new:Npn \__zrefcheck_end_lblfmt:n #1
   { #1 @zrefcheck }
+
+
+%%% section{Messages}
+
+
+\cs_new_protected:Npn \__zrefcheck_message:nnnn #1#2#3#4
+  {
+    \bool_if:NF \l__zrefcheck_msgnone_bool
+      {
+        \use:c { msg_ \l__zrefcheck_msglevel_tl :nnnnn }
+          { zref-check } {#1} {#2} {#3} {#4}
+      }
+  }
+
+\cs_generate_variant:Nn \__zrefcheck_message:nnnn { nnnx }
+
+\msg_new:nnn { zref-check } { check-failed }
+  { Failed~check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { double-check }
+  { Double-check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+
+
+\msg_new:nnn { zref-check } { check-missing }
+  { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-undefined }
+  { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-not-in-label }
+  { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-not-integer }
+  { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
+
 
 
 %%% section{Property values}
@@ -290,11 +367,6 @@
       }
   }
 
-\msg_new:nnn { zref-check } { property-undefined }
-  { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { property-not-in-label }
-  { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
 
 
 % '\__zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
@@ -318,7 +390,7 @@
 \cs_new:Npn \__zrefcheck_get_asint:nnn #1#2#3
   {
     \__zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_propval_tl }
-    \is_integer:nTF { \l__zrefcheck_propval_tl }
+    \__zrefcheck_is_integer:nTF { \l__zrefcheck_propval_tl }
       {
         % Make it an integer data type
         \int_set:Nn #3 { \int_eval:n { \l__zrefcheck_propval_tl } }
@@ -330,12 +402,15 @@
         % for undefined references, that's a task for '\_zrefcheck:nnnnn'.
         \zref@ifrefundefined {#1}
           { }
-          { \msg_warning:nnn { zref-check } { property-not-integer } {#2} }
+          {
+            \msg_warning:nnnn { zref-check }
+              { property-not-integer } {#2} {#1}
+          }
       }
   }
 
 % Thanks egreg: https://tex.stackexchange.com/a/244405
-\prg_new_conditional:Npnn \is_integer:n #1 { p, T, F, TF }
+\prg_new_conditional:Npnn \__zrefcheck_is_integer:n #1 { p, T, F, TF }
   {
     \tl_if_empty:oTF {#1}
       { \prg_return_false: } % empty tl is also not an integer
@@ -346,15 +421,12 @@
       }
   }
 
-\msg_new:nnn { zref-check } { property-not-integer }
-  { Property~'#1'~is~not~an~integer \\
-    on~input~line~\msg_line_number:. }
 
 
-%% chapter{zrefcheck}
+%% chapter{zrcheck}
 
 % *[<options>]{<labels>}[<checks>]{<text>}
-\NewDocumentCommand \zrefcheck
+\NewDocumentCommand \zrcheck
   {
     > { \ReverseBoolean } s % "true" -> "with hyperlink"
     O { }
@@ -387,6 +459,7 @@
         { \__zrefcheck_end_lblfmt:n { \l__zrefcheck_checkbeg_tl } }
 
       % Set checkbeg label
+      \refstepcounter { zrefcheck }
       \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
 
       % Typeset "<text>" (with hyperref!)
@@ -398,6 +471,7 @@
       \hyperlink { \l_tmpb_tl } {#5}
 
       % Set checkend label
+      \refstepcounter { zrefcheck }
       \zref@labelbylist { \l__zrefcheck_checkend_tl } { zrefcheck }
 
       % Check definition
@@ -435,7 +509,7 @@
 % The checks it does are expected to retrieve 'zref's label information with
 % '\__zrefcheck_get_astl:nnn' or '\__zrefcheck_get_asint:nnn'.  Also,
 % technically speaking, the "reference" argument is also a label, actually a
-% pair of them, as set by '\zrefcheck'.  For the "labels", any 'zref' property
+% pair of them, as set by '\zrcheck'.  For the "labels", any 'zref' property
 % in 'zref's main list is available, the "references" store the properties in
 % the 'zrefcheck' list.  Besides those, there is also the 'lblseq' (fake)
 % property (for either "labels" or "references"), stored in
@@ -464,6 +538,8 @@
 
 
 \bool_new:N \l__zrefcheck_passedcheck_bool
+\bool_new:N \l__zrefcheck_onpage_bool
+\tl_new:N \l__zrefcheck_labelend_tl
 
 % {<check>}{<label beg>}{<reference beg>}
 \cs_new:Npn \__zrefcheck_do_check:nnn #1#2#3
@@ -478,6 +554,7 @@
         {}
         {
           \bool_set_true:N \l__zrefcheck_passedcheck_bool
+          \bool_set_false:N \l__zrefcheck_onpage_bool
           \cs_if_exist:cTF { __zrefcheck_check_ #1 :nnF }
             {
               % "label beg" vs "reference beg"
@@ -490,7 +567,7 @@
                 { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
               % "label end" *may* have been created by the target commands
               \zref@ifrefundefined { \__zrefcheck_end_lblfmt:n {#2} }
-                {}
+                { \tl_set:Nn \l__zrefcheck_labelend_tl {#2} }
                 {
                   % "label end" vs "reference beg"
                   \exp_args:Nnx \use:c { __zrefcheck_check_ #1 :nnF }
@@ -501,20 +578,46 @@
                     { \__zrefcheck_end_lblfmt:n {#2} }
                     { \__zrefcheck_end_lblfmt:n {#3} }
                     { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
+                  \tl_set:Nx \l__zrefcheck_labelend_tl
+                    { \__zrefcheck_end_lblfmt:n {#2} }
                 }
-              \bool_if:NF \l__zrefcheck_passedcheck_bool
-                { \msg_warning:nnnn { zref-check } { check-failed } {#1} {#2} }
+              % Handle option 'onpage=msg'.  This is only granted for tests
+              % which perform "within this page" checks ('above', 'below',
+              % 'before', 'after') *and* if all labels are "within this
+              % page".  If both conditions are met, signal.
+              \tl_if_in:nnT {#1} { {above} {below} {before} {after} }
+                {
+                  \__zrefcheck_check_thispage:nnT
+                    {#2} { \__zrefcheck_end_lblfmt:n {#3} }
+                    {
+                      \__zrefcheck_check_thispage:nnT
+                        { \l__zrefcheck_labelend_tl } {#3}
+                        { \bool_set_true:N \l__zrefcheck_onpage_bool }
+                    }
+                }
+              \bool_if:NTF \l__zrefcheck_passedcheck_bool
+                {
+                  \bool_if:nT
+                    {
+                      \l__zrefcheck_msgonpage_bool &&
+                      \l__zrefcheck_onpage_bool
+                    }
+                    {
+                      \__zrefcheck_message:nnnx
+                        { double-check } {#1} {#2}
+                        { \zref@extract {#3} {page} }
+                    }
+                }
+                {
+                  \__zrefcheck_message:nnnx
+                    { check-failed } {#1} {#2} { \zref@extract {#3} {page} }
+                }
             }
             { \msg_warning:nnn { zref-check } { check-missing } {#1} }
         }
     \group_end:
   }
 
-\msg_new:nnn { zref-check } { check-failed }
-  { Check~'#1'~for~label~'#2'~has~failed~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { check-missing }
-  { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
 
 
 %%% section{Definitions}
@@ -527,7 +630,7 @@
 
 %%%% subsection{This page}
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_thispage:nn #1#2 { T, F , TF }
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
@@ -731,10 +834,6 @@
 
 
 %%%% subsection{Close / Far}
-
-% TODO Move this variable to Options
-\int_new:N \l__zrefcheck_close_range_int
-\int_set:Nn \l__zrefcheck_close_range_int { 5 }
 
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_close:nn #1#2 { F , TF }
   {
