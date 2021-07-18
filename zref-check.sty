@@ -16,6 +16,10 @@
 % regardless of internal counters, since we don't get those for the unnumbered
 % (starred) ones.
 
+% TODO Check whether '\chapter' and '\section' are the right macros to hook,
+% and if they are general enough beyond the standard classes (Koma, memoir,
+% etc), or if some lower level command could be used.
+
 \int_new:N \g__zrefcheck_abschap_int
 \int_new:N \g__zrefcheck_abssec_int
 
@@ -53,34 +57,144 @@
 
 %% chapter{Options}
 
+% 'hyperref' option
+
+\bool_new:N \l__zrefcheck_use_hyperref_bool
+\bool_new:N \l__zrefcheck_warn_hyperref_bool
+
+\keys_define:nn { zref-check }
+  {
+    hyperref .choice: ,
+    hyperref / auto .code:n =
+      {
+        \bool_set_true:N \l__zrefcheck_use_hyperref_bool
+        \bool_set_false:N \l__zrefcheck_warn_hyperref_bool
+      } ,
+    hyperref / true .code:n =
+      {
+        \bool_set_true:N \l__zrefcheck_use_hyperref_bool
+        \bool_set_true:N \l__zrefcheck_warn_hyperref_bool
+      } ,
+    hyperref / false .code:n =
+      {
+        \bool_set_false:N \l__zrefcheck_use_hyperref_bool
+        \bool_set_false:N \l__zrefcheck_warn_hyperref_bool
+      } ,
+    hyperref .default:n = auto
+  }
+
+\AtBeginDocument
+  {
+    \@ifpackageloaded { hyperref }
+      {
+        \bool_if:NT \l__zrefcheck_use_hyperref_bool
+          {
+            \RequirePackage { zref-hyperref }
+            \zref@addprop { zrefcheck } { anchor }
+          }
+      }
+      {
+        \bool_if:NT \l__zrefcheck_warn_hyperref_bool
+          { \msg_warning:nn { zref-check } { missing-hyperref } }
+        \bool_set_false:N \l__zrefcheck_use_hyperref_bool
+      }
+    \keys_define:nn { zref-check }
+      {
+        hyperref .code:n =
+          { \msg_warning:nn { zref-check } { hyperref-preamble-only } }
+      }
+  }
 
 
-% TODO Set options to hyperref
-\RequirePackage { zref-hyperref }
-
-\zref@addprop { zrefcheck } { anchor }
-
-\bool_new:N \l__zrefcheck_hyperref_bool
-\bool_set_true:N \l__zrefcheck_hyperref_bool
-
-
-% TODO Set option for close/far checks
+% 'closerange' option
 \int_new:N \l__zrefcheck_close_range_int
-\int_set:Nn \l__zrefcheck_close_range_int { 5 }
+
+\keys_define:nn { zref-check }
+  {
+    closerange .int_set:N = \l__zrefcheck_close_range_int ,
+  }
 
 
-% TODO Set options for messages
-
-\bool_new:N \l__zrefcheck_msgnone_bool
+% 'msglevel' option
 \tl_new:N \l__zrefcheck_msglevel_tl
 
-\tl_set:Nn \l__zrefcheck_msglevel_tl { warning }
+\keys_define:nn { zref-check }
+  {
+    msglevel .choice: ,
+    msglevel / warning .code:n =
+      {
+        \tl_set:Nn \l__zrefcheck_msglevel_tl { warning }
+      } ,
+    msglevel / info .code:n =
+      {
+        \tl_set:Nn \l__zrefcheck_msglevel_tl { info }
+      } ,
+    msglevel / none .code:n =
+      {
+        \tl_set:Nn \l__zrefcheck_msglevel_tl { none }
+      } ,
+    msglevel / obeydraft .code:n =
+      {
+        \ifdraft
+          { \tl_set:Nn \l__zrefcheck_msglevel_tl { info } }
+          { \tl_set:Nn \l__zrefcheck_msglevel_tl { warning } }
+      } ,
+    msglevel / obeyfinal .code:n =
+      {
+        \ifoptionfinal
+          { \tl_set:Nn \l__zrefcheck_msglevel_tl { warning } }
+          { \tl_set:Nn \l__zrefcheck_msglevel_tl { info } }
+      }
+  }
 
 
-% TODO Set options for onpage
-
+% 'onpage' options
 \bool_new:N \l__zrefcheck_msgonpage_bool
-\bool_set_true:N \l__zrefcheck_msgonpage_bool
+
+\keys_define:nn { zref-check }
+  {
+    onpage .choice: ,
+    onpage / labelseq .code:n =
+      {
+        \bool_set_false:N \l__zrefcheck_msgonpage_bool
+      } ,
+    onpage / msg .code:n =
+      {
+        \bool_set_true:N \l__zrefcheck_msgonpage_bool
+      } ,
+    onpage / obeydraft .code:n =
+      {
+        \ifdraft
+          { \bool_set_false:N \l__zrefcheck_msgonpage_bool }
+          { \bool_set_true:N \l__zrefcheck_msgonpage_bool }
+      } ,
+    onpage / obeyfinal .code:n =
+      {
+        \ifoptionfinal
+          { \bool_set_true:N \l__zrefcheck_msgonpage_bool }
+          { \bool_set_false:N \l__zrefcheck_msgonpage_bool }
+      }
+  }
+
+
+% Set load-time default values
+\keys_set:nn { zref-check }
+  {
+    hyperref   = auto ,
+    closerange = 5 ,
+    msglevel   = warning ,
+    onpage     = labelseq
+  }
+
+% Process load-time package options
+% https://tex.stackexchange.com/a/15840
+\RequirePackage { l3keys2e }
+\ProcessKeysOptions { zref-check }
+
+
+% Provide '\zrchecksetup'
+\NewDocumentCommand \zrchecksetup { m }
+  { \keys_set:nn { zref-check } {#1} }
 
 
 
@@ -244,7 +358,7 @@
 % find a '\refstepcounter' equivalent in L3, we use a standard 2e counter
 % here.  I'm also using the technique to ensure the counter is never reset
 % that is used by 'zref-abspage.sty' and '\zref@require@unique'.  I don't know
-% why it is needed, but if Oberdiek did it, there must be a reason.  In any
+% why it is needed, but if Oberdiek does it, there must be a reason.  In any
 % case, the requirements are the same, we need numbers ensured to be *unique*
 % in the counter.
 
@@ -271,11 +385,8 @@
 
 \cs_new_protected:Npn \__zrefcheck_message:nnnn #1#2#3#4
   {
-    \bool_if:NF \l__zrefcheck_msgnone_bool
-      {
-        \use:c { msg_ \l__zrefcheck_msglevel_tl :nnnnn }
-          { zref-check } {#1} {#2} {#3} {#4}
-      }
+    \use:c { msg_ \l__zrefcheck_msglevel_tl :nnnnn }
+      { zref-check } {#1} {#2} {#3} {#4}
   }
 
 \cs_generate_variant:Nn \__zrefcheck_message:nnnn { nnnx }
@@ -299,6 +410,15 @@
 \msg_new:nnn { zref-check } { property-not-integer }
   { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
 
+
+\msg_new:nnn { zref-check } { hyperref-preamble-only }
+  {
+    Option~'hyperref'~only~available~in~the~preamble. \\
+    Use~the~starred~version~of~'\protect\zrcheck'~instead.
+  }
+
+\msg_new:nnn { zref-check } { missing-hyperref }
+  { Missing~'hyperref'~package. \\ Setting~'hyperref=false'. }
 
 
 %%% section{Property values}
@@ -427,20 +547,15 @@
 
 % *[<options>]{<labels>}[<checks>]{<text>}
 \NewDocumentCommand \zrcheck
-  {
-    > { \ReverseBoolean } s % "true" -> "with hyperlink"
-    O { }
-    > { \SplitList { , } } m
-    > { \SplitList { , } } O { }
-    +m
-  }
-  {
-    \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5}
-  }
+  { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } +m }
+  { \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
 
 \int_new:N \g__zrefcheck_id_int
 \tl_new:N \l__zrefcheck_checkbeg_tl
 \tl_new:N \l__zrefcheck_checkend_tl
+\tl_new:N \l__zrefcheck_link_label_tl
+\tl_new:N \l__zrefcheck_link_anchor_tl
+\bool_new:N \l__zrefcheck_link_star_tl
 
 % An intermediate internal function, which places "labels" as first argument,
 % so that it can be protected by '\zref@wrapper@babel'.  This is more or less
@@ -452,6 +567,9 @@
     \mode_leave_vertical:
     \group_begin:
 
+      % Process local options
+      \keys_set:nn { zref-check } {#3}
+
       % Names of the labels for this zrefcheck call
       \tl_set:Nx \l__zrefcheck_checkbeg_tl
         { \__zrefcheck_check_lblfmt:n { \g__zrefcheck_id_int } }
@@ -462,13 +580,30 @@
       \refstepcounter { zrefcheck }
       \zref@labelbylist { \l__zrefcheck_checkbeg_tl } { zrefcheck }
 
-      % Typeset "<text>" (with hyperref!)
-      % For hyperlinking, we must check if the reference is defined or not,
-      % and not only internal options, to avoid hyperref warning in case of
-      % undefined anchor ("suppressing link with empty target" warning).
-      \exp_args:Nx \__zrefcheck_get_astl:nnn
-        { \tl_item:nn {#1} {1} } { anchor } { \l_tmpb_tl }
-      \hyperlink { \l_tmpb_tl } {#5}
+      % Typeset "<text>", with hyperlink when appropriate.
+
+      % Even though the first argument can receive a list of labels, there is
+      % no meaningful way to set links to multiple targets.  Hence, only the
+      % first one is considered for hyperlinking.
+      \tl_set:Nn \l__zrefcheck_link_label_tl { \tl_item:nn {#1} {1} }
+
+      \bool_set:Nn \l__zrefcheck_link_star_tl {#2}
+      \zref@ifrefundefined { \l__zrefcheck_link_label_tl }
+        {#5} % If the reference is undefined, just typeset.
+        {
+          \bool_if:nTF
+            {
+              \l__zrefcheck_use_hyperref_bool &&
+              ! \l__zrefcheck_link_star_tl
+            }
+            {
+              \exp_args:Nx \__zrefcheck_get_astl:nnn
+                { \l__zrefcheck_link_label_tl }
+                { anchor } { \l__zrefcheck_link_anchor_tl }
+              \hyperlink { \l__zrefcheck_link_anchor_tl } {#5}
+            }
+            {#5}
+        }
 
       % Set checkend label
       \refstepcounter { zrefcheck }
@@ -483,6 +618,31 @@
     \group_end:
   }
 
+
+%% chapter{Targets}
+
+% {<label>}{<text>}
+\NewDocumentCommand \zrctarget { m +m }
+  {
+    \refstepcounter { zrefcheck }
+    \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
+    #2
+    \refstepcounter { zrefcheck }
+    \zref@wrapper@babel
+      \zref@labelbylist { \__zrefcheck_end_lblfmt:n {#1} } { zrefcheck }
+  }
+
+% {<label>}
+\NewDocumentEnvironment {zrcregion} { m }
+  {
+    \refstepcounter { zrefcheck }
+    \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
+  }
+  {
+    \refstepcounter { zrefcheck }
+    \zref@wrapper@babel
+      \zref@labelbylist { \__zrefcheck_end_lblfmt:n {#1} } { zrefcheck }
+  }
 
 
 %% chapter{Checks}
@@ -540,6 +700,10 @@
 \bool_new:N \l__zrefcheck_passedcheck_bool
 \bool_new:N \l__zrefcheck_onpage_bool
 \tl_new:N \l__zrefcheck_labelend_tl
+\seq_set_from_clist:Nn \c__zrefcheck_onpage_checks_seq
+  { above , below , before , after }
+
+\cs_generate_variant:Nn \exp_args:Nnno { Nnoo }
 
 % {<check>}{<label beg>}{<reference beg>}
 \cs_new:Npn \__zrefcheck_do_check:nnn #1#2#3
@@ -562,7 +726,7 @@
                 {#2} {#3}
                 { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
               % "label beg" vs "reference end"
-              \exp_args:Nnnx \use:c { __zrefcheck_check_ #1 :nnF }
+              \exp_args:Nnno \use:c { __zrefcheck_check_ #1 :nnF }
                 {#2} { \__zrefcheck_end_lblfmt:n {#3} }
                 { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
               % "label end" *may* have been created by the target commands
@@ -570,11 +734,11 @@
                 { \tl_set:Nn \l__zrefcheck_labelend_tl {#2} }
                 {
                   % "label end" vs "reference beg"
-                  \exp_args:Nnx \use:c { __zrefcheck_check_ #1 :nnF }
+                  \exp_args:Nno \use:c { __zrefcheck_check_ #1 :nnF }
                     { \__zrefcheck_end_lblfmt:n {#2} } {#3}
                     { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
                   % "label end" vs "reference end"
-                  \exp_args:Nnxx \use:c { __zrefcheck_check_ #1 :nnF }
+                  \exp_args:Nnoo \use:c { __zrefcheck_check_ #1 :nnF }
                     { \__zrefcheck_end_lblfmt:n {#2} }
                     { \__zrefcheck_end_lblfmt:n {#3} }
                     { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
@@ -583,9 +747,9 @@
                 }
               % Handle option 'onpage=msg'.  This is only granted for tests
               % which perform "within this page" checks ('above', 'below',
-              % 'before', 'after') *and* if all labels are "within this
-              % page".  If both conditions are met, signal.
-              \tl_if_in:nnT {#1} { {above} {below} {before} {after} }
+              % 'before', 'after') *and* if all labels are "within this page".
+              % If both conditions are met, signal.
+              \seq_if_in:NnT \c__zrefcheck_onpage_checks_seq {#1}
                 {
                   \__zrefcheck_check_thispage:nnT
                     {#2} { \__zrefcheck_end_lblfmt:n {#3} }
@@ -604,8 +768,7 @@
                     }
                     {
                       \__zrefcheck_message:nnnx
-                        { double-check } {#1} {#2}
-                        { \zref@extract {#3} {page} }
+                        { double-check } {#1} {#2} { \zref@extract {#3} {page} }
                     }
                 }
                 {
@@ -619,13 +782,11 @@
   }
 
 
-
 %%% section{Definitions}
 
 % More readable scratch variables for the tests
 \int_new:N \l__zrefcheck_lbl_int
 \int_new:N \l__zrefcheck_ref_int
-
 
 
 %%%% subsection{This page}
@@ -1077,5 +1238,3 @@
     \group_end:
   }
 
-
-%% chapter{Targets}

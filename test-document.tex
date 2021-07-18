@@ -58,11 +58,14 @@ Teste2\phantomsection\zlabel{test2}.
 \hyperlink{figure.1.1}{\zref{fig:figure-1}}
 
 
-\zrcheck{fig:figure-1}[
+\zrcheck{txt:testando}[
   facing,
-  % teste
   prevpage
   ]{alguma coisa e tal}
+
+
+
+\zrctarget{txt:testando}{Platibus absurdus}
 
 \clearpage{}
 
@@ -83,7 +86,7 @@ Teste2\phantomsection\zlabel{test2}.
 \zlabel{sec:section-2-1}
 
 \clearpage{}
-\zrcheck{ fig:figure-2 }[ above ]{alguma coisa e tal}
+\zrcheck{ fig:figure-2 }[ below ]{alguma coisa e tal}
 
 
 \begin{figure}[hb]
@@ -99,8 +102,10 @@ Teste2\phantomsection\zlabel{test2}.
 \chapter{Chapter 3}
 \zlabel{cha:chapter-3}
 
-\econ[3]
 
+\begin{zrcregion}{txt:testando2}
+  \econ[5]
+\end{zrcregion}
 
 
 
