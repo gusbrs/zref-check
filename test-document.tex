@@ -1,0 +1,130 @@
+\documentclass{book}
+
+\usepackage[user,counter,hyperref,titleref]{zref}
+\usepackage{zref-check}
+
+\usepackage{graphicx}
+\usepackage{econlipsum}
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+
+% \usepackage{cleveref}
+
+% \usepackage[french]{babel}
+
+\begin{document}
+
+\zlabel{firstthing}
+
+\frontmatter
+
+\tableofcontents{}
+
+\chapter*{Preface}
+\zlabel{cha:preface}
+
+Hello World!
+
+
+\mainmatter
+
+\chapter*{Introduction}
+\zlabel{cha:introduction}
+
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+
+\econ[1]
+
+\clearpage{}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{example-image-a}
+  \caption{Figure 1}
+  \zlabel{fig:figure-1}
+\end{figure}
+
+
+Teste1\phantomsection\zlabel{test1}. \zrcheck{test2}[below]{mesma linha}.
+Teste2\phantomsection\zlabel{test2}.
+
+\clearpage{}
+
+
+% É assim que constrói um hyperlink pra uma zlabel! Essa macro aparece na
+% documentação do hyperref, mas sem explicação alguma. O primeiro argumento é
+% a ‘anchor’, propriedade que o módulo zref-hyperref disponibiliza.  :-)
+\hyperlink{figure.1.1}{\zref{fig:figure-1}}
+
+
+\zrcheck{txt:testando}[
+  facing,
+  prevpage
+  ]{alguma coisa e tal}
+
+
+
+\zrctarget{txt:testando}{Platibus absurdus}
+
+\clearpage{}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.6\textwidth]{example-image-c}
+  \caption{Figure 3}
+  \zlabel{fig:figure-3}
+\end{figure}
+
+\chapter{Chapter 2}
+\zlabel{cha:chapter-2}
+\label{cha:chapter-2}
+
+\econ[2]
+
+\section{section-2-1}
+\zlabel{sec:section-2-1}
+
+\clearpage{}
+\zrcheck{ fig:figure-2 }[ below ]{alguma coisa e tal}
+
+
+\begin{figure}[hb]
+  \centering
+  \caption{Figure 2}
+  \includegraphics[width=.6\textwidth]{example-image-b}
+  \zlabel{fig:figure-2}
+\end{figure}
+
+
+\hyperlink{figure.2.1}{\zref{fig:figure-2}}
+
+\chapter{Chapter 3}
+\zlabel{cha:chapter-3}
+
+
+\begin{zrcregion}{txt:testando2}
+  \econ[5]
+\end{zrcregion}
+
+
+
+
+\chapter{Chapter 4}
+\zlabel{cha:chapter-4}
+
+\econ[4]
+
+
+
+
+\backmatter
+
+
+
+\chapter{Bibliography}
+\zlabel{cha:bibliography}
+
+
+
+\end{document}
