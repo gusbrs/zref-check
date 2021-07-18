@@ -14,11 +14,8 @@
 % Provide absolute counters for section and chapter, and respective zref
 % properties, so that we can make checks about relation of chapters/sections
 % regardless of internal counters, since we don't get those for the unnumbered
-% (starred) ones.
-
-% TODO Check whether '\chapter' and '\section' are the right macros to hook,
-% and if they are general enough beyond the standard classes (Koma, memoir,
-% etc), or if some lower level command could be used.
+% (starred) ones.  About the proper place to make the hooks for this purpose,
+% see https://tex.stackexchange.com/q/605533/105447.
 
 \int_new:N \g__zrefcheck_abschap_int
 \int_new:N \g__zrefcheck_abssec_int
@@ -26,7 +23,7 @@
 % If the documentclass does not define '\chapter' the only thing that happens
 % is that the chapter counter is never incremented, and the section one never
 % reset.
-\hook_gput_code:nnn { cmd / chapter / before } { zref-check }
+\AddToHook { cmd / chapter / before }
   {
     \int_gincr:N \g__zrefcheck_abschap_int
     \int_zero:N \g__zrefcheck_abssec_int
@@ -35,7 +32,7 @@
 \zref@newprop { abschap } [0] { \int_use:N \g__zrefcheck_abschap_int }
 \zref@addprop \ZREF@mainlist { abschap }
 
-\hook_gput_code:nnn { cmd / section / before } { zref-check }
+\AddToHook { cmd / section / before }
   { \int_gincr:N \g__zrefcheck_abssec_int }
 
 \zref@newprop { abssec } [0] { \int_use:N \g__zrefcheck_abssec_int }
@@ -55,7 +52,55 @@
   }
 
 
-%% chapter{Options}
+%% chapter{Plumbing}
+
+%%% section{Messages}
+
+\cs_new_protected:Npn \__zrefcheck_message:nnnn #1#2#3#4
+  {
+    \use:c { msg_ \l__zrefcheck_msglevel_tl :nnnnn }
+      { zref-check } {#1} {#2} {#3} {#4}
+  }
+
+\cs_generate_variant:Nn \__zrefcheck_message:nnnn { nnnx }
+
+\msg_new:nnn { zref-check } { check-failed }
+  { Failed~check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { double-check }
+  { Double-check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+
+
+\msg_new:nnn { zref-check } { check-missing }
+  { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-undefined }
+  { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-not-in-label }
+  { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
+
+\msg_new:nnn { zref-check } { property-not-integer }
+  { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
+
+
+\msg_new:nnn { zref-check } { hyperref-preamble-only }
+  {
+    Option~'hyperref'~only~available~in~the~preamble. \\
+    Use~the~starred~version~of~'\protect\zrcheck'~instead.
+  }
+
+\msg_new:nnn { zref-check } { missing-hyperref }
+  { Missing~'hyperref'~package. \\ Setting~'hyperref=false'. }
+
+\msg_new:nnn { zref-check } { ignore-document-only }
+  {
+    Option~'ignore'~only~available~in~the~document. \\
+    Use~option~'msglevel'~instead.
+  }
+
+
+%%% section{Options}
 
 % 'hyperref' option
 
@@ -106,33 +151,18 @@
   }
 
 
-% 'closerange' option
-\int_new:N \l__zrefcheck_close_range_int
-
-\keys_define:nn { zref-check }
-  {
-    closerange .int_set:N = \l__zrefcheck_close_range_int ,
-  }
-
-
 % 'msglevel' option
 \tl_new:N \l__zrefcheck_msglevel_tl
 
 \keys_define:nn { zref-check }
   {
     msglevel .choice: ,
-    msglevel / warning .code:n =
-      {
-        \tl_set:Nn \l__zrefcheck_msglevel_tl { warning }
-      } ,
+    msglevel / warn .code:n =
+      { \tl_set:Nn \l__zrefcheck_msglevel_tl { warning } } ,
     msglevel / info .code:n =
-      {
-        \tl_set:Nn \l__zrefcheck_msglevel_tl { info }
-      } ,
+      { \tl_set:Nn \l__zrefcheck_msglevel_tl { info } } ,
     msglevel / none .code:n =
-      {
-        \tl_set:Nn \l__zrefcheck_msglevel_tl { none }
-      } ,
+      { \tl_set:Nn \l__zrefcheck_msglevel_tl { none } } ,
     msglevel / obeydraft .code:n =
       {
         \ifdraft
@@ -144,6 +174,18 @@
         \ifoptionfinal
           { \tl_set:Nn \l__zrefcheck_msglevel_tl { warning } }
           { \tl_set:Nn \l__zrefcheck_msglevel_tl { info } }
+      } ,
+    % 'ignore' alias for 'msglevel=none'
+    ignore .code:n =
+      { \msg_warning:nn { zref-check } { ignore-document-only } }
+  }
+
+\AtBeginDocument
+  {
+    \keys_define:nn { zref-check }
+      {
+        ignore .code:n =
+          { \keys_set:nn { zref-check } { msglevel = none } }
       }
   }
 
@@ -177,13 +219,22 @@
   }
 
 
+% 'closerange' option
+\int_new:N \l__zrefcheck_close_range_int
+
+\keys_define:nn { zref-check }
+  {
+    closerange .int_set:N = \l__zrefcheck_close_range_int ,
+  }
+
+
 % Set load-time default values
 \keys_set:nn { zref-check }
   {
     hyperref   = auto ,
-    closerange = 5 ,
-    msglevel   = warning ,
-    onpage     = labelseq
+    msglevel   = warn ,
+    onpage     = labelseq ,
+    closerange = 5
   }
 
 % Process load-time package options
@@ -196,9 +247,6 @@
 \NewDocumentCommand \zrchecksetup { m }
   { \keys_set:nn { zref-check } {#1} }
 
-
-
-%% chapter{Plumbing}
 
 %%% section{Position on page}
 
@@ -378,47 +426,6 @@
 % {<label>}
 \cs_new:Npn \__zrefcheck_end_lblfmt:n #1
   { #1 @zrefcheck }
-
-
-%%% section{Messages}
-
-
-\cs_new_protected:Npn \__zrefcheck_message:nnnn #1#2#3#4
-  {
-    \use:c { msg_ \l__zrefcheck_msglevel_tl :nnnnn }
-      { zref-check } {#1} {#2} {#3} {#4}
-  }
-
-\cs_generate_variant:Nn \__zrefcheck_message:nnnn { nnnx }
-
-\msg_new:nnn { zref-check } { check-failed }
-  { Failed~check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { double-check }
-  { Double-check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
-
-
-\msg_new:nnn { zref-check } { check-missing }
-  { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { property-undefined }
-  { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { property-not-in-label }
-  { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
-
-\msg_new:nnn { zref-check } { property-not-integer }
-  { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
-
-
-\msg_new:nnn { zref-check } { hyperref-preamble-only }
-  {
-    Option~'hyperref'~only~available~in~the~preamble. \\
-    Use~the~starred~version~of~'\protect\zrcheck'~instead.
-  }
-
-\msg_new:nnn { zref-check } { missing-hyperref }
-  { Missing~'hyperref'~package. \\ Setting~'hyperref=false'. }
 
 
 %%% section{Property values}
