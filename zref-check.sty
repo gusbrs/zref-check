@@ -1049,7 +1049,8 @@
           % '0' is the default value of 'abschap' property, and means here no
           % '\chapter' has yet been issued, therefore it cannot be "this
           % chapter", nor "the next chapter", nor "the previous chapter", it
-          % is just "no chapter".
+          % is just "no chapter".  Note, however, that a statement about a
+          % "future" chapter does not require the "current" one to exist.
           ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
         }
@@ -1069,9 +1070,8 @@
         {
           \int_compare_p:nNn
             { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 } &&
-          % Ditto.
-          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+          % Ditto. (Though redundant, in this case).
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
@@ -1098,26 +1098,6 @@
     \group_end:
   }
 
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_chapsbefore:nn #1#2 { F }
-  {
-    \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
-      \bool_lazy_and:nnTF
-        { \l__zrefcheck_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
-          % Ditto.
-          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_chapsafter:nn #1#2 { F }
   {
     \group_begin:
@@ -1129,6 +1109,25 @@
         {
           \int_compare_p:nNn
             { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } &&
+          % Ditto. (Though redundant, in this case).
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_chapsbefore:nn #1#2 { F }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } < { \l__zrefcheck_ref_int } &&
           % Ditto.
           ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
@@ -1156,7 +1155,8 @@
           % '\section' has yet been issued since its counter has been reset,
           % which occurs at the beginning of the document and at every
           % chapter.  Hence, as is the case for chapters, '0' is just "not a
-          % section".
+          % section".  The same observation about the need of the "current"
+          % section to exist to be able to refer to a "future" one also holds.
           ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
         }
@@ -1176,9 +1176,8 @@
         {
           \int_compare_p:nNn
             { \l__zrefcheck_lbl_int } = { \l__zrefcheck_ref_int + 1 } &&
-          % Ditto.
-          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
+          % Ditto. (Though redundant, in this case).
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
@@ -1205,6 +1204,25 @@
     \group_end:
   }
 
+\prg_new_protected_conditional:Npnn \__zrefcheck_check_secsafter:nn #1#2 { F }
+  {
+    \group_begin:
+      \bool_set_true:N \l__zrefcheck_integer_bool
+      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \bool_lazy_and:nnTF
+        { \l__zrefcheck_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } &&
+          % Ditto. (Though redundant, in this case).
+          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
+
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_secsbefore:nn #1#2 { F }
   {
     \group_begin:
@@ -1224,24 +1242,3 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
-\prg_new_protected_conditional:Npnn \__zrefcheck_check_secsafter:nn #1#2 { F }
-  {
-    \group_begin:
-      \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
-      \bool_lazy_and:nnTF
-        { \l__zrefcheck_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l__zrefcheck_lbl_int } > { \l__zrefcheck_ref_int } &&
-          % Ditto.
-          ! \int_compare_p:nNn { \l__zrefcheck_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l__zrefcheck_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
-    \group_end:
-  }
-
