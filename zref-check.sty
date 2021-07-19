@@ -1,6 +1,6 @@
 
-\ProvidesExplPackage {zref-check} {2021-07-06} { }
-  {Flexible cross-references with relative position checks based on zref}
+\ProvidesExplPackage {zref-check} {2021-07-19} { }
+  {Flexible cross-references with contextual checks based on zref}
 
 %% chapter{Dependencies}
 
@@ -15,7 +15,7 @@
 % properties, so that we can make checks about relation of chapters/sections
 % regardless of internal counters, since we don't get those for the unnumbered
 % (starred) ones.  About the proper place to make the hooks for this purpose,
-% see https://tex.stackexchange.com/q/605533/105447.
+% see https://tex.stackexchange.com/q/605533/105447, thanks Ulrike.
 
 \int_new:N \g__zrefcheck_abschap_int
 \int_new:N \g__zrefcheck_abssec_int
@@ -190,7 +190,7 @@
   }
 
 
-% 'onpage' options
+% 'onpage' option
 \bool_new:N \l__zrefcheck_msgonpage_bool
 
 \keys_define:nn { zref-check }
@@ -388,14 +388,14 @@
 % bottom fundamentally flawed.  Ulrike Fischer was very much right when she
 % said that "structure and position are two different beasts"
 % (https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).  It is
-% true that the tests behaved decently, in normal circumstances, and except
-% for outrageous label placement by the user, it would return the expected
-% results.  We don't really need exact coordinates to decide "above/below".
-% Besides, it would do an exact job for the dedicated target macros of this
-% package.  However, I could not conceive a situation where the 'yx' criterion
-% would perform clearly better than the 'labeseq' one.  And, if that's the
-% case, and considering the complications it brings, this check was a slippery
-% slope.  All in all, I've decided to drop it.
+% true that the checks based on it behaved decently, in normal circumstances,
+% and except for outrageous label placement by the user, it would return the
+% expected results.  We don't really need exact coordinates to decide
+% "above/below".  Besides, it would do an exact job for the dedicated target
+% macros of this package.  However, I could not conceive a situation where the
+% 'yx' criterion would perform clearly better than the 'labeseq' one.  And, if
+% that's the case, and considering the complications it brings, this check was
+% a slippery slope.  All in all, I've decided to drop it.
 
 
 %%% section{Counter}
@@ -444,7 +444,7 @@
 %
 % I'm returning '\c_empty_tl' in case of failure to find the intended property
 % value (explicitly in '\zref@extractdefault', but that is also what
-% '\tl_clear:N' does).  This can also
+% '\tl_clear:N' does).
 
 
 % {<label>}{<prop>}{<tl var>}
