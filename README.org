@@ -1,8 +1,6 @@
 #+title: zref-check
-#+subtitle: Flexible cross-references with contextual checks based on zref
-#+author: Gustavo Barros
-#+date: 2021-07-19
 
+*Flexible cross-references with contextual checks based on zref*
 
 * Introduction
 
@@ -30,7 +28,7 @@ expressions you may use for similar situations, does not need to be sacrificed
 for the convenience.  =zref-check= cross-references do not need to “feel”
 automated to be consistently checked.  Localization is also not an issue, for
 the same reason.  There is also much more document context we can leverage by
-separating “typesetting” from “checking” (see [[id:ffd83762-4a66-430a-9a27-2f96592c69cb][Checks]]).
+separating “typesetting” from “checking” (see [[#checks][Checks]]).
 
 =zref-check= depends on =zref=, as the name entails, which means it is able to
 work with =zref= labels, usually created by =\zlabel=.  This provides some
@@ -45,8 +43,7 @@ directly with =varioref=).  It is easy to see the use in conjunction with
 standard references, for example:
 
 #+begin_src latex
-... see Figure~\ref{fig:figure-1}, \zrcheck*{fig:figure-1}[nextpage]{on the
-  next page}.
+... see Figure~\ref{fig:figure-1}, \zrcheck*{fig:figure-1}[nextpage]{on the next page}.
 #+end_src
 
 Besides, =zref= does not share the label name-space with the standard labels, so
@@ -81,7 +78,7 @@ do tend to be employed in a number of places, particularly in longer
 documents.  And that’s precisely the scenario in which they may become
 problematic.  If your document is short (say, a paper/article) and it was made
 in a reasonably short spurt, you’ll probably won’t bother with this kind of
-references.  In this case, and to use =varioref=​’s expression, you “usually know
+references.  In this case, and to use =varioref= ’s expression, you “usually know
 (!)” them to be correct.  However, if you are preparing one of those long,
 complex, and “long ground” documents, with several rounds of editing and
 content rearranging, this kind of references will likely bring you trouble.
@@ -128,7 +125,7 @@ the package for you.
 - =\zrcheck[<options>]{<labels>}[<checks>]{<text>}=
   + Typesets =<text>=, as given, while performing the comma separated list of
     =<checks>= on each of the comma separated list of =<labels>=.  In addition to
-    that, it places a pair of (internal) =zlabel=​s, one at the start of =<text>=,
+    that, it places a pair of (internal) =zlabel= s, one at the start of =<text>=,
     another one at the end of =<text>=, which are used to run the checks against
     each of the =<labels>=.  When =hyperref= support is enabled, =<text>= will be
     made a hyperlink to /the first/ label in =<labels>=.  The starred version of
@@ -136,27 +133,24 @@ the package for you.
     (mostly) the same as those of the package, and can be given to local
     effect.
 - =\zrctarget{<label>}{<text>}=
-  + Typesets =<text>=, as given, and places a pair of =zlabel=​s, one at the start
+  + Typesets =<text>=, as given, and places a pair of =zlabel= s, one at the start
     of =<text>=, using =<label>= as label name, another one (internal) at the end
     of =<text>=.
 - =\begin{zrcregion}{<label>} <text> \end{zrcregion}=
   + Just an environment that does pretty much the same as =\zrctarget=, for
     cases of longer stretches of text.  If you don’t like to use the
-    environment for whatever reason, you may also set two =\zrctarget=​s (with
+    environment for whatever reason, you may also set two =\zrctarget= s (with
     empty =<text>= arguments), one at the beginning and another one at the end,
     and run =\zrcheck= against both of them to the same effect.
 
 
 * Checks
-:PROPERTIES:
-:ID:       ffd83762-4a66-430a-9a27-2f96592c69cb
-:END:
 
 - =thispage=, =prevpage=, =nextpage=, =facing=
   + self-explanatory.
 - =above=, =below=
   + label referred to occurs in this page and, respectively, “above” or
-    “below” the reference.  For how this is inferred, see [[id:1171c088-e3af-4317-943c-1b59dc19923d][Within page checks]].
+    “below” the reference.  For how this is inferred, see [[#within-page-checks][Within page checks]].
 - =pagesbefore=, =pagesafter= (with convenience aliases =ppbefore=, =ppafter=)
   + self-explanatory.
 - =before=, =after=
@@ -172,7 +166,7 @@ the package for you.
 
 The checks may be combined, e.g. =[close, after]=, or =[thischap, before]=.
 Whether the combination is meaningful, is up to the user.  As is the
-correspondence between the =[<checks>]= and the =[<text>]= in =\zrcheck=.
+correspondence between the =[<checks>]= and the ={<text>}= in =\zrcheck=.
 
 
 * Options
@@ -206,7 +200,7 @@ correspondence between the =[<checks>]= and the =[<text>]= in =\zrcheck=.
     message *even if the check passes*, to provide a simple workflow for robust
     checking of “false negatives” at a final typesetting stage of the
     document, considering the label sequence is not fool proof (for details,
-    see [[id:1171c088-e3af-4317-943c-1b59dc19923d][Within page checks]]).  =msg= issues its messages as defined by =msglevel=.
+    see [[#within-page-checks][Within page checks]]).  =msg= issues its messages as defined by =msglevel=.
     =obeydraft= corresponds to =labelseq= if option =draft= is passed to
     =documentclass= and to =msg= otherwise.  =obeyfinal= corresponds to =msg= if
     option =final= is (explicitly) passed to =documentclass=, and to =labelseq=
@@ -218,7 +212,7 @@ correspondence between the =[<checks>]= and the =[<text>]= in =\zrcheck=.
 
 * Label names
 
-All user commands have their =<label>= arguments protected by =zref=​’s
+All user commands have their =<label>= arguments protected by =zref= ’s
 =\zref@wrapper@babel= so that we should have equivalent support in that regard,
 as =zref= itself does.  However, =zref-check= sets labels which either start with
 =zrefcheck@= or end with =@zrefcheck=, for internal use.  Label names with either
@@ -237,7 +231,7 @@ mobilize: page number checks, within page checks, and sectioning checks.
 Page number checks -- =thispage=, =prevpage=, =nextpage=, =facing=, =pagesbefore=,
 =pagesafter= -- use the =abspage= property provided by the =zref-abspage= module.
 This is a solid piece of information, on which we can rely upon.  However,
-despite that, page number checks may still become undefined, if the =<text>=
+despite that, page number checks may still become ill-defined, if the =<text>=
 argument in =\zrcheck=, when typeset, crosses page boundaries, and starts in one
 page, and finishes in another.  The same with the text in =\zrctarget= and the
 =zrcregion= environment.
@@ -256,22 +250,19 @@ these tests.
 
 
 ** Within page checks
-:PROPERTIES:
-:ID:       1171c088-e3af-4317-943c-1b59dc19923d
-:END:
 
 When both label and reference fall on the same page things become much
 trickier.  This is basically the case of the checks =above= and =below= (and,
-though them, =before= and =after=).  There is no equally reliable information
+through them, =before= and =after=).  There is no equally reliable information
 (that I know of) as we have for the page number checks for this, especially
 when floats come into play.  Which, of course, is the interesting case to
 handle.
 
 To infer relative position of label and reference on the same page, =zref-check=
 uses the labels’ shipout sequence, which is retrieved at load-time from the
-order in which the labels are written in the .aux file.  Indeed, =zref= writes
-labels to the .aux file at shipout, and needs to do so, because a number of
-its properties are only available at that point.
+order in which the labels occur in the .aux file.  Indeed, =zref= writes labels
+to the .aux file at shipout (and, hence, in shipout order), and needs to do
+so, because a number of its properties are only available at that point.
 
 However, even if this method will buy us a correct check for a regular float
 on a regular page (which, to be fair, is a good result), it is not difficult
