@@ -448,7 +448,7 @@
 
 
 % {<label>}{<prop>}{<tl var>}
-\cs_new:Npn \__zrefcheck_get_astl:nnn #1#2#3
+\cs_new:Npn \zrefcheck_get_astl:nnn #1#2#3
   {
     \tl_clear:N #3
     \tl_if_eq:nnTF {#2} { lblseq }
@@ -496,14 +496,14 @@
 
 
 
-% '\__zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
-% general '\__zrefcheck_get_astl:nnn', since almost always we'll be wanting to
+% '\zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
+% general '\zrefcheck_get_astl:nnn', since almost always we'll be wanting to
 % compare numbers in the checks.  However, it is quite hard for it to ensure
 % an integer is *always* returned in the case of errors.  And those do occur,
 % even in a well structured document (e.g., in a first round of compilation).
 % To complicate things, the L3 integer predicates are *very* sensitive to
 % receiving any other kind of data, and they *scream*.  To handle this
-% '\__zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use this
+% '\zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use this
 % function always set '\l__zrefcheck_integer_bool' to true first, then call it
 % as much as you need.  If any of these calls got is returning anything which
 % is not an integer, '\l__zrefcheck_integer_bool' will have been set to false,
@@ -514,9 +514,9 @@
 \tl_new:N \l__zrefcheck_propval_tl
 
 % {<label>}{<prop>}{<int var>}
-\cs_new:Npn \__zrefcheck_get_asint:nnn #1#2#3
+\cs_new:Npn \zrefcheck_get_asint:nnn #1#2#3
   {
-    \__zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_propval_tl }
+    \zrefcheck_get_astl:nnn {#1} {#2} { \l__zrefcheck_propval_tl }
     \__zrefcheck_is_integer:nTF { \l__zrefcheck_propval_tl }
       {
         % Make it an integer data type
@@ -604,7 +604,7 @@
               ! \l__zrefcheck_link_star_tl
             }
             {
-              \exp_args:Nx \__zrefcheck_get_astl:nnn
+              \exp_args:Nx \zrefcheck_get_astl:nnn
                 { \l__zrefcheck_link_label_tl }
                 { anchor } { \l__zrefcheck_link_anchor_tl }
               \hyperlink { \l__zrefcheck_link_anchor_tl } {#5}
@@ -674,13 +674,12 @@
 % occurs before the "reference".
 %
 % The checks it does are expected to retrieve 'zref's label information with
-% '\__zrefcheck_get_astl:nnn' or '\__zrefcheck_get_asint:nnn'.  Also,
-% technically speaking, the "reference" argument is also a label, actually a
-% pair of them, as set by '\zrcheck'.  For the "labels", any 'zref' property
-% in 'zref's main list is available, the "references" store the properties in
-% the 'zrefcheck' list.  Besides those, there is also the 'lblseq' (fake)
-% property (for either "labels" or "references"), stored in
-% '\g__zrefcheck_auxfile_lblseq_prop'.
+% '\zrefcheck_get_astl:nnn' or '\zrefcheck_get_asint:nnn'.  Also, technically
+% speaking, the "reference" argument is also a label, actually a pair of them,
+% as set by '\zrcheck'.  For the "labels", any 'zref' property in 'zref's main
+% list is available, the "references" store the properties in the 'zrefcheck'
+% list.  Besides those, there is also the 'lblseq' (fake) property (for either
+% "labels" or "references"), stored in '\g__zrefcheck_auxfile_lblseq_prop'.
 %
 % Second, the required properties of labels and references must be duly
 % registered for 'zref'.  This can be done with '\zref@newprop',
@@ -802,8 +801,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -831,8 +830,8 @@
       \__zrefcheck_check_thispage:nnTF {#1} {#2}
         {
           \bool_set_true:N \l__zrefcheck_integer_bool
-          \__zrefcheck_get_asint:nnn {#1} { lblseq } { \l__zrefcheck_lbl_int }
-          \__zrefcheck_get_asint:nnn {#2} { lblseq } { \l__zrefcheck_ref_int }
+          \zrefcheck_get_asint:nnn {#1} { lblseq } { \l__zrefcheck_lbl_int }
+          \zrefcheck_get_asint:nnn {#2} { lblseq } { \l__zrefcheck_ref_int }
           \bool_lazy_and:nnTF
             { \l__zrefcheck_integer_bool }
             {
@@ -887,8 +886,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -907,8 +906,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -927,8 +926,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -949,8 +948,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -971,8 +970,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1007,8 +1006,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1039,8 +1038,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1063,8 +1062,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1082,8 +1081,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1102,8 +1101,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1121,8 +1120,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1144,8 +1143,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1169,8 +1168,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1188,8 +1187,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1208,8 +1207,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
@@ -1227,8 +1226,8 @@
   {
     \group_begin:
       \bool_set_true:N \l__zrefcheck_integer_bool
-      \__zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
-      \__zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec } { \l__zrefcheck_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec } { \l__zrefcheck_ref_int }
       \bool_lazy_and:nnTF
         { \l__zrefcheck_integer_bool }
         {
