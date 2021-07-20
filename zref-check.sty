@@ -468,7 +468,7 @@
         % verify the consistency of this value.
         %
         % The existence of the label is an user facing issue, and a warning
-        % for this is placed in '\_zrefcheck:nnnnn' (and done with
+        % for this is placed in '\__zrefcheck:nnnnn' (and done with
         % '\zref@refused').  We do check here though for definition with
         % '\zref@ifrefundefined' and silently do nothing if it is undefined,
         % to reduce irrelevant warnings in a fresh compilation round.  The
@@ -526,7 +526,7 @@
         \bool_set_false:N \l__zrefcheck_integer_bool
         % Keep silent if ref is undefined to reduce irrelevant warnings in a
         % fresh compilation round.  Again, this is also not the point to check
-        % for undefined references, that's a task for '\_zrefcheck:nnnnn'.
+        % for undefined references, that's a task for '\__zrefcheck:nnnnn'.
         \zref@ifrefundefined {#1}
           { }
           {
@@ -562,7 +562,7 @@
 % *[<options>]{<labels>}[<checks>]{<text>}
 \NewDocumentCommand \zrcheck
   { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } m }
-  { \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
+  { \zref@wrapper@babel \__zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
 
 \int_new:N \g__zrefcheck_id_int
 \tl_new:N \l__zrefcheck_checkbeg_tl
@@ -575,7 +575,7 @@
 % so that it can be protected by '\zref@wrapper@babel'.  This is more or less
 % what the definition of '\zref' in 'zref-user.sty' does for this.
 % {<labels>}*[<options>][<checks>]{<text>}
-\cs_new_protected:Npn \_zrefcheck:nnnnn #1#2#3#4#5
+\cs_new_protected:Npn \__zrefcheck:nnnnn #1#2#3#4#5
   {
     \group_begin:
 
@@ -721,7 +721,7 @@
   {
     \group_begin:
       % "label beg" may be defined or not, it is arbitrary user input.
-      % Whether this is the case is checked in '\_zrefcheck:nnnnn', and due
+      % Whether this is the case is checked in '\__zrefcheck:nnnnn', and due
       % warning already ensues.  And there is no point in checking "relative
       % position" of an undefined label.  Hence, in the absence of '#2', we do
       % nothing at all here.
