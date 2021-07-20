@@ -65,10 +65,10 @@
 \cs_generate_variant:Nn \__zrefcheck_message:nnnn { nnnx }
 
 \msg_new:nnn { zref-check } { check-failed }
-  { Failed~check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+  { Failed~check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
 
 \msg_new:nnn { zref-check } { double-check }
-  { Double-check~'#1'~for~label~'#2'~on~page~#3~on~input~line~\msg_line_number:. }
+  { Double-check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
 
 
 \msg_new:nnn { zref-check } { check-missing }
@@ -773,13 +773,13 @@
                       \l__zrefcheck_onpage_bool
                     }
                     {
-                      \__zrefcheck_message:nnnx
-                        { double-check } {#1} {#2} { \zref@extract {#3} {page} }
+                      \__zrefcheck_message:nnnx { double-check } {#1} {#2}
+                        { \zref@extractdefault {#3} {page} {'unknown'} }
                     }
                 }
                 {
-                  \__zrefcheck_message:nnnx
-                    { check-failed } {#1} {#2} { \zref@extract {#3} {page} }
+                  \__zrefcheck_message:nnnx { check-failed } {#1} {#2}
+                    { \zref@extractdefault {#3} {page} {'unknown'} }
                 }
             }
             { \msg_warning:nnn { zref-check } { check-missing } {#1} }
