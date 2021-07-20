@@ -1,130 +1,444 @@
 \documentclass{book}
 
-\usepackage[user,counter,hyperref,titleref]{zref}
-\usepackage{zref-check}
+\usepackage[T1]{fontenc}
+
+\usepackage[french]{babel} % worst case for babel active characters
 
 \usepackage{graphicx}
-\usepackage{econlipsum}
+\usepackage{lipsum}
+
+\usepackage{zref-check}
+
 \usepackage{hyperref}
 \usepackage[all]{hypcap}
 
-% \usepackage{cleveref}
-
-% \usepackage[french]{babel}
-
 \begin{document}
 
-\zlabel{firstthing}
+\part{Testing Checks}
+\zlabel{part:testing-checks}
 
-\frontmatter
-
-\tableofcontents{}
-
-\chapter*{Preface}
-\zlabel{cha:preface}
-
-Hello World!
-
-
-\mainmatter
-
-\chapter*{Introduction}
-\zlabel{cha:introduction}
-
-\chapter{Chapter 1}
-\zlabel{cha:chapter-1}
-
-\econ[1]
-
-\clearpage{}
+\chapter{above, below}
+\zlabel{cha:above-below}
 
 \begin{figure}
   \centering
-  \includegraphics[width=.6\textwidth]{example-image-a}
   \caption{Figure 1}
+  \includegraphics[width=.4\textwidth]{example-image-a}
   \zlabel{fig:figure-1}
 \end{figure}
 
-
-Teste1\phantomsection\zlabel{test1}. \zrcheck{test2}[below]{mesma linha}.
-Teste2\phantomsection\zlabel{test2}.
+\zrcheck{fig:figure-1}[below]{I said below: this check should pass}
 
 \clearpage{}
 
-
-% É assim que constrói um hyperlink pra uma zlabel! Essa macro aparece na
-% documentação do hyperref, mas sem explicação alguma. O primeiro argumento é
-% a ‘anchor’, propriedade que o módulo zref-hyperref disponibiliza.  :-)
-\hyperlink{figure.1.1}{\zref{fig:figure-1}}
-
-
-\zrcheck{txt:testando}[
-  facing,
-  prevpage
-  ]{alguma coisa e tal}
-
-
-
-\zrctarget{txt:testando}{Platibus absurdus}
-
-\clearpage{}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=.6\textwidth]{example-image-c}
-  \caption{Figure 3}
-  \zlabel{fig:figure-3}
-\end{figure}
-
-\chapter{Chapter 2}
-\zlabel{cha:chapter-2}
-\label{cha:chapter-2}
-
-\econ[2]
-
-\section{section-2-1}
-\zlabel{sec:section-2-1}
-
-\clearpage{}
-\zrcheck{ fig:figure-2 }[ below ]{alguma coisa e tal}
-
-
-\begin{figure}[hb]
+\begin{figure}[h]
   \centering
   \caption{Figure 2}
-  \includegraphics[width=.6\textwidth]{example-image-b}
+  \includegraphics[width=.4\textwidth]{example-image-a}
   \zlabel{fig:figure-2}
 \end{figure}
 
+\zrcheck{fig:figure-2}[below]{I said below: this check should fail}
 
-\hyperlink{figure.2.1}{\zref{fig:figure-2}}
+\clearpage{}
 
-\chapter{Chapter 3}
-\zlabel{cha:chapter-3}
+\zrcheck{fig:figure-3}[above]{I said above: this check should pass}
 
+\begin{figure}
+  \centering
+  \caption{Figure 3}
+  \includegraphics[width=.4\textwidth]{example-image-a}
+  \zlabel{fig:figure-3}
+\end{figure}
 
-\begin{zrcregion}{txt:testando2}
-  \econ[5]
+\clearpage{}
+
+\zrcheck{fig:figure-4}[above]{I said above: this check should fail}
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 4}
+  \includegraphics[width=.4\textwidth]{example-image-a}
+  \zlabel{fig:figure-4}
+\end{figure}
+
+\chapter{before, after}
+\zlabel{cha:before-after}
+
+\section{Within page case}
+\zlabel{sec:within-page-case}
+
+\zrcheck{fig:figure-5}[after]{I said after: this check should pass}
+
+\begin{figure}
+  \centering
+  \caption{Figure 5}
+  \includegraphics[width=.4\textwidth]{example-image-a}
+  \zlabel{fig:figure-5}
+\end{figure}
+
+\clearpage{}
+
+\zrcheck{fig:figure-6}[before]{I said before: this check should fail}
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 6}
+  \includegraphics[width=.4\textwidth]{example-image-a}
+  \zlabel{fig:figure-6}
+\end{figure}
+
+\section{Between pages case}
+\zlabel{sec:between-pages-case}
+
+\zrcheck{fig:figure-5}[before]{I said before: this check should pass}
+
+\zrcheck{txt:between-pages-after}[after]{I said after: this check should pass}
+
+\zrcheck{sec:within-page-case}[after]{I said after: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[before]{I said before: this check should fail}
+
+\clearpage{}
+
+\zrctarget{txt:between-pages-after}{\lipsum[1]}
+
+\chapter{thispage, nextpage, prevpage}
+\zlabel{cha:thisp-nextp-prevp}
+
+\zrcheck{cha:thisp-nextp-prevp}[thispage]{I said thispage: this check should pass}
+
+\zrcheck{cha:thisp-nextp-prevp}[nextpage]{I said nextpage: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[prevpage]{I said prevpage: this check should fail}
+
+\zrcheck{txt:thisp-nextp-prevp-2}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{txt:thisp-nextp-prevp-2}[nextpage]{I said nextpage: this check should pass}
+
+\zrcheck{txt:thisp-nextp-prevp-2}[prevpage]{I said prevpage: this check should fail}
+
+\clearpage{}
+
+\zrctarget{txt:thisp-nextp-prevp-2}{\lipsum[1]}
+
+\zrcheck{cha:thisp-nextp-prevp}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[nextpage]{I said nextpage: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[prevpage]{I said prevpage: this check should pass}
+
+\clearpage{}
+
+\zrcheck{cha:thisp-nextp-prevp}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[nextpage]{I said nextpage: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[prevpage]{I said prevpage: this check should fail}
+
+\clearpage{}
+
+\section{Page boundaries case}
+\zlabel{sec:page-boundaries}
+
+\vspace{40\baselineskip}
+
+\zrcheck{sec:page-boundaries}[thispage]{I said thispage: this check should fail.
+ \lipsum[6]}
+
+\clearpage{}
+
+\zrcheck{text:boundaries-1}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{text:boundaries-1}[nextpage]{I said nextpage: this check should fail}
+
+\zrcheck{text:boundaries-1}[after]{I said after: this check should pass}
+
+\vspace{40\baselineskip}
+
+\zrctarget{text:boundaries-1}{\lipsum[4]}
+
+\zrcheck{text:boundaries-1}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{text:boundaries-1}[prevpage]{I said prevpage: this check should fail}
+
+\zrcheck{text:boundaries-1}[before]{I said before: this check should pass}
+
+\clearpage{}
+
+\zrcheck{text:boundaries-2}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{text:boundaries-2}[nextpage]{I said nextpage: this check should fail}
+
+\zrcheck{text:boundaries-2}[after]{I said after: this check should pass}
+
+\vspace{40\baselineskip}
+
+\begin{zrcregion}{text:boundaries-2}
+  \lipsum[5]
 \end{zrcregion}
 
+\zrcheck{text:boundaries-2}[thispage]{I said thispage: this check should fail}
+
+\zrcheck{text:boundaries-2}[prevpage]{I said prevpage: this check should fail}
+
+\zrcheck{text:boundaries-2}[before]{I said before: this check should pass}
+
+\chapter{facing}
+\zlabel{cha:facing}
+
+\clearpage{}
+
+\zrcheck{cha:facing}[facing]{I said facing: this check should fail}
+
+\zrcheck{cha:facing}[prevpage]{I said prevpage: this check should pass}
+
+\zrctarget{txt:facing-2}{\lipsum[2]}
+
+\zrcheck{txt:facing-3}[facing]{I said facing: this check should pass}
+
+\zrcheck{txt:facing-3}[nextpage]{I said nextpage: this check should pass}
+
+\clearpage{}
+
+\zrcheck{txt:facing-2}[facing]{I said facing: this check should pass}
+
+\zrcheck{txt:facing-2}[prevpage]{I said prevpage: this check should pass}
+
+\zrctarget{txt:facing-3}{\lipsum[2]}
+
+\chapter{pagesbefore, pagesafter}
+\zlabel{cha:pagesbef-pagesaft}
+
+\zrctarget{txt:pp-1}{\lipsum[3]}
+
+\zrcheck{txt:pp-1}[pagesbefore]{I said pagesbefore: this check should fail}
+
+\zrcheck{txt:pp-2}[pagesafter]{I said pagesafter: this check should pass}
+
+\zrcheck{txt:pp-3}[ppafter]{I said ppafter: this check should pass}
+
+\zrcheck{txt:pp-4}[pagesafter]{I said pagesafter: this check should pass}
+
+\clearpage{}
+
+\zrctarget{txt:pp-2}{\lipsum[3]}
+
+\zrcheck{txt:pp-1}[ppbefore]{I said ppbefore: this check should pass}
+
+\zrcheck{txt:pp-2}[pagesafter]{I said pagesafter: this check should fail}
+
+\zrcheck{txt:pp-3}[ppafter]{I said ppafter: this check should pass}
+
+\zrcheck{txt:pp-4}[pagesafter]{I said pagesafter: this check should pass}
+
+\clearpage{}
+
+\zrctarget{txt:pp-3}{\lipsum[3]}
+
+\zrcheck{txt:pp-1}[ppbefore]{I said ppbefore: this check should pass}
+
+\zrcheck{txt:pp-2}[pagesbefore]{I said pagesbefore: this check should pass}
+
+\zrcheck{txt:pp-3}[ppafter]{I said ppafter: this check should fail}
+
+\zrcheck{txt:pp-4}[pagesafter]{I said pagesafter: this check should pass}
+
+\clearpage{}
+
+\zrctarget{txt:pp-4}{\lipsum[3]}
+
+\zrcheck{txt:pp-1}[ppbefore]{I said ppbefore: this check should pass}
+
+\zrcheck{txt:pp-2}[pagesbefore]{I said pagesbefore: this check should pass}
+
+\zrcheck{txt:pp-3}[ppafter]{I said ppafter: this check should fail}
+
+\zrcheck{txt:pp-4}[pagesafter]{I said pagesafter: this check should fail}
+
+\chapter{Chapter checks}
+\zlabel{cha:prevch-nextch-thisch}
+
+\zrcheck{cha:pagesbef-pagesaft}[prevchap]{I said prevchap: this check should pass}
+
+\zrcheck{cha:pagesbef-pagesaft}[thischap]{I said thischap: this check should fail}
+
+\zrcheck{cha:prevch-nextch-thisch}[thischap]{I said thischap: this check should pass}
+
+\zrcheck{cha:pagesbef-pagesaft}[nextchap]{I said nextchap: this check should fail}
+
+\zrcheck{cha:thisp-nextp-prevp}[chapsbefore]{I said chapsbefore: this check should pass}
+
+\zrcheck{cha:prevs-nexts-thiss}[chapsafter]{I said chapsafter: this check should pass}
+
+\chapter{Section checks}
+\zlabel{cha:prevs-nexts-thiss}
+
+\zrcheck{sec:secs-1}[nextsec]{I said nextsec: this check should pass}
+
+\zrctarget{txt:secs-1}{Just something before the first section starts}
+
+\section{Section 1}
+\zlabel{sec:secs-1}
+
+\zrcheck{txt:secs-1}[prevsec]{I said prevsec: this check should fail}
+
+\zrcheck{sec:secs-1}[thissec]{I said thissec: this check should pass}
+
+\zrcheck{sec:secs-1}[nextsec]{I said nextsec: this check should fail}
+
+\zrcheck{sec:secs-2}[nextsec]{I said nextsec: this check should pass}
+
+\zrcheck{sec:secs-3}[nextsec]{I said nextsec: this check should fail}
 
 
+\section{Section 2}
+\zlabel{sec:secs-2}
 
-\chapter{Chapter 4}
-\zlabel{cha:chapter-4}
+\zrcheck{sec:secs-1}[thissec]{I said thissec: this check should fail}
 
-\econ[4]
+\zrcheck{sec:secs-1}[secsbefore]{I said secsbefore: this check should pass}
 
+\zrcheck{sec:secs-1}[secsafter]{I said secsafter: this check should fail}
 
+\zrcheck{sec:secs-3}[secsafter]{I said secsafter: this check should pass}
 
+\section{Section 3}
+\zlabel{sec:secs-3}
 
-\backmatter
+\chapter{close, far}
+\label{cha:close-far}
 
+\zrctarget{txt:close-far-1}{Foo bar}
 
+\zrcheck{txt:close-far-1}[close]{I said close: this check should pass}
 
-\chapter{Bibliography}
-\zlabel{cha:bibliography}
+\zrcheck{txt:close-far-2}[close]{I said close: this check should pass}
 
+\zrcheck{txt:close-far-3}[far]{I said far: this check should pass}
 
+\zrcheck{txt:close-far-2}[far]{I said far: this check should fail}
+
+\zrcheck{txt:close-far-3}[close]{I said close: this check should fail}
+
+\clearpage{}
+
+Hi!
+
+\clearpage{}
+
+Hi!
+
+\clearpage{}
+
+\zrctarget{txt:close-far-2}{Foo bar}
+
+\zrcheck{txt:close-far-1}[close]{I said close: this check should pass}
+
+\zrcheck{txt:close-far-2}[close]{I said close: this check should pass}
+
+\zrcheck{txt:close-far-3}[far]{I said far: this check should fail}
+
+\zrcheck{txt:close-far-2}[far]{I said far: this check should fail}
+
+\zrcheck{txt:close-far-3}[close]{I said close: this check should pass}
+
+\clearpage{}
+
+Hi!
+
+\clearpage{}
+
+Hi!
+
+\clearpage{}
+
+\zrctarget{txt:close-far-3}{Foo bar}
+
+\zrcheck{txt:close-far-1}[close]{I said close: this check should fail}
+
+\zrcheck{txt:close-far-2}[close]{I said close: this check should pass}
+
+\zrcheck{txt:close-far-3}[far]{I said far: this check should fail}
+
+\zrcheck{txt:close-far-2}[far]{I said far: this check should fail}
+
+\zrcheck{txt:close-far-3}[close]{I said close: this check should pass}
+
+\part{Testing Options}
+\zlabel{part:testing-options}
+
+\chapter{hyperref}
+\zlabel{cha:hyperref}
+
+This was done at the preamble, since it is a preamble only option. But a
+starred ‘zrcheck’ is local:
+
+\zrcheck*{cha:hyperref}[thispage]{I said this page: this check should pass}
+
+\chapter{msglevel}
+\zlabel{cha:msglevel}
+
+Also tested at the preamble, but can be used locally.
+
+\zrcheck[msglevel=info]{cha:msglevel}[nextchap]{I said nextchap: this check should fail}
+but only produce a info message.
+
+\zrcheck[msglevel=none]{cha:msglevel}[nextchap]{I said nextchap: this check should fail}
+but produce no message at all.
+
+\zrcheck[ignore]{cha:msglevel}[nextchap]{I said nextchap: this check should fail}
+but produce no message at all.
+
+\zrcheck[msglevel=obeydraft]{cha:msglevel}[nextchap]{I said nextchap: this check should fail}
+
+\zrcheck[msglevel=obeyfinal]{cha:msglevel}[nextchap]{I said nextchap: this check should fail}
+
+\chapter{onpage}
+\zlabel{cha:onpage}
+
+Also tested at the preamble, but can be used locally.
+
+\zrcheck{cha:onpage}[above]{I said above: this check should pass}
+and produce no warning.
+
+\zrcheck[onpage=msg]{cha:onpage}[above]{I said above: this check should pass}
+and produce a double-check warning.
+
+\zrcheck[onpage=msg]{cha:onpage}[below]{I said below: this check should fail}
+and produce a fail warning.
+
+\zrcheck[onpage=obeydraft]{cha:onpage}[above]{I said above: this check should pass}
+
+\zrcheck[onpage=obeyfinal]{cha:onpage}[above]{I said above: this check should pass}
+
+\chapter{closerange}
+\zlabel{cha:closerange}
+
+Also tested at the preamble, but can be used locally.
+
+\zrcheck[closerange=2]{cha:closerange}[close]{I said close: this check should pass}
+
+\zrcheck[closerange=2]{cha:closerange}[far]{I said far: this check should fail}
+
+\clearpage{}
+
+\zrcheck[closerange=2]{cha:closerange}[close]{I said close: this check should pass}
+
+\zrcheck[closerange=2]{cha:closerange}[far]{I said far: this check should fail}
+
+\clearpage{}
+
+\zrcheck[closerange=2]{cha:closerange}[close]{I said close: this check should pass}
+
+\zrcheck[closerange=2]{cha:closerange}[far]{I said far: this check should fail}
+
+\clearpage{}
+
+\zrcheck[closerange=2]{cha:closerange}[close]{I said close: this check should fail}
+
+\zrcheck[closerange=3]{cha:closerange}[close]{I said close: this check should pass}
+
+\zrcheck[closerange=2]{cha:closerange}[far]{I said far: this check should pass}
 
 \end{document}

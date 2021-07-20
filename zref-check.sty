@@ -552,9 +552,16 @@
 
 %% chapter{zrcheck}
 
+% The <text> argument of '\zrcheck' should not be long, since '\hyperlink'
+% cannot receive a long argument.  Besides, there is no reason for it to be.
+% Note, also, that hyperlinks crossing page boundaries have some known issues:
+% https://tex.stackexchange.com/a/182769
+% https://tex.stackexchange.com/a/54607
+% https://tex.stackexchange.com/a/179907
+
 % *[<options>]{<labels>}[<checks>]{<text>}
 \NewDocumentCommand \zrcheck
-  { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } +m }
+  { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } m }
   { \zref@wrapper@babel \_zrefcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
 
 \int_new:N \g__zrefcheck_id_int
@@ -705,7 +712,6 @@
 
 \bool_new:N \l__zrefcheck_passedcheck_bool
 \bool_new:N \l__zrefcheck_onpage_bool
-\tl_new:N \l__zrefcheck_labelend_tl
 \seq_set_from_clist:Nn \c__zrefcheck_onpage_checks_seq
   { above , below , before , after }
 
@@ -737,7 +743,7 @@
                 { \bool_set_false:N \l__zrefcheck_passedcheck_bool }
               % "label end" *may* have been created by the target commands
               \zref@ifrefundefined { \__zrefcheck_end_lblfmt:n {#2} }
-                { \tl_set:Nn \l__zrefcheck_labelend_tl {#2} }
+                {}
                 {
                   % "label end" vs "reference beg"
                   \exp_args:Nno \use:c { __zrefcheck_check_ #1 :nnF }
@@ -753,15 +759,26 @@
                 }
               % Handle option 'onpage=msg'.  This is only granted for tests
               % which perform "within this page" checks ('above', 'below',
-              % 'before', 'after') *and* if all labels are "within this page".
-              % If both conditions are met, signal.
+              % 'before', 'after') *and* if any of the two by two checks uses
+              % a "within this page" comparison.  If both conditions are met,
+              % signal.
               \seq_if_in:NnT \c__zrefcheck_onpage_checks_seq {#1}
                 {
                   \__zrefcheck_check_thispage:nnT
+                    {#2} {#3}
+                    { \bool_set_true:N \l__zrefcheck_onpage_bool }
+                  \__zrefcheck_check_thispage:nnT
                     {#2} { \__zrefcheck_end_lblfmt:n {#3} }
+                    { \bool_set_true:N \l__zrefcheck_onpage_bool }
+                  \zref@ifrefundefined { \__zrefcheck_end_lblfmt:n {#2} }
+                    {}
                     {
                       \__zrefcheck_check_thispage:nnT
-                        { \l__zrefcheck_labelend_tl } {#3}
+                        { \__zrefcheck_end_lblfmt:n {#2} } {#3}
+                        { \bool_set_true:N \l__zrefcheck_onpage_bool }
+                      \__zrefcheck_check_thispage:nnT
+                        { \__zrefcheck_end_lblfmt:n {#2} }
+                        { \__zrefcheck_end_lblfmt:n {#3} }
                         { \bool_set_true:N \l__zrefcheck_onpage_bool }
                     }
                 }
@@ -849,9 +866,13 @@
 
 \prg_new_protected_conditional:Npnn \__zrefcheck_check_below:nn #1#2 { F , TF }
   {
-    \__zrefcheck_check_above:nnTF {#1} {#2}
+    \__zrefcheck_check_thispage:nnTF {#1} {#2}
+      {
+        \__zrefcheck_check_above:nnTF {#1} {#2}
+          { \prg_return_false: }
+          { \prg_return_true:  }
+      }
       { \prg_return_false: }
-      { \prg_return_true:  }
   }
 
 

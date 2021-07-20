@@ -76,11 +76,11 @@ Granted, the need and usage of this type of document self reference certainly
 depend on the kind of document, on the area of knowledge, etc.  However, they
 do tend to be employed in a number of places, particularly in longer
 documents.  And that’s precisely the scenario in which they may become
-problematic.  If your document is short (say, a paper/article) and it was made
-in a reasonably short spurt, you’ll probably won’t bother with this kind of
-references.  In this case, and to use =varioref= ’s expression, you “usually know
-(!)” them to be correct.  However, if you are preparing one of those long,
-complex, and “long ground” documents, with several rounds of editing and
+problematic.  If your document is short (say, a paper / article) and it was
+made in a reasonably short spurt, you’ll probably won’t bother with this kind
+of references.  In this case, and to use =varioref= ’s expression, you “usually
+know (!)” them to be correct.  However, if you are preparing one of those
+long, complex, and “long ground” documents, with several rounds of editing and
 content rearranging, this kind of references will likely bring you trouble.
 They are not only hard to check and find, but they are also hard to fix.
 After all, if you are making one such reference, you are taking that statement
@@ -131,7 +131,9 @@ the package for you.
     made a hyperlink to /the first/ label in =<labels>=.  The starred version of
     the command does the same, just does not form a link.  The =<options>= are
     (mostly) the same as those of the package, and can be given to local
-    effect.
+    effect.  Note that the =<text>= argument of =\zrcheck= is not long (that of
+    =\zrctarget= is) because, if it was, we’d not be able to use if for building
+    hyperlinks, besides there is no need for it to be.
 - =\zrctarget{<label>}{<text>}=
   + Typesets =<text>=, as given, and places a pair of =zlabel= s, one at the start
     of =<text>=, using =<label>= as label name, another one (internal) at the end
