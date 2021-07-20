@@ -577,14 +577,13 @@
 % {<labels>}*[<options>][<checks>]{<text>}
 \cs_new_protected:Npn \_zrefcheck:nnnnn #1#2#3#4#5
   {
-    \int_gincr:N \g__zrefcheck_id_int
-    \mode_leave_vertical:
     \group_begin:
 
       % Process local options
       \keys_set:nn { zref-check } {#3}
 
       % Names of the labels for this zrefcheck call
+      \int_gincr:N \g__zrefcheck_id_int
       \tl_set:Nx \l__zrefcheck_checkbeg_tl
         { \__zrefcheck_check_lblfmt:n { \g__zrefcheck_id_int } }
       \tl_set:Nx \l__zrefcheck_checkend_tl
