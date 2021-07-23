@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% File: zref-check.ins
+% File: zref-check.dtx
 % Copyright (C) 2021 Gustavo Barros
 %
 % It may be distributed and/or modified under the conditions of the
@@ -30,130 +30,176 @@
 % Have \GetFileInfo pick up date and version data
 \usepackage{zref-check}
 \begin{document}
-  \DocInput{\jobname.dtx}
+  \DocInput{zref-check.dtx}
 \end{document}
 %</driver>
 % \fi
 %
+%
+% \GetFileInfo{zref-check.sty}
+%
+% \title{^^A
+%   Package \pkg{zref-check}^^A
+%   \thanks{This file describes \fileversion,
+%     last revised \filedate.}^^A
+% }
+%
+% \author{^^A
+%  Gustavo Barros^^A
+%  \thanks{^^A
+%    \url{https://github.com/gusbrs/zref-check}^^A
+%   }^^A
+% }
+%
+% \date{Released \filedate}
+%
+% \maketitle
+%
+%
+% \begin{documentation}
+%
+% \end{documentation}
+%
+%
+% \begin{implementation}
+%
+% \part{\pkg{zref-check} implementation}
+%
 % Start the \pkg{DocStrip} guards.
 %    \begin{macrocode}
-%<*zref-check>
+%<*package>
 %    \end{macrocode}
 %
 % Identify the internal prefix (\LaTeX3 \pkg{DocStrip} convention).
 %    \begin{macrocode}
 %<@@=zrefcheck>
 %    \end{macrocode}
-
-
+%
+% \section{Initial setup}
+%
+%    \begin{macrocode}
 \ProvidesExplPackage {zref-check} {2021-07-21} {0.1.0}
   {Flexible cross-references with contextual checks based on zref}
-
-%% chapter{Dependencies}
-
+%    \end{macrocode}
+%
+% \section{Dependencies}
+%
+%    \begin{macrocode}
 \RequirePackage { zref-user }
 \RequirePackage { zref-abspage }
 \RequirePackage { ifdraft }
-
-
-%% chapter{zref setup}
-
-% Provide absolute counters for section and chapter, and respective zref
-% properties, so that we can make checks about relation of chapters/sections
-% regardless of internal counters, since we don't get those for the unnumbered
-% (starred) ones.  About the proper place to make the hooks for this purpose,
-% see https://tex.stackexchange.com/q/605533/105447, thanks Ulrike.
-
+%    \end{macrocode}
+%
+%
+% \section{\pkg{zref} setup}
+%
+% \begin{variable}{\g_@@_abschap_int, \g_@@_abssec_int}
+%   Provide absolute counters for section and chapter, and respective zref
+%   properties, so that we can make checks about relation of chapters/sections
+%   regardless of internal counters, since we don't get those for the
+%   unnumbered (starred) ones.  About the proper place to make the hooks for
+%   this purpose, see \url{https://tex.stackexchange.com/q/605533/105447},
+%   thanks Ulrike.
+%    \begin{macrocode}
 \int_new:N \g_@@_abschap_int
 \int_new:N \g_@@_abssec_int
-
-% If the documentclass does not define '\chapter' the only thing that happens
-% is that the chapter counter is never incremented, and the section one never
-% reset.
+%    \end{macrocode}
+% \end{variable}
+%
+%
+% If the documentclass does not define \cs{chapter} the only thing that
+% happens is that the chapter counter is never incremented, and the section
+% one never reset.
+%    \begin{macrocode}
 \AddToHook { cmd / chapter / before }
   {
     \int_gincr:N \g_@@_abschap_int
     \int_zero:N \g_@@_abssec_int
   }
-
 \zref@newprop { abschap } [0] { \int_use:N \g_@@_abschap_int }
 \zref@addprop \ZREF@mainlist { abschap }
-
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \AddToHook { cmd / section / before }
   { \int_gincr:N \g_@@_abssec_int }
-
 \zref@newprop { abssec } [0] { \int_use:N \g_@@_abssec_int }
 \zref@addprop \ZREF@mainlist { abssec }
-
-
-% This is the list of properties to be used by 'zrefcheck', that is, the list
-% of properties the references and targets store.  This is the minimum set
-% required, more properties may be added according to options.
+%    \end{macrocode}
+%
+%
+% This is the list of properties to be used by \pkg{zref-check}, that is, the
+% list of properties the references and targets store.  This is the minimum
+% set required, more properties may be added according to options.
+%    \begin{macrocode}
 \zref@newlist { zrefcheck }
 \zref@addprops { zrefcheck }
   {
     abspage ,
     abschap ,
     abssec ,
-    page % for messages
+    page
   }
-
-
-%% chapter{Plumbing}
-
-%%% section{Messages}
-
+%    \end{macrocode}
+%
+%
+% \section{Plumbing}
+%
+% \subsection{Messages}
+%
+% \begin{macro}{\@@_message:nnnn, \@@_message:nnnx}
+%    \begin{macrocode}
 \cs_new_protected:Npn \@@_message:nnnn #1#2#3#4
   {
     \use:c { msg_ \l_@@_msglevel_tl :nnnnn }
       { zref-check } {#1} {#2} {#3} {#4}
   }
-
 \cs_generate_variant:Nn \@@_message:nnnn { nnnx }
-
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-failed }
   { Failed~check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
-
 \msg_new:nnn { zref-check } { double-check }
   { Double-check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
-
-
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-missing }
   { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
-
 \msg_new:nnn { zref-check } { property-undefined }
   { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
-
 \msg_new:nnn { zref-check } { property-not-in-label }
   { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
-
 \msg_new:nnn { zref-check } { property-not-integer }
   { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
-
-
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \msg_new:nnn { zref-check } { hyperref-preamble-only }
   {
     Option~'hyperref'~only~available~in~the~preamble. \\
     Use~the~starred~version~of~'\protect\zrcheck'~instead.
   }
-
 \msg_new:nnn { zref-check } { missing-hyperref }
   { Missing~'hyperref'~package. \\ Setting~'hyperref=false'. }
-
 \msg_new:nnn { zref-check } { ignore-document-only }
   {
     Option~'ignore'~only~available~in~the~document. \\
     Use~option~'msglevel'~instead.
   }
-
-
-%%% section{Options}
-
-% 'hyperref' option
-
+%    \end{macrocode}
+%
+%
+% \subsection{Options}
+%
+% \verb|hyperref| option
+%
+% \begin{variable}{\l_@@_use_hyperref_bool, \l_@@_warn_hyperref_bool}
+%    \begin{macrocode}
 \bool_new:N \l_@@_use_hyperref_bool
 \bool_new:N \l_@@_warn_hyperref_bool
-
 \keys_define:nn { zref-check }
   {
     hyperref .choice: ,
@@ -174,7 +220,10 @@
       } ,
     hyperref .default:n = auto
   }
-
+%    \end{macrocode}
+% \end{variable}
+%
+%    \begin{macrocode}
 \AtBeginDocument
   {
     \@ifpackageloaded { hyperref }
@@ -196,11 +245,12 @@
           { \msg_warning:nn { zref-check } { hyperref-preamble-only } }
       }
   }
-
-
-% 'msglevel' option
+%    \end{macrocode}
+%
+% \verb|msglevel| option
+% \begin{variable}{\l_@@_msglevel_tl}
+%    \begin{macrocode}
 \tl_new:N \l_@@_msglevel_tl
-
 \keys_define:nn { zref-check }
   {
     msglevel .choice: ,
@@ -222,11 +272,16 @@
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
-    % 'ignore' alias for 'msglevel=none'
+%    \end{macrocode}
+% \verb|ignore| alias for \verb|msglevel=none|
+%    \begin{macrocode}
     ignore .code:n =
       { \msg_warning:nn { zref-check } { ignore-document-only } }
   }
-
+%    \end{macrocode}
+% \end{variable}
+%
+%    \begin{macrocode}
 \AtBeginDocument
   {
     \keys_define:nn { zref-check }
@@ -235,11 +290,13 @@
           { \keys_set:nn { zref-check } { msglevel = none } }
       }
   }
-
-
-% 'onpage' option
+%    \end{macrocode}
+%
+%
+% \verb|onpage| option
+% \begin{variable}{\l_@@_msgonpage_bool}
+%    \begin{macrocode}
 \bool_new:N \l_@@_msgonpage_bool
-
 \keys_define:nn { zref-check }
   {
     onpage .choice: ,
@@ -264,18 +321,24 @@
           { \bool_set_false:N \l_@@_msgonpage_bool }
       }
   }
-
-
-% 'closerange' option
+%    \end{macrocode}
+% \end{variable}
+%
+%
+% \verb|closerange| option
+% \begin{variable}{\l_@@_close_range_int}
+%    \begin{macrocode}
 \int_new:N \l_@@_close_range_int
-
 \keys_define:nn { zref-check }
   {
     closerange .int_set:N = \l_@@_close_range_int ,
   }
-
-
+%    \end{macrocode}
+% \end{variable}
+%
+%
 % Set load-time default values
+%    \begin{macrocode}
 \keys_set:nn { zref-check }
   {
     hyperref   = auto ,
@@ -283,110 +346,130 @@
     onpage     = labelseq ,
     closerange = 5
   }
-
+%    \end{macrocode}
+%
 % Process load-time package options
 % https://tex.stackexchange.com/a/15840
+%    \begin{macrocode}
 \RequirePackage { l3keys2e }
 \ProcessKeysOptions { zref-check }
-
-
-% Provide '\zrchecksetup'
+%    \end{macrocode}
+%
+%
+% \begin{macro}{\zrchecksetup}
+%   Provide \cs{zrchecksetup}.
+%    \begin{macrocode}
 \NewDocumentCommand \zrchecksetup { m }
   { \keys_set:nn { zref-check } {#1} }
-
-
-%%% section{Position on page}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Position on page}
+%
 % Method for determining relative position within the page: the sequence in
 % which the labels get shipped out, inferred from the sequence in which the
-% labels occur in the .aux file.
+% labels occur in the \file{.aux} file.
 %
 % Some relevant info about the sequence of things:
-% https://tex.stackexchange.com/a/120978 and 'texdoc lthooks', section "Hooks
-% provided by \begin{document}".
-
-
-% One first attempt at this was to use '\zref@newlabel', which is the macro in
-% which 'zref' stores the label information in the aux file.  When the .aux
-% file is read at the beginning of the compilation, this macro is expanded for
-% each of the labels.  So, by redefining this macro we can feed a variable (a
-% L3 sequence), and then do what it usually does, which is to define each
-% label with the internal macro '\@newl@bel', when the .aux file is read.
+% \url{https://tex.stackexchange.com/a/120978} and \verb|texdoc lthooks|,
+% section ``Hooks provided by \verb|\begin{document}|''.
 %
-% Patching this macro for this is not possible.  First, '\zref@newlabel' is
-% one of those "commands that look ahead" mentioned in 'ltcmdhooks'
-% documentation.  Indeed, '\@newl@bel' receives 3 arguments, and
-% '\zref@newlabel' just passes the first, the following two will be scanned
-% ahead.  Second, the 'ltcmdhooks' hooks are not actually available when the
-% .aux file is read, they come only after '\begin{document}'.  Hence,
-% redefinition would be the only alternative.  My attempts at this ended up
-% registered at https://tex.stackexchange.com/a/604744.  But the best result
-% in these lines was:
 %
+% One first attempt at this was to use \cs{zref@newlabel}, which is the macro
+% in which \pkg{zref} stores the label information in the aux file.  When the
+% \file{.aux} file is read at the beginning of the compilation, this macro is
+% expanded for each of the labels.  So, by redefining this macro we can feed a
+% variable (a L3 sequence), and then do what it usually does, which is to
+% define each label with the internal macro \cs{@newl@bel}, when the
+% \file{.aux} file is read.
+%
+% Patching this macro for this is not possible.  First, \cs{zref@newlabel} is
+% one of those ``commands that look ahead'' mentioned in \verb|ltcmdhooks|
+% documentation.  Indeed, \cs{@newl@bel} receives 3 arguments, and
+% \cs{zref@newlabel} just passes the first, the following two will be scanned
+% ahead.  Second, the \verb|ltcmdhooks| hooks are not actually available when
+% the \file{.aux} file is read, they come only after \verb|\begin{document}|.
+% Hence, redefinition would be the only alternative.  My attempts at this
+% ended up registered at \url{https://tex.stackexchange.com/a/604744}.  But
+% the best result in these lines was:
+%
+% \begin{verbatim}
 % \ZREF@Robust\edef\zref@newlabel#1{
 %   \noexpand\seq_gput_right:Nn \noexpand\g__zrefcheck_auxfile_lblseq_seq {#1}
 %   \noexpand\@newl@bel{\ZREF@RefPrefix}{#1}
 % }
-
-
-% However, better than the above is to just read it from the .aux file
+% \end{verbatim}
+%
+%
+% However, better than the above is to just read it from the \file{.aux} file
 % directly, no need to redefine anything.  That's what David Carlisle's answer
-% at https://tex.stackexchange.com/a/147705 does.  This answer has actually
-% been converted into the package 'listlbls' by Norbert Melzer, but it is made
-% to work with regular labels, not with 'zref's.  And it also does not really
-% expose the information in a retrievable way (as far as I can tell).  So, the
-% below is adapted from Carlisle's answer's technique (a poor man's version of
-% it...).
+% at \url{https://tex.stackexchange.com/a/147705} does.  This answer has
+% actually been converted into the package \pkg{listlbls} by Norbert Melzer,
+% but it is made to work with regular labels, not with \pkg{zref}'s.  And it
+% also does not really expose the information in a retrievable way (as far as
+% I can tell).  So, the below is adapted from Carlisle's answer's technique (a
+% poor man's version of it...).
 %
 % There is some subtlety here as to whether this approach makes it safe for us
-% to read the labels at this point without '\zref@wrapper@babel'.  The common
-% wisdom is that babel's shorthands are only active after '\begin{document}'
-% (e.g., https://tex.stackexchange.com/a/98897).  Alas, it is more complicated
-% than that.  Babel's documentation says (in section 9.5 Shorthands): "To
-% prevent problems with the loading of other packages after babel we reset the
-% catcode of the character to the original one at the end of the package and
-% of each language file (except with KeepShorthandsActive).  It is
-% re-activate[d] again at \begin{document}.  We also need to make sure that
-% the shorthands are active during the processing of the .aux file.  Otherwise
-% some citations may give unexpected results in the printout when a shorthand
-% was used in the optional argument of \bibitem for example."  This is done
-% with '\if@filesw \immediate\write\@mainaux{...}'.  In other words, the
-% catcode change is written in the .aux file itself!  Indeed, if you inspect
-% the file, you'll find them there.  Besides, there is still the ominous
-% "except with KeepShorthandsActive".
+% to read the labels at this point without \cs{zref@wrapper@babel}.  The
+% common wisdom is that babel's shorthands are only active after
+% \verb|\begin{document}| (e.g., \url{https://tex.stackexchange.com/a/98897}).
+% Alas, it is more complicated than that.  Babel's documentation says (in
+% section 9.5 Shorthands): ``To prevent problems with the loading of other
+% packages after babel we reset the catcode of the character to the original
+% one at the end of the package and of each language file (except with
+% KeepShorthandsActive).  It is re-activate[d] again at
+% \verb|\begin{document}|.  We also need to make sure that the shorthands are
+% active during the processing of the \file{.aux} file.  Otherwise some
+% citations may give unexpected results in the printout when a shorthand was
+% used in the optional argument of \verb|\bibitem| for example.''  This is
+% done with \verb|\if@filesw \immediate\write\@mainaux{...}|.  In other words,
+% the catcode change is written in the \file{.aux} file itself!  Indeed, if
+% you inspect the file, you'll find them there.  Besides, there is still the
+% ominous ``except with KeepShorthandsActive''.
 %
-% However, the *method* I'm using here is not quite the same as the usual run
-% of the .aux file, because I'm actively discarding the lines for which the
-% first token is not equal to '\zref@newlabel'.  I have tested the famous
-% sensitive case for this: 'babel' with 'french' and labels with colons.  And
-% I was able to retrieve the information as expected.  Well, *if*
-% 'KeepShorthandsActive' is enabled *with 'french'* and we load the package
-% *after babel* things do break, but not quite because of the colons in the
-% labels.  Even 'siunitx' breaks in the same conditions...
+% However, the \emph{method} I'm using here is not quite the same as the usual
+% run of the \file{.aux} file, because I'm actively discarding the lines for
+% which the first token is not equal to \cs{zref@newlabel}.  I have tested the
+% famous sensitive case for this: \pkg{babel} with \verb|french| and labels
+% with colons.  And I was able to retrieve the information as expected.  Well,
+% \emph{if} \verb|KeepShorthandsActive| is enabled \emph{with \verb|french|}
+% and we load the package \emph{after babel} things do break, but not quite
+% because of the colons in the labels.  Even \pkg{siunitx} breaks in the same
+% conditions...
 %
 % For reference: About what are valid characters for use in labels:
-% https://tex.stackexchange.com/a/18312.  About some problems with active
-% colons: https://tex.stackexchange.com/a/89470.
+% \url{https://tex.stackexchange.com/a/18312}.  About some problems with
+% active colons: \url{https://tex.stackexchange.com/a/89470}.
 %
 % About the difference between L3 strings and token lists, see
-% https://tex.stackexchange.com/a/446381, in particular Joseph Wright's
-% comment: "Strings are for data that will never be typeset, for example file
+% \url{https://tex.stackexchange.com/a/446381}, in particular Joseph Wright's
+% comment: ``Strings are for data that will never be typeset, for example file
 % names, identifiers, etc.: if the material may be used in typesetting, it
-% should be a token list."  See also moewe's (CW) answer in the same lines.
+% should be a token list.''  See also moewe's (CW) answer in the same lines.
 % Which suggests using L3 strings for the reference labels might be a good
 % catch all approach, and possibly more robust.  David Carlisle's comment
-% about 'inputenc' is a caveat (see
-% https://tex.stackexchange.com/q/446123#comment1516961_446381).
-% Still... let's stick to tradition as long as it works, 'zref' already does a
-% great job here anyway.
-
+% about \pkg{inputenc} is a caveat (see
+% \url{https://tex.stackexchange.com/q/446123#comment1516961_446381}).
+% Still... let's stick to tradition as long as it works, \pkg{zref} already
+% does a great job here anyway.
+%
+%
+% \begin{variable}{\g_@@_auxfile_lblseq_prop}
+%    \begin{macrocode}
 \prop_new:N \g_@@_auxfile_lblseq_prop
-
+%    \end{macrocode}
+% \end{variable}
+%
+%    \begin{macrocode}
 \tl_set:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
 \file_if_exist:nT { \g_tmpa_tl }
   {
-    % Retrieve the information from the .aux file, and store it in a property
-    % list, so that the sequence can be retrieved in key-value fashion.
+%    \end{macrocode}
+% Retrieve the information from the \file{.aux} file, and store it in a
+% property list, so that the sequence can be retrieved in key-value fashion.
+%    \begin{macrocode}
     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
     \group_begin:
       \int_zero:N \l_tmpa_int
@@ -399,7 +482,9 @@
             {
               \tl_if_eq:NnTF \l_tmpb_tl { \zref@newlabel }
                 {
-                  % Found a zref@label, signal it.
+%    \end{macrocode}
+% Found a \cs{zref@label}, signal it.
+%    \begin{macrocode}
                   \bool_set_true:N \l_tmpa_bool
                 }
                 {
@@ -411,13 +496,13 @@
                         { \l_tmpb_tl } { \int_use:N \l_tmpa_int }
                     }
                     {
-                      % If there is not a match of the first token with
-                      % '\zref@newlabel', break the loop and discard the rest
-                      % of the line, to ensure no babel calls to '\catcode' in
-                      % the .aux file get expanded.  This also breaks the loop
-                      % and discards the rest of the '\zref@newlabel' lines
-                      % after we got the label we wanted, since we reset
-                      % '\l_tmpa_bool' in the 'T' branch.
+%    \end{macrocode}
+% If there is not a match of the first token with \cs{zref@newlabel}, break
+% the loop and discard the rest of the line, to ensure no babel calls to
+% \cs{catcode} in the \file{.aux} file get expanded.  This also breaks the
+% loop and discards the rest of the \cs{zref@newlabel} lines after we got the
+% label we wanted, since we reset \cs{l_tmpa_bool} in the \verb|T| branch.
+%    \begin{macrocode}
                       \tl_map_break:
                     }
                 }
@@ -426,75 +511,96 @@
     \group_end:
     \ior_close:N \g_tmpa_ior
   }
-
-
+%    \end{macrocode}
+%
+%
+%
 % The alternate method I had considered (more than that...) for this was using
-% yx coordinates supplied by 'zref's 'savepos' module.  However, this approach
-% brought in a number of complexities, including the need to patch either
-% '\zref@label' or '\ZREF@label'.  In addition, the technique was at the
-% bottom fundamentally flawed.  Ulrike Fischer was very much right when she
-% said that "structure and position are two different beasts"
-% (https://github.com/ho-tex/zref/issues/12#issuecomment-880022576).  It is
-% true that the checks based on it behaved decently, in normal circumstances,
-% and except for outrageous label placement by the user, it would return the
-% expected results.  We don't really need exact coordinates to decide
-% "above/below".  Besides, it would do an exact job for the dedicated target
-% macros of this package.  However, I could not conceive a situation where the
-% 'yx' criterion would perform clearly better than the 'labeseq' one.  And, if
-% that's the case, and considering the complications it brings, this check was
-% a slippery slope.  All in all, I've decided to drop it.
-
-
-%%% section{Counter}
-
+% yx coordinates supplied by \pkg{zref}'s \verb|savepos| module.  However,
+% this approach brought in a number of complexities, including the need to
+% patch either \cs{zref@label} or \cs{ZREF@label}.  In addition, the technique
+% was at the bottom fundamentally flawed.  Ulrike Fischer was very much right
+% when she said that ``structure and position are two different beasts''
+% (\url{https://github.com/ho-tex/zref/issues/12#issuecomment-880022576}).  It
+% is true that the checks based on it behaved decently, in normal
+% circumstances, and except for outrageous label placement by the user, it
+% would return the expected results.  We don't really need exact coordinates
+% to decide ``above/below''.  Besides, it would do an exact job for the
+% dedicated target macros of this package.  However, I could not conceive a
+% situation where the \verb|yx| criterion would perform clearly better than
+% the \verb|labeseq| one.  And, if that's the case, and considering the
+% complications it brings, this check was a slippery slope.  All in all, I've
+% decided to drop it.
+%
+%
+%
+% \subsection{Counter}
+%
 % We need a dedicated counter for the labels generated by the checks and
 % targets.  The value of the counter is not relevant, we just need it to be
-% able to set proper anchors with '\refstepcounter'.  And, since I couldn't
-% find a '\refstepcounter' equivalent in L3, we use a standard 2e counter
+% able to set proper anchors with \cs{refstepcounter}.  And, since I couldn't
+% find a \cs{refstepcounter} equivalent in L3, we use a standard 2e counter
 % here.  I'm also using the technique to ensure the counter is never reset
-% that is used by 'zref-abspage.sty' and '\zref@require@unique'.  I don't know
-% why it is needed, but if Oberdiek does it, there must be a reason.  In any
-% case, the requirements are the same, we need numbers ensured to be *unique*
-% in the counter.
-
+% that is used by \file{zref-abspage.sty} and \cs{zref@require@unique}.  I
+% don't know why it is needed, but if Oberdiek does it, there must be a
+% reason.  In any case, the requirements are the same, we need numbers ensured
+% to be \emph{unique} in the counter.
+%
+%    \begin{macrocode}
 \begingroup
   \let \@addtoreset \ltx@gobbletwo
   \newcounter { zrefcheck }
 \endgroup
 \setcounter { zrefcheck } { 0 }
-
-
-%%% section{Label formats}
-
-% {<check id int>}
+%    \end{macrocode}
+%
+%
+%
+% \subsection{Label formats}
+%
+% \begin{macro}{\@@_check_lblfmt:n}
+%   \marg{<check id int>}
+%    \begin{macrocode}
 \cs_new:Npn \@@_check_lblfmt:n #1
   { zrefcheck@ \int_use:N #1 }
-
-% {<label>}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_end_lblfmt:n}
+%   \marg{<label>}
+%    \begin{macrocode}
 \cs_new:Npn \@@_end_lblfmt:n #1
   { #1 @zrefcheck }
-
-
-%%% section{Property values}
-
-% A convenience function to retrieve property values from labels.  Uses
-% '\g__zrefcheck_auxfile_lblseq_prop' for "lblseq", and calls
-% '\zref@extract' for everything else.
+%    \end{macrocode}
+% \end{macro}
 %
-% We cannot use the return value of '\__zrefcheck_get_as(tl|int):nnn'
-% directly, because we need to use the retrieved property values as arguments
-% in the checks, however we use here a number of non-expandable operations.
-% Hence, we receive a local tl/int variable as third argument and set that, so
-% that it is available (and expandable) at the place of use.  For this reason,
-% we do not group here, because we are passing a local variable around, but it
-% is expected this function will be called within a group.
 %
-% I'm returning '\c_empty_tl' in case of failure to find the intended property
-% value (explicitly in '\zref@extractdefault', but that is also what
-% '\tl_clear:N' does).
-
-
-% {<label>}{<prop>}{<tl var>}
+%
+% \subsection{Property values}
+%
+%
+% \begin{macro}{\zrefcheck_get_astl:nnn}
+%   A convenience function to retrieve property values from labels.  Uses
+%   \cs{g_@@_auxfile_lblseq_prop} for \verb|lblseq|, and calls
+%   \cs{zref@extractdefault} for everything else.
+%
+%   We cannot use the ``return value'' of \cs{@@_get_astl:nnn} or
+%   \cs{@@_get_asint:nnn} directly, because we need to use the retrieved
+%   property values as arguments in the checks, however we use here a number
+%   of non-expandable operations.  Hence, we receive a local \verb|tl/int|
+%   variable as third argument and set that, so that it is available (and
+%   expandable) at the place of use.  For this reason, we do not group here,
+%   because we are passing a local variable around, but it is expected this
+%   function will be called within a group.
+%
+%   I'm returning \cs{c_empty_tl} in case of failure to find the intended
+%   property value (explicitly in \cs{zref@extractdefault}, but that is also
+%   what \cs{tl_clear:N} does).
+%
+%   \begin{syntax}
+%     \cs{zrefcheck_get_astl:nnn} \Arg{label} \Arg{prop} \Arg{tl var}
+%   \end{syntax}
+%    \begin{macrocode}
 \cs_new:Npn \zrefcheck_get_astl:nnn #1#2#3
   {
     \tl_clear:N #3
@@ -507,20 +613,22 @@
           }
       }
       {
-        % There are three things we need to check to ensure the information we
-        % are trying to retrieve here exists: the existence of "label", the
-        % existence of "property", and whether the particular label being
-        % queried actually contains the property.  If that's all in place, the
-        % value is passed to the checks, and it's their responsibility to
-        % verify the consistency of this value.
-        %
-        % The existence of the label is an user facing issue, and a warning
-        % for this is placed in '\__zrefcheck:nnnnn' (and done with
-        % '\zref@refused').  We do check here though for definition with
-        % '\zref@ifrefundefined' and silently do nothing if it is undefined,
-        % to reduce irrelevant warnings in a fresh compilation round.  The
-        % other two are more "internal" problems, either some problem with the
-        % checks, or with the configuration of 'zref' for their consumption.
+%    \end{macrocode}
+% There are three things we need to check to ensure the information we are
+% trying to retrieve here exists: the existence of \Arg{label}, the existence
+% of \Arg{prop}, and whether the particular label being queried actually
+% contains the property.  If that's all in place, the value is passed to the
+% checks, and it's their responsibility to verify the consistency of this
+% value.
+%
+% The existence of the label is an user facing issue, and a warning for this
+% is placed in \cs{@@_zrcheck:nnnnn} (and done with \cs{zref@refused}).  We do
+% check here though for definition with \cs{zref@ifrefundefined} and silently
+% do nothing if it is undefined, to reduce irrelevant warnings in a fresh
+% compilation round.  The other two are more ``internal'' problems, either
+% some problem with the checks, or with the configuration of \pkg{zref} for
+% their consumption.
+%    \begin{macrocode}
         \zref@ifrefundefined {#1}
           {}
           {
@@ -540,41 +648,59 @@
           }
       }
   }
-
-
-
-% '\zrefcheck_get_asint:nnn' is a very convenient wrapper around the more
-% general '\zrefcheck_get_astl:nnn', since almost always we'll be wanting to
-% compare numbers in the checks.  However, it is quite hard for it to ensure
-% an integer is *always* returned in the case of errors.  And those do occur,
-% even in a well structured document (e.g., in a first round of compilation).
-% To complicate things, the L3 integer predicates are *very* sensitive to
-% receiving any other kind of data, and they *scream*.  To handle this
-% '\zrefcheck_get_asint:nnn' uses '\l__zrefcheck_integer_bool'.  To use this
-% function always set '\l__zrefcheck_integer_bool' to true first, then call it
-% as much as you need.  If any of these calls got is returning anything which
-% is not an integer, '\l__zrefcheck_integer_bool' will have been set to false,
-% and you should check that this hasn't happened before actually comparing the
-% integers ('\bool_lazy_and:nnTF' is your friend).
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{variable}{\l_@@_integer_bool}
+%   \cs{zrefcheck_get_asint:nnn} is a very convenient wrapper around the more
+%   general \cs{zrefcheck_get_astl:nnn}, since almost always we'll be wanting
+%   to compare numbers in the checks.  However, it is quite hard for it to
+%   ensure an integer is \emph{always} returned in the case of errors.  And
+%   those do occur, even in a well structured document (e.g., in a first round
+%   of compilation).  To complicate things, the L3 integer predicates are
+%   \emph{very} sensitive to receiving any other kind of data, and they
+%   \emph{scream}.  To handle this \cs{zrefcheck_get_asint:nnn} uses
+%   \cs{l_@@_integer_bool} to signal if an integer could not be returned.  To
+%   use this function always set \cs{l_@@_integer_bool} to true first, then
+%   call it as much as you need.  If any of these calls got is returning
+%   anything which is not an integer, \cs{l_@@_integer_bool} will have been
+%   set to false, and you should check that this hasn't happened before
+%   actually comparing the integers (\cs{bool_lazy_and:nnTF} is your friend).
+%    \begin{macrocode}
 \bool_new:N \l_@@_integer_bool
-
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}{\l_@@_propval_tl}
+%    \begin{macrocode}
 \tl_new:N \l_@@_propval_tl
-
-% {<label>}{<prop>}{<int var>}
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{macro}{\zrefcheck_get_asint:nnn}
+%   \begin{syntax}
+%     \cs{zrefcheck_get_asint:nnn} \Arg{label} \Arg{prop} \Arg{int var}
+%   \end{syntax}
+%    \begin{macrocode}
 \cs_new:Npn \zrefcheck_get_asint:nnn #1#2#3
   {
     \zrefcheck_get_astl:nnn {#1} {#2} { \l_@@_propval_tl }
     \@@_is_integer:nTF { \l_@@_propval_tl }
       {
-        % Make it an integer data type
+%    \end{macrocode}
+% Make it an integer data type.
+%    \begin{macrocode}
         \int_set:Nn #3 { \int_eval:n { \l_@@_propval_tl } }
       }
       {
         \bool_set_false:N \l_@@_integer_bool
-        % Keep silent if ref is undefined to reduce irrelevant warnings in a
-        % fresh compilation round.  Again, this is also not the point to check
-        % for undefined references, that's a task for '\__zrefcheck:nnnnn'.
         \zref@ifrefundefined {#1}
+%    \end{macrocode}
+% Keep silent if ref is undefined to reduce irrelevant warnings in a fresh
+% compilation round.  Again, this is also not the point to check for undefined
+% references, that's a task for \cs{@@_zrcheck:nnnnn}.
+%    \begin{macrocode}
           { }
           {
             \msg_warning:nnnn { zref-check }
@@ -582,74 +708,118 @@
           }
       }
   }
-
-% Thanks egreg: https://tex.stackexchange.com/a/244405
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_is_integer:n}
+%    \begin{macrocode}
 \prg_new_conditional:Npnn \@@_is_integer:n #1 { p, T, F, TF }
   {
     \tl_if_empty:oTF {#1}
-      { \prg_return_false: } % empty tl is also not an integer
+%    \end{macrocode}
+% Empty tl is also not an integer.
+%    \begin{macrocode}
+      { \prg_return_false: }
       {
+%    \end{macrocode}
+% Thanks egreg: \url{https://tex.stackexchange.com/a/244405}.
+%    \begin{macrocode}
         \tl_if_blank:oTF { \__int_to_roman:w -0#1 }
           { \prg_return_true:  }
           { \prg_return_false: }
       }
   }
-
-
-
-%% chapter{zrcheck}
-
-% The <text> argument of '\zrcheck' should not be long, since '\hyperlink'
-% cannot receive a long argument.  Besides, there is no reason for it to be.
-% Note, also, that hyperlinks crossing page boundaries have some known issues:
-% https://tex.stackexchange.com/a/182769
-% https://tex.stackexchange.com/a/54607
-% https://tex.stackexchange.com/a/179907
-
-% *[<options>]{<labels>}[<checks>]{<text>}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \section{\cs{zrcheck}}
+%
+% \begin{macro}{\zrcheck}
+%   The \marg{text} argument of \cs{zrcheck} should not be long, since
+%   \cs{hyperlink} cannot receive a long argument.  Besides, there is no
+%   reason for it to be.  Note, also, that hyperlinks crossing page boundaries
+%   have some known issues: \url{https://tex.stackexchange.com/a/182769},
+%   \url{https://tex.stackexchange.com/a/54607},
+%   \url{https://tex.stackexchange.com/a/179907}.
+%
+%   \begin{syntax}
+%     \cs{zrcheck}\meta{*}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%   \end{syntax}
+%
+%    \begin{macrocode}
 \NewDocumentCommand \zrcheck
   { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } m }
-  { \zref@wrapper@babel \@@:nnnnn {#3} {#1} {#2} {#4} {#5} }
-
+  { \zref@wrapper@babel \@@_zrcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{variable}
+%   {
+%     \g_@@_id_int ,
+%     \l_@@_checkbeg_tl ,
+%     \l_@@_checkend_tl ,
+%     \l_@@_link_label_tl ,
+%     \l_@@_link_anchor_tl ,
+%     \l_@@_link_star_tl
+%   }
+%    \begin{macrocode}
 \int_new:N \g_@@_id_int
 \tl_new:N \l_@@_checkbeg_tl
 \tl_new:N \l_@@_checkend_tl
 \tl_new:N \l_@@_link_label_tl
 \tl_new:N \l_@@_link_anchor_tl
 \bool_new:N \l_@@_link_star_tl
-
-% An intermediate internal function, which places "labels" as first argument,
-% so that it can be protected by '\zref@wrapper@babel'.  This is more or less
-% what the definition of '\zref' in 'zref-user.sty' does for this.
-% {<labels>}*[<options>][<checks>]{<text>}
-\cs_new_protected:Npn \@@:nnnnn #1#2#3#4#5
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{macro}{\@@_zrcheck:nnnnn}
+%   An intermediate internal function, which places \Arg{labels} as first
+%   argument, so that it can be protected by \cs{zref@wrapper@babel}.  This is
+%   more or less what the definition of \cs{zref} in \file{zref-user.sty} does
+%   for this.
+%
+%   \begin{syntax}
+%     \cs{@@_zrcheck:nnnnn} \Arg{labels} \Arg{*} \Arg{options} \Arg{checks} \Arg{text}
+%   \end{syntax}
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \@@_zrcheck:nnnnn #1#2#3#4#5
   {
     \group_begin:
-
-      % Process local options
+%    \end{macrocode}
+% Process local options.
+%    \begin{macrocode}
       \keys_set:nn { zref-check } {#3}
-
-      % Names of the labels for this zrefcheck call
+%    \end{macrocode}
+% Names of the labels for this zrefcheck call.
+%    \begin{macrocode}
       \int_gincr:N \g_@@_id_int
       \tl_set:Nx \l_@@_checkbeg_tl
         { \@@_check_lblfmt:n { \g_@@_id_int } }
       \tl_set:Nx \l_@@_checkend_tl
         { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
-
-      % Set checkbeg label
+%    \end{macrocode}
+% Set checkbeg label.
+%    \begin{macrocode}
       \refstepcounter { zrefcheck }
       \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck }
-
-      % Typeset "<text>", with hyperlink when appropriate.
-
-      % Even though the first argument can receive a list of labels, there is
-      % no meaningful way to set links to multiple targets.  Hence, only the
-      % first one is considered for hyperlinking.
+%    \end{macrocode}
+% Typeset \marg{text}, with hyperlink when appropriate.
+%
+% Even though the first argument can receive a list of labels, there is no
+% meaningful way to set links to multiple targets.  Hence, only the first one
+% is considered for hyperlinking.
+%    \begin{macrocode}
       \tl_set:Nn \l_@@_link_label_tl { \tl_item:nn {#1} {1} }
-
       \bool_set:Nn \l_@@_link_star_tl {#2}
       \zref@ifrefundefined { \l_@@_link_label_tl }
-        {#5} % If the reference is undefined, just typeset.
+%    \end{macrocode}
+% If the reference is undefined, just typeset.
+%    \begin{macrocode}
+        {#5}
         {
           \bool_if:nTF
             {
@@ -664,24 +834,33 @@
             }
             {#5}
         }
-
-      % Set checkend label
+%    \end{macrocode}
+% Set checkend label.
+%    \begin{macrocode}
       \refstepcounter { zrefcheck }
       \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck }
-
-      % Check definition
+%    \end{macrocode}
+% Check definition.
+%    \begin{macrocode}
       \tl_map_function:nN {#1} \zref@refused
-
-      % Run the checks
+%    \end{macrocode}
+% Run the checks.
+%    \begin{macrocode}
       \@@_run_checks:nnV {#4} {#1} { \l_@@_checkbeg_tl }
-
     \group_end:
   }
-
-
-%% chapter{Targets}
-
-% {<label>}{<text>}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \section{Targets}
+%
+% \begin{macro}{\zrctarget}
+%   \begin{syntax}
+%     \cs{zrctarget}\marg{label}\marg{text}
+%   \end{syntax}
+%    \begin{macrocode}
 \NewDocumentCommand \zrctarget { m +m }
   {
     \refstepcounter { zrefcheck }
@@ -691,8 +870,16 @@
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
   }
-
-% {<label>}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{zrcregion}
+%   \begin{syntax}
+%     |\begin{zrcregion}|\marg{label}
+%       |...|
+%     |\end{zrcregion}|
+%   \end{syntax}
+%    \begin{macrocode}
 \NewDocumentEnvironment {zrcregion} { m }
   {
     \refstepcounter { zrefcheck }
@@ -703,45 +890,55 @@
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
   }
-
-
-%% chapter{Checks}
-
+%    \end{macrocode}
+% \end{environment}
+%
+%
+%
+% \section{Checks}
+%
 % What is needed for a check to work?
 %
 % First, a conditional/predicate function defined with:
 %
-% \prg_new_conditional:Npnn \__zrefcheck_check_<check>:nn #1#2 { F }
+% \cs{prg_new_conditional:Npnn} \cs{@@_check_\meta{check}:nn}
+%   \verb|#1#2| \verb|{ F }|
 %
-% where "<check>", it the name of the check, the first argument is the "label"
-% and the second the "reference".  The existence of the check is verified by
-% the existence of the function with this name-scheme (and signatures).  Of
-% course, this function must return either '\prg_return_true:' or
-% '\prg_return_false:'.  Of course, you can define other variants if you need
-% internally, and may do a protected definition, if it is needed for the
-% content of the check, just what the package does expect and verifies is
-% existence of the ':nnF' variant.
+% \noindent where \meta{check}, it the name of the check, the first argument
+% is the \Arg{label} and the second the \Arg{reference}.  The existence of the
+% check is verified by the existence of the function with this name-scheme
+% (and signatures).  Of course, this function must return either
+% \cs{prg_return_true:} or \cs{prg_return_false:}.  Of course, you can define
+% other variants if you need internally, and may do a protected definition, if
+% it is needed for the content of the check, just what the package does expect
+% and verifies is existence of the \verb|:nnF| variant.
 %
 % Note that the naming convention of the checks adopts the perspective of the
-% "reference".  That is, the "before" check should return true if the "label"
-% occurs before the "reference".
+% \meta{reference}.  That is, the ``before'' check should return true if the
+% \meta{label} occurs before the ``reference''.
 %
-% The checks it does are expected to retrieve 'zref's label information with
-% '\zrefcheck_get_astl:nnn' or '\zrefcheck_get_asint:nnn'.  Also, technically
-% speaking, the "reference" argument is also a label, actually a pair of them,
-% as set by '\zrcheck'.  For the "labels", any 'zref' property in 'zref's main
-% list is available, the "references" store the properties in the 'zrefcheck'
-% list.  Besides those, there is also the 'lblseq' (fake) property (for either
-% "labels" or "references"), stored in '\g__zrefcheck_auxfile_lblseq_prop'.
+% The checks it does are expected to retrieve \pkg{zref}'s label information
+% with \cs{zrefcheck_get_astl:nnn} or \cs{zrefcheck_get_asint:nnn}.  Also,
+% technically speaking, the \meta{reference} argument is also a label,
+% actually a pair of them, as set by \cs{zrcheck}.  For the ``labels'', any
+% \pkg{zref} property in \pkg{zref}'s main list is available, the
+% ``references'' store the properties in the \verb|zrefcheck| list.  Besides
+% those, there is also the \verb|lblseq| (fake) property (for either
+% ``labels'' or ``references''), stored in \cs{g_@@_auxfile_lblseq_prop}.
 %
 % Second, the required properties of labels and references must be duly
-% registered for 'zref'.  This can be done with '\zref@newprop',
-% '\zref@addprop' and friends, as usual.
-
-
-%%% section{Running}
-
-% {<list of checks>}{<list of labels>}{<reference>}
+% registered for \pkg{zref}.  This can be done with \cs{zref@newprop},
+% \cs{zref@addprop} and friends, as usual.
+%
+%
+% \subsection{Running}
+%
+% \begin{macro}{\@@_run_checks:nnn, \@@_run_checks:nnV}
+%   \begin{syntax}
+%     \cs{@@_run_checks:nnn}
+%       \Arg{list of checks} \Arg{list of labels} \Arg{reference}
+%   \end{syntax}
+%    \begin{macrocode}
 \cs_new:Npn \@@_run_checks:nnn #1#2#3
   {
     \group_begin:
@@ -752,26 +949,47 @@
         }
     \group_end:
   }
-
 \cs_generate_variant:Nn \@@_run_checks:nnn { nnV }
-
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{variable}
+%   {
+%     \l_@@_passedcheck_bool ,
+%     \l_@@_onpage_bool ,
+%     \c_@@_onpage_checks_seq
+%   }
+%    \begin{macrocode}
 \bool_new:N \l_@@_passedcheck_bool
 \bool_new:N \l_@@_onpage_bool
+\seq_new:N \c_@@_onpage_checks_seq
 \seq_set_from_clist:Nn \c_@@_onpage_checks_seq
   { above , below , before , after }
-
+%    \end{macrocode}
+% \end{variable}
+%
+%
+% Variant not provided by \pkg{expl3}.
+%    \begin{macrocode}
 \cs_generate_variant:Nn \exp_args:Nnno { Nnoo }
-
-% {<check>}{<label beg>}{<reference beg>}
+%    \end{macrocode}
+%
+% \begin{macro}{\@@_do_check:nnn}
+%   \begin{syntax}
+%     \cs{@@_do_check:nnn} \Arg{check} \Arg{label beg} \Arg{reference beg}
+%   \end{syntax}
+%    \begin{macrocode}
 \cs_new:Npn \@@_do_check:nnn #1#2#3
   {
     \group_begin:
-      % "label beg" may be defined or not, it is arbitrary user input.
-      % Whether this is the case is checked in '\__zrefcheck:nnnnn', and due
-      % warning already ensues.  And there is no point in checking "relative
-      % position" of an undefined label.  Hence, in the absence of '#2', we do
-      % nothing at all here.
+%    \end{macrocode}
+% \meta{label beg} may be defined or not, it is arbitrary user input.  Whether
+% this is the case is checked in \cs{@@_zrcheck:nnnnn}, and due warning
+% already ensues.  And there is no point in checking ``relative position'' of
+% an undefined label.  Hence, in the absence of \verb|#2|, we do nothing at
+% all here.
+%    \begin{macrocode}
       \zref@ifrefundefined {#2}
         {}
         {
@@ -779,35 +997,44 @@
           \bool_set_false:N \l_@@_onpage_bool
           \cs_if_exist:cTF { @@_check_ #1 :nnF }
             {
-              % "label beg" vs "reference beg"
+%    \end{macrocode}
+% ``label beg'' vs ``reference beg''.
+%    \begin{macrocode}
               \use:c { @@_check_ #1 :nnF }
                 {#2} {#3}
                 { \bool_set_false:N \l_@@_passedcheck_bool }
-              % "label beg" vs "reference end"
+%    \end{macrocode}
+% ``label beg'' vs ``reference end''.
+%    \begin{macrocode}
               \exp_args:Nnno \use:c { @@_check_ #1 :nnF }
                 {#2} { \@@_end_lblfmt:n {#3} }
                 { \bool_set_false:N \l_@@_passedcheck_bool }
-              % "label end" *may* have been created by the target commands
+%    \end{macrocode}
+% ``label end'' \emph{may} have been created by the target commands.
+%    \begin{macrocode}
               \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
                 {}
                 {
-                  % "label end" vs "reference beg"
+%    \end{macrocode}
+% ``label end'' vs ``reference beg''.
+%    \begin{macrocode}
                   \exp_args:Nno \use:c { @@_check_ #1 :nnF }
                     { \@@_end_lblfmt:n {#2} } {#3}
                     { \bool_set_false:N \l_@@_passedcheck_bool }
-                  % "label end" vs "reference end"
+%    \end{macrocode}
+% ``label end'' vs ``reference end''.
+%    \begin{macrocode}
                   \exp_args:Nnoo \use:c { @@_check_ #1 :nnF }
                     { \@@_end_lblfmt:n {#2} }
                     { \@@_end_lblfmt:n {#3} }
                     { \bool_set_false:N \l_@@_passedcheck_bool }
-                  \tl_set:Nx \l_@@_labelend_tl
-                    { \@@_end_lblfmt:n {#2} }
                 }
-              % Handle option 'onpage=msg'.  This is only granted for tests
-              % which perform "within this page" checks ('above', 'below',
-              % 'before', 'after') *and* if any of the two by two checks uses
-              % a "within this page" comparison.  If both conditions are met,
-              % signal.
+%    \end{macrocode}
+% Handle option \verb|onpage=msg|.  This is only granted for tests which
+% perform ``within this page'' checks (\verb|above|, \verb|below|,
+% \verb|before|, \verb|after|) \emph{and} if any of the two by two checks uses
+% a ``within this page'' comparison.  If both conditions are met, signal.
+%    \begin{macrocode}
               \seq_if_in:NnT \c_@@_onpage_checks_seq {#1}
                 {
                   \@@_check_thispage:nnT
@@ -849,17 +1076,25 @@
         }
     \group_end:
   }
-
-
-%%% section{Definitions}
-
-% More readable scratch variables for the tests
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{Definitions}
+%
+% \begin{variable}{\l_@@_lbl_int, \l_@@_ref_int}
+%   More readable scratch variables for the tests.
+%    \begin{macrocode}
 \int_new:N \l_@@_lbl_int
 \int_new:N \l_@@_ref_int
-
-
-%%%% subsection{This page}
-
+%    \end{macrocode}
+% \end{variable}
+%
+%
+% \subsubsection{This page}
+%
+% \begin{macro}{\@@_check_thispage:nn}
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_thispage:nn #1#2 { T, F , TF }
   {
     \group_begin:
@@ -871,11 +1106,12 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
-            % '0' is the default value of 'abspage' property, and this
-            % value should not happen normally for this property, since
-            % even the first page, after it gets shipped out, will store
-            % '1'.  So, if we do find '0' here, better signal something is
-            % wrong.
+%    \end{macrocode}
+% `0' is the default value of \verb|abspage| property, and this value should
+% not happen normally for this property, since even the first page, after it
+% gets shipped out, will store `1'.  So, if we do find `0' here, better signal
+% something is wrong.
+%    \begin{macrocode}
             ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
             ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -883,10 +1119,14 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
-
-%%%% subsection{On page}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{On page}
+%
+% \begin{macro}{\@@_check_above:nn, \@@_check_below:nn}
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_above:nn #1#2 { F , TF }
   {
     \group_begin:
@@ -909,7 +1149,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_below:nn #1#2 { F , TF }
   {
     \@@_check_thispage:nnTF {#1} {#2}
@@ -920,10 +1159,14 @@
       }
       { \prg_return_false: }
   }
-
-
-%%%% subsection{Before / After}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Before / After}
+%
+% \begin{macro}{\@@_check_before:nn, \@@_check_after:nn}
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_before:nn #1#2 { F }
   {
     \@@_check_pagesbefore:nnTF {#1} {#2}
@@ -934,7 +1177,6 @@
           { \prg_return_false: }
       }
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_after:nn #1#2 { F }
   {
     \@@_check_pagesafter:nnTF {#1} {#2}
@@ -945,10 +1187,23 @@
           { \prg_return_false: }
       }
   }
-
-
-%%%% subsection{Pages}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Pages}
+%
+% \begin{macro}
+%   {
+%     \@@_check_nextpage:nn ,
+%     \@@_check_prevpage:nn ,
+%     \@@_check_pagesbefore:nn ,
+%     \@@_check_ppbefore:nn ,
+%     \@@_check_pagesafter:nn ,
+%     \@@_check_ppafter:nn ,
+%     \@@_check_facing:nn
+%   }
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_nextpage:nn #1#2 { F }
   {
     \group_begin:
@@ -960,7 +1215,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -968,7 +1225,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_prevpage:nn #1#2 { F }
   {
     \group_begin:
@@ -980,7 +1236,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -988,7 +1246,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_pagesbefore:nn #1#2 { F , TF }
   {
     \group_begin:
@@ -1000,7 +1257,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1008,9 +1267,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \cs_new_eq:NN \@@_check_ppbefore:nnF \@@_check_pagesbefore:nnF
-
 \prg_new_protected_conditional:Npnn \@@_check_pagesafter:nn #1#2 { F , TF }
   {
     \group_begin:
@@ -1022,7 +1279,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1030,9 +1289,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \cs_new_eq:NN \@@_check_ppafter:nnF \@@_check_pagesafter:nnF
-
 \prg_new_protected_conditional:Npnn \@@_check_facing:nn #1#2 { F }
   {
     \group_begin:
@@ -1042,9 +1299,13 @@
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
-          % There exists no "facing" page if the document is not twoside.
+%    \end{macrocode}
+% There exists no ``facing'' page if the document is not twoside.
+%    \begin{macrocode}
           \legacy_if_p:n { @twoside } &&
-          % Now we test "facing"
+%    \end{macrocode}
+% Now we test ``facing''.
+%    \begin{macrocode}
           (
             (
               \int_if_odd_p:n { \l_@@_ref_int } &&
@@ -1057,7 +1318,9 @@
                 { \l_@@_lbl_int } = { \l_@@_ref_int + 1 }
             )
           ) &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1065,10 +1328,14 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
-
-%%%% subsection{Close / Far}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Close / Far}
+%
+% \begin{macro}{\@@_check_close:nn, \@@_check_far:nn}
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_close:nn #1#2 { F , TF }
   {
     \group_begin:
@@ -1082,7 +1349,9 @@
             { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } }
             <
             { \l_@@_close_range_int + 1 } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1090,17 +1359,27 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_far:nn #1#2 { F }
   {
     \@@_check_close:nnTF {#1} {#2}
       { \prg_return_false: }
       { \prg_return_true:  }
   }
-
-
-%%%% subsection{Chapter}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Chapter}
+%
+% \begin{macro}
+%   {
+%     \@@_check_thischap:nn ,
+%     \@@_check_nextchap:nn ,
+%     \@@_check_prevchap:nn ,
+%     \@@_check_chapsafter:nn ,
+%     \@@_check_chapsbefore:nn
+%   }
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_thischap:nn #1#2 { F }
   {
     \group_begin:
@@ -1112,11 +1391,13 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
-          % '0' is the default value of 'abschap' property, and means here no
-          % '\chapter' has yet been issued, therefore it cannot be "this
-          % chapter", nor "the next chapter", nor "the previous chapter", it
-          % is just "no chapter".  Note, however, that a statement about a
-          % "future" chapter does not require the "current" one to exist.
+%    \end{macrocode}
+% `0' is the default value of \verb|abschap| property, and means here no
+% \cs{chapter} has yet been issued, therefore it cannot be ``this chapter'',
+% nor ``the next chapter'', nor ``the previous chapter'', it is just ``no
+% chapter''.  Note, however, that a statement about a ``future'' chapter does
+% not require the ``current'' one to exist.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1124,7 +1405,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_nextchap:nn #1#2 { F }
   {
     \group_begin:
@@ -1136,14 +1416,15 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          % Ditto. (Though redundant, in this case).
+%    \end{macrocode}
+% Ditto (though redundant, in this case).
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_prevchap:nn #1#2 { F }
   {
     \group_begin:
@@ -1155,7 +1436,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1163,7 +1446,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_chapsafter:nn #1#2 { F }
   {
     \group_begin:
@@ -1175,14 +1457,15 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          % Ditto. (Though redundant, in this case).
+%    \end{macrocode}
+% Ditto (though redundant, in this case).
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_chapsbefore:nn #1#2 { F }
   {
     \group_begin:
@@ -1194,7 +1477,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1202,10 +1487,21 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
-
-%%%% subsection{Section}
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Section}
+%
+% \begin{macro}
+%   {
+%     \@@_check_thissec:nn ,
+%     \@@_check_nextsec:nn ,
+%     \@@_check_prevsec:nn ,
+%     \@@_check_secsafter:nn ,
+%     \@@_check_secsbefore:nn
+%   }
+%    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_thissec:nn #1#2 { F }
   {
     \group_begin:
@@ -1217,12 +1513,14 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
-          % '0' is the default value of 'abssec' property, and means here no
-          % '\section' has yet been issued since its counter has been reset,
-          % which occurs at the beginning of the document and at every
-          % chapter.  Hence, as is the case for chapters, '0' is just "not a
-          % section".  The same observation about the need of the "current"
-          % section to exist to be able to refer to a "future" one also holds.
+%    \end{macrocode}
+% `0' is the default value of \verb|abssec| property, and means here no
+% \cs{section} has yet been issued since its counter has been reset, which
+% occurs at the beginning of the document and at every chapter.  Hence, as is
+% the case for chapters, `0' is just ``not a section''.  The same observation
+% about the need of the ``current'' section to exist to be able to refer to a
+% ``future'' one also holds.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1230,7 +1528,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_nextsec:nn #1#2 { F }
   {
     \group_begin:
@@ -1242,14 +1539,15 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          % Ditto. (Though redundant, in this case).
+%    \end{macrocode}
+% Ditto (though redundant, in this case).
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_prevsec:nn #1#2 { F }
   {
     \group_begin:
@@ -1261,7 +1559,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1269,7 +1569,6 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_secsafter:nn #1#2 { F }
   {
     \group_begin:
@@ -1281,14 +1580,15 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          % Ditto. (Though redundant, in this case).
+%    \end{macrocode}
+% Ditto (though redundant, in this case).
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
 \prg_new_protected_conditional:Npnn \@@_check_secsbefore:nn #1#2 { F }
   {
     \group_begin:
@@ -1300,7 +1600,9 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          % Ditto.
+%    \end{macrocode}
+% Ditto.
+%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1308,8 +1610,12 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-
-
-%    \begin{macrocode}
-%</zref-check>
 %    \end{macrocode}
+% \end{macro}
+%
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+% \end{implementation}
