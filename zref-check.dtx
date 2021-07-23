@@ -1,6 +1,7 @@
 % \iffalse meta-comment
 %
 % File: zref-check.dtx
+%
 % Copyright (C) 2021 Gustavo Barros
 %
 % It may be distributed and/or modified under the conditions of the
@@ -9,6 +10,10 @@
 % of this license is in the file:
 %
 %    https://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
 %
 % The released version of this work is available from CTAN.
 %
@@ -57,6 +62,403 @@
 %
 %
 % \begin{documentation}
+%
+%
+% \section{Introduction}
+%
+% \pkg{zref-check} provides an user interface for making \LaTeX{}
+% cross-references exploiting document contextual information to enrich the
+% way the reference is rendered.  In so doing, it caters to the same kind of
+% need as \pkg{varioref} does.  But the UI concept is quite different.  I
+% think it is fair to say that, in relation to \pkg{varioref},
+% \pkg{zref-check} offers a little less automation and a lot more flexibility.
+%
+% The basic idea is that, instead of trying to provide the text to be typeset
+% based on the contextual information (as \pkg{varioref} does),
+% \pkg{zref-check} lets the user supply an arbitrary text and specify a number
+% of checks to be done on the label(s) being referred to.  If the checks fail,
+% a warning is issued upon compilation, so that the user can go back to that
+% cross-reference and correct it as needed.  In a way, this shares the spirit
+% of \pkg{widows-and-orphans}: instead of trying to fix it for you
+% automatically (as \pkg{nowidow} does), it just provides a warning so that
+% the problem can be identified (and fixed) without having to rely on
+% burdensome and error prone manual proof-reading.
+%
+% Though, admittedly, the kind of automation \pkg{varioref} provides may be
+% preferred for a number of use cases, in others there is a lot to gain on the
+% extra flexibility \pkg{zref-check} provides.  The writing style, the variety
+% of expressions you may use for similar situations, does not need to be
+% sacrificed for the convenience.  \pkg{zref-check} cross-references do not
+% need to ``feel'' automated to be consistently checked.  Localization is also
+% not an issue, for the same reason.  There is also much more document context
+% we can leverage by separating ``typesetting'' from ``checking'' (see
+% Section~\ref{sec:checks}).
+%
+% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
+% is able to work with \pkg{zref} labels, usually created by \cs{zlabel}.
+% This provides some advantages, particularly the data flexibility of
+% \pkg{zref}, and the absence of the ubiquitous ``load-order'' and
+% compatibility problems which are well known to afflict \LaTeX{} packages of
+% this area of functionality.  On the other hand, the reliance on \cs{zlabel}
+% may be seen as an inconvenience, since users of the standard cross-reference
+% infrastructure will need to add extra labels for this.  That's true.  But
+% \pkg{zref-check} is not meant to replace the existing functionality of the
+% traditional packages (to my knowledge, it only intersects directly with
+% \pkg{varioref}).  It is easy to see the use in conjunction with standard
+% references, for example:
+%
+% \begin{verbatim}
+%     ... Figure~\ref{fig:figure-1}, \zrcheck*{fig:figure-1}[nextpage]{on
+%     the next page}.
+% \end{verbatim}
+%
+% Besides, \pkg{zref} does not share the label name-space with the standard
+% labels, so that you can call both \cs{label} and \cs{zlabel} with the same
+% label name (manually, or through a convenience macro), to ease the label set
+% administration.  The example above presumes that was the case.
+%
+%
+% \subsection{Hard vs. soft cross-references}
+%
+% The standard \LaTeX{} cross-reference infrastructure, even considering the
+% package ecosystem, is made to work with and refer to specific numbered
+% document elements.  Chapters, sections, figures, tables, equations, etc.
+% The cross-reference will normally produce that number (which is the
+% element's ``id'') and, eventually, its ``type'' (the counter).  We may also
+% refer to the page that element occurs and even its ``title'' (in which case,
+% atypically, we may even get to refer to an unnumbered section, provided we
+% also implicitly supply by some means the ``id'').  These are what I'm
+% calling here ``hard'' cross-references.
+%
+% However, there are other kinds of ``soft'' cross-references we routinely do
+% in our documents.  Expressions such as ``as previously discussed'', ``as
+% mentioned before'', ``as will be soon elaborated'' and on, and on, are a
+% powerful discursive instrument, which enriches the text, by offering hints
+% to the arguments' threads, without necessarily ``smashing them into the
+% reader's face''.  So, we don't say ``on footnote 57, pag. 34'', but
+% ``previously'', not ``on Section 3.4'', but ``below'', or ``later on''.
+%
+% Granted, the need and usage of this type of document self reference
+% certainly depend on the kind of document, on the area of knowledge, etc.
+% However, they do tend to be employed in a number of places, particularly in
+% longer documents.  And that's precisely the scenario in which they may
+% become problematic.  If your document is short (say, a paper / article) and
+% it was made in a reasonably short spurt, you'll probably won't bother with
+% this kind of references.  In this case, and to use \pkg{varioref}'s
+% expression, you ``usually know (!)'' them to be correct.  However, if you
+% are preparing one of those long, complex, and ``long ground'' documents,
+% with several rounds of editing and content rearranging, this kind of
+% references will likely bring you trouble.  They are not only hard to check
+% and find, but they are also hard to fix.  After all, if you are making one
+% such reference, you are taking that statement as a premisse at the current
+% point in the text.  So, if that reference is missing, or relocated, you may
+% need to bring in the support to the premisse for your argument to close,
+% rather than just ``adjust the reference text''.
+%
+% To my knowledge, there is no \LaTeX{} package providing support for this
+% kind of cross-reference, \pkg{zref-check} does so.  Of course, this is
+% already possible with the standard infrastructure, \pkg{zref-check} just
+% streamlines the task.
+%
+%
+% \section{Loading the package}
+%
+% As usual:
+%
+% \begin{syntax}
+%   \cs{usepackage}\oarg{options}|{zref-check}|
+% \end{syntax}
+%
+% Options are a standard \verb|key=value| comma separated list, and can also
+% be set by means of \cs{zrchecksetup}.  The above would be equivalent to:
+%
+% \begin{syntax}
+%   \cs{usepackage}|{zref-check}|
+%   \cs{zrchecksetup}\marg{options}
+% \end{syntax}
+%
+%
+% \section{Dependencies}
+%
+% \pkg{zref} is required, of course, but in particular, its modules
+% \pkg{zref-user} and \pkg{zref-abspage} are loaded by default.  \pkg{ifdraft}
+% is also required by default.  A recent \LaTeX{} kernel is presumed (but not
+% checked), since we rely on the new hook system from \verb|ltcmdhooks| for
+% the sectioning checks.  If \pkg{hyperref} is loaded and option
+% \pkg{hyperref} is given, \pkg{zref-check} makes use of it, but it does not
+% load the package for you.
+%
+%
+% \section{User interface}
+%
+% \begin{function}{\zrcheck}
+%   \begin{syntax}
+%     \cs{zrcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%   \end{syntax}
+%   Typesets \marg{text}, as given, while performing the comma separated list
+%   of \oarg{checks} on each of the comma separated list of \marg{labels}.  In
+%   addition to that, it places a pair of (internal) \verb|zlabel|s, one at
+%   the start of \marg{text}, another one at the end of \marg{text}, which are
+%   used to run the checks against each of the \marg{labels}.  When
+%   \pkg{hyperref} support is enabled, \marg{text} will be made a hyperlink to
+%   \emph{the first} label in \marg{labels}.  The starred version of the
+%   command does the same, just does not form a link.  The \oarg{options} are
+%   (mostly) the same as those of the package, and can be given to local
+%   effect.  Note that the \marg{text} argument of \cs{zrcheck} is not long
+%   (that of \cs{zrctarget} is) because, if it was, we'd not be able to use if
+%   for building hyperlinks, besides there is no need for it to be.
+% \end{function}
+%
+% \begin{function}{\zrctarget}
+%   \begin{syntax}
+%     \cs{zrctarget}\marg{label}\marg{text}
+%   \end{syntax}
+%   Typesets \marg{text}, as given, and places a pair of \verb|zlabel|s, one
+%   at the start of \marg{text}, using \marg{label} as label name, another one
+%   (internal) at the end of \marg{text}.
+% \end{function}
+%
+%
+% \begin{function}{zrcregion}
+%   \begin{syntax}
+%     |\begin{zrcregion}|\marg{label}
+%       |  ...|
+%     |\end{zrcregion}|
+%   \end{syntax}
+%   Just an environment that does pretty much the same as \cs{zrctarget}, for
+%   cases of longer stretches of text.  If you don't like to use the
+%   environment for whatever reason, you may also set two \cs{zrctarget}s
+%   (with empty \marg{text} arguments), one at the beginning and another one
+%   at the end, and run \cs{zrcheck} against both of them to the same effect.
+% \end{function}
+%
+% \section{Checks}
+% \label{sec:checks}
+%
+% \DescribeOption{thispage}
+% \DescribeOption{prevpage}
+% \DescribeOption{nextpage}
+% \DescribeOption{facing}
+% Self-explanatory.
+% \vspace{4\baselineskip}
+%
+%
+% \DescribeOption{above}
+% \DescribeOption{below}
+% The label referred to occurs in this page and, respectively, ``above'' or
+% ``below'' the reference.  For how this is inferred, see
+% Section~\ref{sec:within-page-checks}.
+% \vspace{1\baselineskip}
+%
+%
+% \DescribeOption{pagesbefore}
+% \DescribeOption{pagesafter}
+% \DescribeOption{ppbefore}
+% \DescribeOption{ppafter}
+% Self-explanatory. \texttt{ppbefore} and \texttt{ppbefore} are just
+% convenience aliases.
+% \vspace{4\baselineskip}
+%
+%
+% \DescribeOption{before}
+% \DescribeOption{after}
+% ``before'' is either \texttt{above} or \texttt{pagesbefore}; ``after'' is
+% either \texttt{below} or \texttt{pagesafter}.
+% \vspace{2\baselineskip}
+%
+%
+% \DescribeOption{thischap}
+% \DescribeOption{prevchap}
+% \DescribeOption{nextchap}
+% \DescribeOption{chapsbefore}
+% \DescribeOption{chapsafter}
+% \DescribeOption{thissec}
+% \DescribeOption{prevsec}
+% \DescribeOption{nextsec}
+% \DescribeOption{secsbefore}
+% \DescribeOption{secsafter}
+% Self-explanatory.
+% \vspace{10\baselineskip}
+%
+%
+% \DescribeOption{close}
+% \DescribeOption{far}
+% ``close'' means occurring from \texttt{closerange} pages before the
+% reference to \texttt{closerange} pages after the reference (see
+% corresponding option, the default value is 5).  ``far'' is ``not close''.
+% \vspace{1\baselineskip}
+%
+%
+% The checks may be combined, e.g. \verb|[close, after]|, or
+% \verb|[thischap, before]|.  Whether the combination is meaningful, is up to
+% the user.  As is the correspondence between the \oarg{checks} and the
+% \marg{text>} in \cs{zrcheck}.
+%
+%
+% \section{Options}
+%
+% \DescribeOption{hyperref}
+% Takes values \texttt{auto}, \texttt{true}, \texttt{false}.  The default
+% value, \texttt{auto}, makes \pkg{zref-check} use \pkg{hyperref} if it is
+% loaded, meaning \cs{zrcheck} can be hyperlinked to the first label in
+% \marg{labels}.  \texttt{true} does the same thing, but warns if
+% \pkg{hyperref} is not loaded (\pkg{hyperref} is never loaded for you).  In
+% either case, if \pkg{hyperref} is loaded, module \pkg{zref-hyperref} is also
+% loaded by \pkg{zref-check}.  \texttt{false} means not to use \pkg{hyperref}
+% regardless of its availability.  This is a preamble only option, but
+% \cs{zrcheck} provides granular control of hyperlinking by means of its
+% starred version.
+%
+%
+% \DescribeOption{msglevel}
+% Takes values \texttt{warn}, \texttt{info}, \texttt{none},
+% \texttt{obeydraft}, \texttt{obeyfinal}.  Sets the level of messages issued
+% by \cs{zrcheck} failed checks.  The default is \texttt{warn}.  \texttt{warn}
+% issues messages both in the terminal and log file, \texttt{info} issues
+% messages in the log file only, \texttt{none} suppresses all messages.
+% \texttt{obeydraft} corresponds to \texttt{info} if option \texttt{draft} is
+% passed to \cs{documentclass}, and to \texttt{warn} otherwise.
+% \texttt{obeyfinal} corresponds to \texttt{warn} if option \texttt{final} is
+% (explicitly) passed to \cs{documentclass} and \texttt{info} otherwise.
+% \texttt{ignore} is provided as convenience alias for \verb|msglevel=none|
+% for local use only.  This option only affects the messages issued by the
+% checks in \cs{zrcheck}, not other checks of the package.  In particular, it
+% does not affect warnings issued for undefined labels, which just use
+% \cs{zrefused} and thus are the same as standard \LaTeX{} ones for this
+% purpose.
+%
+%
+% \DescribeOption{onpage}
+% Takes values \texttt{labelseq}, \texttt{msg}, \texttt{obeydraft},
+% \texttt{obeyfinal}.  Allow to control the messaging level for ``within page
+% checks''.  The default, \texttt{labelseq} uses the labels' shipout sequence,
+% as retrieved from the \file{.aux} file, to infer relative position within
+% the page.  \texttt{msg} also uses the same method for checking relative
+% position, but issues a (different) message \textbf{even if the check
+% passes}, to provide a simple workflow for robust checking of ``false
+% negatives'' at a final typesetting stage of the document, considering the
+% label sequence is not fool proof (for details, see
+% Section~\ref{sec:within-page-checks}).  \texttt{msg} issues its messages as
+% defined by \texttt{msglevel}.  \texttt{obeydraft} corresponds to
+% \texttt{labelseq} if option \texttt{draft} is passed to \cs{documentclass}
+% and to \texttt{msg} otherwise.  \texttt{obeyfinal} corresponds to
+% \texttt{msg} if option \texttt{final} is (explicitly) passed to
+% \cs{documentclass}, and to \texttt{labelseq} otherwise.
+%
+%
+% \DescribeOption{closerange}
+% Takes an integer as value.  Defines the width of range of pages relative to
+% the reference, that are considered ``close'' by the \texttt{close} check.
+% Default is 5.
+%
+%
+% \section{Label names}
+%
+% All user commands have their \marg{label} arguments protected by
+% \pkg{zref}'s \cs{zref@wrapper@babel} so that we should have equivalent
+% support in that regard, as \pkg{zref} itself does.  However,
+% \pkg{zref-check} sets labels which either start with \verb|zrefcheck@| or
+% end with \verb|@zrefcheck|, for internal use.  Label names with either of
+% those are considered reserved by the package.
+%
+%
+% \section{Technique and limitations}
+%
+% There are three qualitatively different kinds of checks being used by
+% \cs{zrcheck}, according to the source and reliability of the information
+% they mobilize: page number checks, within page checks, and sectioning
+% checks.
+%
+%
+% \subsection{Page number checks}
+%
+% Page number checks -- \texttt{thispage}, \texttt{prevpage},
+% \texttt{nextpage}, \texttt{facing}, \texttt{pagesbefore},
+% \texttt{pagesafter} -- use the \verb|abspage| property provided by the
+% \pkg{zref-abspage} module.  This is a solid piece of information, on which
+% we can rely upon.  However, despite that, page number checks may still
+% become ill-defined, if the \marg{text} argument in \cs{zrcheck}, when
+% typeset, crosses page boundaries, and starts in one page, and finishes in
+% another.  The same with the text in \cs{zrctarget} and the \verb|zrcregion|
+% environment.
+%
+% This is why the user commands of this package set always a pair or labels
+% around \marg{text}.  So, when checking \cs{zrcheck} against a regular
+% \verb|zlabel| both the start and the end of the \marg{text} are checked
+% against the label, and the check fails if either of them fails.  When
+% checking \cs{zrcheck} against a \cs{zrctarget} or a \verb|zrcregion|, both
+% beginnings and ends are checked against each other two by two, and if any of
+% them fails, the check fails.  In other words, if a page number checks
+% passes, we know that the entire \marg{text} arguments pass it.
+%
+% This is a corner case (albeit relevant) which must be taken care of, and it
+% is possible to do so robustly.  Hence, we can expect fully reliable results
+% in these tests.
+%
+%
+% \subsection{Within page checks}
+% \label{sec:within-page-checks}
+%
+% When both label and reference fall on the same page things become much
+% trickier.  This is basically the case of the checks \texttt{above} and
+% \texttt{below} (and, through them, \texttt{before} and \texttt{after}).
+% There is no equally reliable information (that I know of) as we have for the
+% page number checks for this, especially when floats come into play.  Which,
+% of course, is the interesting case to handle.
+%
+% To infer relative position of label and reference on the same page,
+% \pkg{zref-check} uses the labels' shipout sequence, which is retrieved at
+% load-time from the order in which the labels occur in the .aux file.
+% Indeed, \pkg{zref} writes labels to the \file{.aux} file at shipout (and,
+% hence, in shipout order), and needs to do so, because a number of its
+% properties are only available at that point.
+%
+% However, even if this method will buy us a correct check for a regular float
+% on a regular page (which, to be fair, is a good result), it is not difficult
+% do conceive situations in which this sequence may not be meaningful, or even
+% correct, for the case.  A number of cases which may do so are: two column
+% documents, text wrapped around boxes, scaling, overlays, etc.  (I don't know
+% if those make the method fail, I just don't know if they don't).  Therefore,
+% the \verb|labelseq| should be taken as a \emph{proxy} and not fully
+% reliable, meaning that the user should be watchful of its results.
+%
+% For this reason, \pkg{zref-check} provides an easy way to do so, by allowing
+% specific control of the messaging of the checks which do within page
+% comparisons, and thus rely on this method, though the option \texttt{onpage}.
+% The concern is not really with false positives (we get a warning when it was
+% not due), but with false negatives (we don't get a warning when it was due).
+% Hence, setting \texttt{onpage} to \texttt{msg} (or to \texttt{obeydraft} or
+% \texttt{obeyfinal} if that's part of your workflow) at a final typesetting
+% stage provides a way to easily identify all cases of such checks (failing or
+% passing), and double-check them.  In case the test is passing though, the
+% message is different from that of a failing check, to quickly convey why you
+% are getting the message.  This option can also be set at the local level, if
+% the page in question is known to be problematic, or just atypical.
+%
+%
+% \subsection{Sectioning checks}
+%
+% The information used by sectioning checks is provided by means of dedicated
+% counters for chapters and sections, similarly as standard counters for them,
+% but which are stepped and reset regardless of whether these sectioning
+% commands are numbered or not (that is, starred or not).  And this for two
+% reasons.  First, we don't need the absolute counter value to be able to make
+% the kind of relative statement we want to do here.  Second, this allows us
+% to have these checks work for numbered and unnumbered sectioning commands
+% without having to worry about how those are used within the document.
+%
+% The caveat is that the package does this by hooking into \cs{chapter} and
+% \cs{section}, which poses two restrictions for the proper working of these
+% checks.  First, we are using the new hook system for this, as provided by
+% \verb|ltcmdhooks|, which means a recent \LaTeX{} kernel is required (this
+% might be circumvented with \pkg{etoolbox}, but I'm not sure how restrictive
+% this issue may be and, if at all possible, I'd prefer to stick to the new
+% hook system).  Second, since we are hooking into \cs{chapter} and
+% \cs{section}, these checks presume these commands are being used by the
+% \cs{documentclass} for this purpose (either directly, or internally as, for
+% example, KOMA-Script's \cs{addchap} and \cs{addsec} do).  If that's not the
+% case, additional setup may be required for these checks to work as expected.
+%
 %
 % \end{documentation}
 %
