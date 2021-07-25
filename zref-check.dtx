@@ -479,6 +479,24 @@
 %
 % \section{Initial setup}
 %
+% For the \texttt{chapter} and \texttt{section} checks, \pkg{zref-check} uses
+% the new hook system in \pkg{ltcmdhooks}, which was released with the
+% 2021/06/01 \LaTeX{} kernel.
+%    \begin{macrocode}
+\providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
+\IfFormatAtLeastTF{2021-06-01}
+  {}
+  {%
+    \PackageError{zref-check}{LaTeX kernel too old}
+      {%
+        'zref-check' requires a LaTeX kernel newer than 2021-06-01.\MessageBreak
+        Loading will abort!%
+      }%
+    \endinput
+  }
+%    \end{macrocode}
+%
+%
 %    \begin{macrocode}
 \ProvidesExplPackage {zref-check} {2021-07-21} {0.1.0}
   {Flexible cross-references with contextual checks based on zref}
