@@ -569,7 +569,7 @@
 %
 % \begin{macro}{\@@_message:nnnn, \@@_message:nnnx}
 %    \begin{macrocode}
-\cs_new_protected:Npn \@@_message:nnnn #1#2#3#4
+\cs_new:Npn \@@_message:nnnn #1#2#3#4
   {
     \use:c { msg_ \l_@@_msglevel_tl :nnnnn }
       { zref-check } {#1} {#2} {#3} {#4}
@@ -1206,7 +1206,7 @@
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\cs_new_protected:Npn \@@_zrcheck:nnnnn #1#2#3#4#5
+\cs_new:Npn \@@_zrcheck:nnnnn #1#2#3#4#5
   {
     \group_begin:
 %    \end{macrocode}
