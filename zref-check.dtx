@@ -693,7 +693,7 @@
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
 %    \end{macrocode}
-% \verb|ignore| alias for \verb|msglevel=none|
+% \texttt{ignore} alias for \texttt{msglevel=none}
 %    \begin{macrocode}
     ignore .code:n =
       { \msg_warning:nn { zref-check } { ignore-document-only } }
@@ -706,8 +706,8 @@
   {
     \keys_define:nn { zref-check }
       {
-        ignore .code:n =
-          { \keys_set:nn { zref-check } { msglevel = none } }
+        ignore .meta:n =
+          { msglevel = none }
       }
   }
 %    \end{macrocode}
