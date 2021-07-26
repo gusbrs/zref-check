@@ -8,7 +8,6 @@ build/*
 *.glo
 *.idx
 *.hd
-*.pdf
 *.bbl
 *.bcf
 *.blg
@@ -19,3 +18,4 @@ auto/
 *.synctex(busy)
 *.synctex.gz
 *.synctex.gz(busy)
+test-document.pdf

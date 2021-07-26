@@ -43,7 +43,7 @@
 % \GetFileInfo{zref-check.sty}
 %
 % \title{^^A
-%   Package \pkg{zref-check}^^A
+%   The \pkg{zref-check} package^^A
 %   \thanks{This file describes \fileversion,
 %     last revised \filedate.}^^A
 % }
@@ -55,20 +55,21 @@
 %   }^^A
 % }
 %
-% \date{Released \filedate}
+% \date{\filedate}
 %
 % \maketitle
 %
+% \tableofcontents
+%
 %
 % \begin{documentation}
-%
 %
 % \section{Introduction}
 %
 % \pkg{zref-check} provides an user interface for making \LaTeX{}
 % cross-references exploiting document contextual information to enrich the
-% way the reference is rendered.  In so doing, it caters to the same kind of
-% need as \pkg{varioref} does.  But the UI concept is quite different.  I
+% way the reference can be rendered.  In so doing, it caters to the same kind
+% of need as \pkg{varioref} does.  But the UI concept is quite different.  I
 % think it is fair to say that, in relation to \pkg{varioref},
 % \pkg{zref-check} offers a little less automation and a lot more flexibility.
 %
@@ -84,7 +85,7 @@
 % burdensome and error prone manual proof-reading.
 %
 % Though, admittedly, the kind of automation \pkg{varioref} provides may be
-% preferred for a number of use cases, in others there is a lot to gain on the
+% preferred in a number of use cases, in others there is a lot to gain on the
 % extra flexibility \pkg{zref-check} provides.  The writing style, the variety
 % of expressions you may use for similar situations, does not need to be
 % sacrificed for the convenience.  \pkg{zref-check} cross-references do not
@@ -94,17 +95,18 @@
 % Section~\ref{sec:checks}).
 %
 % \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
-% is able to work with \pkg{zref} labels, usually created by \cs{zlabel}.
-% This provides some advantages, particularly the data flexibility of
-% \pkg{zref}, and the absence of the ubiquitous ``load-order'' and
-% compatibility problems which are well known to afflict \LaTeX{} packages of
-% this area of functionality.  On the other hand, the reliance on \cs{zlabel}
-% may be seen as an inconvenience, since users of the standard cross-reference
-% infrastructure will need to add extra labels for this.  That's true.  But
-% \pkg{zref-check} is not meant to replace the existing functionality of the
-% traditional packages (to my knowledge, it only intersects directly with
-% \pkg{varioref}).  It is easy to see the use in conjunction with standard
-% references, for example:
+% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
+% but also with \cs{zrctarget} and the \texttt{zrcregion} environment provided
+% by this package.  This has some advantages, particularly the data
+% flexibility of \pkg{zref}, and the absence of the ubiquitous ``load-order''
+% and compatibility problems which are well known to afflict \LaTeX{} packages
+% of this area of functionality.  On the other hand, the reliance on
+% \pkg{zref} labels may be seen as an inconvenience, since users of the
+% standard cross-reference infrastructure will need to add extra labels for
+% this.  That's true.  But \pkg{zref-check} is not meant to replace the
+% existing functionality of the traditional packages (to my knowledge, it only
+% intersects directly with \pkg{varioref}).  Indeed, it is easy to see the use
+% in tandem with standard references, for example:
 %
 % \begin{verbatim}
 %     ... Figure~\ref{fig:figure-1}, \zrcheck*{fig:figure-1}[nextpage]{on
@@ -131,7 +133,7 @@
 %
 % However, there are other kinds of ``soft'' cross-references we routinely do
 % in our documents.  Expressions such as ``as previously discussed'', ``as
-% mentioned before'', ``as will be soon elaborated'' and on, and on, are a
+% mentioned before'', ``as will be soon elaborated'', and so on, are a
 % powerful discursive instrument, which enriches the text, by offering hints
 % to the arguments' threads, without necessarily ``smashing them into the
 % reader's face''.  So, we don't say ``on footnote 57, pag. 34'', but
@@ -141,18 +143,18 @@
 % certainly depend on the kind of document, on the area of knowledge, etc.
 % However, they do tend to be employed in a number of places, particularly in
 % longer documents.  And that's precisely the scenario in which they may
-% become problematic.  If your document is short (say, a paper / article) and
-% it was made in a reasonably short spurt, you'll probably won't bother with
-% this kind of references.  In this case, and to use \pkg{varioref}'s
-% expression, you ``usually know (!)'' them to be correct.  However, if you
-% are preparing one of those long, complex, and ``long ground'' documents,
-% with several rounds of editing and content rearranging, this kind of
-% references will likely bring you trouble.  They are not only hard to check
-% and find, but they are also hard to fix.  After all, if you are making one
-% such reference, you are taking that statement as a premisse at the current
-% point in the text.  So, if that reference is missing, or relocated, you may
-% need to bring in the support to the premisse for your argument to close,
-% rather than just ``adjust the reference text''.
+% become problematic.  If your document is short (say, a paper/article) and it
+% was made in a reasonably short spurt, you'll probably won't bother with this
+% kind of references.  In this case, and to use \pkg{varioref}'s expression,
+% you ``usually know (!)'' them to be correct.  However, if you are preparing
+% one of those long, complex, and ``long ground'' documents, with several
+% rounds of editing and content rearranging, this kind of references will
+% likely bring you trouble.  They are not only hard to check and find, but
+% they are also hard to fix.  After all, if you are making one such reference,
+% you are taking that statement as a premisse at the current point in the
+% text.  So, if that reference is missing, or relocated, you may need to bring
+% in the support to the premisse for your argument to close, rather than just
+% ``adjust the reference text''.
 %
 % To my knowledge, there is no \LaTeX{} package providing support for this
 % kind of cross-reference, \pkg{zref-check} does so.  Of course, this is
@@ -161,6 +163,7 @@
 %
 %
 % \section{Loading the package}
+% \label{sec:loading-package}
 %
 % As usual:
 %
@@ -168,27 +171,20 @@
 %   \cs{usepackage}\oarg{options}|{zref-check}|
 % \end{syntax}
 %
-% Options are a standard \texttt{key=value} comma separated list, and can also
-% be set by means of \cs{zrchecksetup}.  The above would be equivalent to:
-%
-% \begin{syntax}
-%   \cs{usepackage}|{zref-check}|
-%   \cs{zrchecksetup}\marg{options}
-% \end{syntax}
 %
 %
 % \section{Dependencies}
 %
 % \pkg{zref} is required, of course, but in particular, its modules
 % \pkg{zref-user} and \pkg{zref-abspage} are loaded by default.  \pkg{ifdraft}
-% is also required by default.  A recent \LaTeX{} kernel is presumed (but not
-% checked), since we rely on the new hook system from \pkg{ltcmdhooks} for the
-% sectioning checks.  If \pkg{hyperref} is loaded and option \pkg{hyperref} is
-% given, \pkg{zref-check} makes use of it, but it does not load the package
-% for you.
+% is also loaded by default.  A recent \LaTeX{} kernel is required, since we
+% rely on the new hook system from \pkg{ltcmdhooks} for the sectioning checks.
+% If \pkg{hyperref} is loaded and option \pkg{hyperref} is given,
+% \pkg{zref-check} makes use of it, but it does not load the package for you.
 %
 %
 % \section{User interface}
+% \label{sec:user-interface}
 %
 % \begin{function}{\zrcheck}
 %   \begin{syntax}
@@ -201,11 +197,11 @@
 %   used to run the checks against each of the \marg{labels}.  When
 %   \pkg{hyperref} support is enabled, \marg{text} will be made a hyperlink to
 %   \emph{the first} label in \marg{labels}.  The starred version of the
-%   command does the same, just does not form a link.  The \oarg{options} are
-%   (mostly) the same as those of the package, and can be given to local
-%   effect.  Note that the \marg{text} argument of \cs{zrcheck} is not long
-%   (that of \cs{zrctarget} is) because, if it was, we'd not be able to use if
-%   for building hyperlinks, besides there is no need for it to be.
+%   command does the same as the plain one, just does not form a link.  The
+%   \oarg{options} are (mostly) the same as those of the package, and can be
+%   given to local effect.  Note that the \marg{text} argument of \cs{zrcheck}
+%   is not long because, if it was, we'd not be able to use if for building
+%   hyperlinks, besides there is no need for it to be.
 % \end{function}
 %
 % \begin{function}{\zrctarget}
@@ -231,76 +227,125 @@
 %   at the end, and run \cs{zrcheck} against both of them to the same effect.
 % \end{function}
 %
+%
+% \begin{function}{\zrchecksetup}
+%   \begin{syntax}
+%     \cs{zrchecksetup}\marg{options}
+%   \end{syntax}
+%   Sets \pkg{zref-check}'s options (see Section~\ref{sec:options}).
+% \end{function}
+%
+%
 % \section{Checks}
 % \label{sec:checks}
 %
-% \DescribeOption{thispage}
-% \DescribeOption{prevpage}
-% \DescribeOption{nextpage}
-% \DescribeOption{facing}
-% Self-explanatory.
-% \vspace{4\baselineskip}
+% \pkg{zref-check} provides several ``checks'' to be used with \cs{zrcheck}.
+% The checks may be combined in a \cs{zrcheck} call, e.g. \opt{[close,
+% after]}, or \opt{[thischap, before]}.  In this case, each check in
+% \oarg{checks} is performed against each of the \marg{labels}.  This is done
+% independently for each check, which means, in practice, that the checks bear
+% a logical \texttt{AND} relation to the others.  Whether the combination is
+% meaningful, is up to the user.  As is the correspondence between the
+% \oarg{checks} and the \marg{text>} in \cs{zrcheck}.
 %
+% Note that the naming convention of the checks adopts the perspective of
+% \cs{zrcheck}.  That is, the name of the check describes the position of the
+% label being checked, relative to the \cs{zrcheck} call being made.  For
+% example, the \opt{before} check should issue no message if the \marg{label}
+% occurs before \cs{zrcheck}.
 %
-% \DescribeOption{above}
-% \DescribeOption{below}
-% The label referred to occurs in this page and, respectively, ``above'' or
-% ``below'' the reference.  For how this is inferred, see
-% Section~\ref{sec:within-page-checks}.
-% \vspace{1\baselineskip}
+% The available checks are the following:
 %
+% \begin{description}[leftmargin=0pt, itemindent=0pt, align=right,
+%   labelsep=1em, font=\MacroFont]
 %
-% \DescribeOption{pagesbefore}
-% \DescribeOption{pagesafter}
-% \DescribeOption{ppbefore}
-% \DescribeOption{ppafter}
-% Self-explanatory.  \opt{ppbefore} and \opt{ppbefore} are just convenience
-% aliases.
-% \vspace{4\baselineskip}
+% \item[thispage] \marg{label} occurs on the same page as \cs{zrcheck}.
 %
+% \item[prevpage] \marg{label} occurs on the previous page relative to
+%   \cs{zrcheck}.
 %
-% \DescribeOption{before}
-% \DescribeOption{after}
-% ``before'' is either \opt{above} or \opt{pagesbefore}; ``after'' is either
-% \opt{below} or \opt{pagesafter}.
-% \vspace{2\baselineskip}
+% \item[nextpage] \marg{label} occurs on the next page relative to
+%   \cs{zrcheck}.
 %
+% \item[facing] On a \texttt{twoside} document, both \marg{label} and
+%   \cs{zrcheck} fall onto a double spread, each on one of the two facing
+%   pages.
 %
-% \DescribeOption{thischap}
-% \DescribeOption{prevchap}
-% \DescribeOption{nextchap}
-% \DescribeOption{chapsbefore}
-% \DescribeOption{chapsafter}
-% \DescribeOption{thissec}
-% \DescribeOption{prevsec}
-% \DescribeOption{nextsec}
-% \DescribeOption{secsbefore}
-% \DescribeOption{secsafter}
-% Self-explanatory.
-% \vspace{10\baselineskip}
+% \item[above] \marg{label} and \cs{zrcheck} are both on the same page, and
+%   \marg{label} occurs ``above'' \cs{zrcheck} (for how this is inferred, see
+%   Section~\ref{sec:within-page-checks}).
 %
+% \item[below] \marg{label} and \cs{zrcheck} are both on the same page, and
+%   \marg{label} occurs ``below'' \cs{zrcheck}.
 %
-% \DescribeOption{close}
-% \DescribeOption{far}
-% ``close'' means occurring from \opt{closerange} pages before the
-% reference to \opt{closerange} pages after the reference (see
-% corresponding option, the default value is 5).  ``far'' is ``not close''.
-% \vspace{1\baselineskip}
+% \item[pagesbefore] \marg{label} occurs on any page before the one of
+%   \cs{zrcheck}.
 %
+% \item[ppbefore] Convenience alias for \opt{pagesbefore}.
 %
-% The checks may be combined, e.g. \opt{[close, after]}, or \opt{[thischap,
-% before]}.  Whether the combination is meaningful, is up to the user.  As is
-% the correspondence between the \oarg{checks} and the \marg{text>} in
-% \cs{zrcheck}.
+% \item[pagesafter] \marg{label} occurs on any page after the one of
+%   \cs{zrcheck}.
+%
+% \item[ppafter] Convenience alias for \opt{pagesafter}.
+%
+% \item[before] Either \opt{above} or \opt{pagesbefore}.
+%
+% \item[after]  Either \opt{below} or \opt{pagesafter}.
+%
+% \item[thischap] \marg{label} occurs on the same chapter as \cs{zrcheck}.
+%
+% \item[prevchap] \marg{label} occurs on the previous chapter relative to the
+%   one of \cs{zrcheck}.
+%
+% \item[nextchap] \marg{label} occurs on the next chapter relative to the one
+%   of \cs{zrcheck}.
+%
+% \item[chapsbefore] \marg{label} occurs on any chapter before the one of
+%   \cs{zrcheck}.
+%
+% \item[chapsafter] \marg{label} occurs on any chapter after the one of
+%   \cs{zrcheck}.
+%
+% \item[thissec] \marg{label} occurs on the same section as \cs{zrcheck}.
+%
+% \item[prevsec] \marg{label} occurs on the previous section (of the same
+%   chapter) relative to the one of \cs{zrcheck}.
+%
+% \item[nextsec] \marg{label} occurs on the next section (of the same chapter)
+%   relative to the one of \cs{zrcheck}.
+%
+% \item[secsbefore] \marg{label} occurs on any section (of the same chapter)
+%   before the one of \cs{zrcheck}.
+%
+% \item[secsafter] \marg{label} occurs on any section (of the same chapter)
+%   after the one of \cs{zrcheck}.
+%
+% \item[close] \marg{label} occurs within a page range from \opt{closerange}
+%   pages before the one of \cs{zrcheck} to \opt{closerange} pages after it
+%   (about \opt{closerange}, see Section~\ref{sec:options}).
+%
+% \item[far] Not \opt{close}.
+%
+% \end{description}
+%
 %
 %
 % \section{Options}
+% \label{sec:options}
+%
+% Options are a standard \texttt{key=value} comma separated list, and can be
+% set globally either as \cs{usepackage}\oarg{options} at load-time (see
+% Section~\ref{sec:loading-package}), or by means of \cs{zrchecksetup} (see
+% Section~\ref{sec:user-interface}) in the preamble.  Most options can also be
+% used with local effects, through the optional argument \oarg{options} of
+% \cs{zrcheck}.
 %
 % \DescribeOption{hyperref}
-% Takes values \opt{auto}, \opt{true}, \opt{false}.  The default value,
-% \opt{auto}, makes \pkg{zref-check} use \pkg{hyperref} if it is loaded,
-% meaning \cs{zrcheck} can be hyperlinked to the first label in \marg{labels}.
-% \opt{true} does the same thing, but warns if \pkg{hyperref} is not loaded
+% Controls the use of \pkg{hyperref} by \pkg{zref-check} and takes values
+% \opt{auto}, \opt{true}, \opt{false}.  The default value, \opt{auto}, makes
+% \pkg{zref-check} use \pkg{hyperref} if it is loaded, meaning \cs{zrcheck}
+% can be hyperlinked to the \emph{first label} in \marg{labels}.  \opt{true}
+% does the same thing, but warns if \pkg{hyperref} is not loaded
 % (\pkg{hyperref} is never loaded for you).  In either case, if \pkg{hyperref}
 % is loaded, module \pkg{zref-hyperref} is also loaded by \pkg{zref-check}.
 % \opt{false} means not to use \pkg{hyperref} regardless of its availability.
@@ -309,53 +354,53 @@
 %
 %
 % \DescribeOption{msglevel}
-% Takes values \opt{warn}, \opt{info}, \opt{none}, \opt{obeydraft},
-% \opt{obeyfinal}.  Sets the level of messages issued by \cs{zrcheck} failed
-% checks.  The default is \opt{warn}.  \opt{warn} issues messages both in the
-% terminal and log file, \opt{info} issues messages in the log file only,
-% \opt{none} suppresses all messages.  \opt{obeydraft} corresponds to
-% \opt{info} if option \opt{draft} is passed to \cs{documentclass}, and to
-% \opt{warn} otherwise.  \opt{obeyfinal} corresponds to \opt{warn} if option
-% \opt{final} is (explicitly) passed to \cs{documentclass} and \opt{info}
-% otherwise.  \opt{ignore} is provided as convenience alias for
-% \opt{msglevel=none} for local use only.  This option only affects the
-% messages issued by the checks in \cs{zrcheck}, not other messages or
-% warnings of the package.  In particular, it does not affect warnings issued
-% for undefined labels, which just use \cs{zrefused} and thus are the same as
-% standard \LaTeX{} ones for this purpose.
+% Sets the level of messages issued by \cs{zrcheck} failed checks and takes
+% values \opt{warn}, \opt{info}, \opt{none}, \opt{obeydraft}, \opt{obeyfinal}.
+% The default value, \opt{warn}, issues messages both to the terminal and to
+% the log file, \opt{info} issues messages to the log file only, \opt{none}
+% suppresses all messages.  \opt{obeydraft} corresponds to \opt{info} if
+% option \opt{draft} is passed to \cs{documentclass}, and to \opt{warn}
+% otherwise.  \opt{obeyfinal} corresponds to \opt{warn} if option \opt{final}
+% is (explicitly) passed to \cs{documentclass} and \opt{info} otherwise.
+% \opt{ignore} is provided as convenience alias for \opt{msglevel=none} for
+% local use only.  This option only affects the messages issued by the checks
+% in \cs{zrcheck}, not other messages or warnings of the package.  In
+% particular, it does not affect warnings issued for undefined labels, which
+% just use \cs{zrefused} and thus are the same as standard \LaTeX{} ones for
+% this purpose.
 %
 %
 % \DescribeOption{onpage}
-% Takes values \opt{labelseq}, \opt{msg}, \opt{obeydraft}, \opt{obeyfinal}.
-% Allow to control the messaging level for ``within page checks''.  The
+% Allows to control the messaging style for ``within page checks'', and takes
+% values \opt{labelseq}, \opt{msg}, \opt{obeydraft}, \opt{obeyfinal}.  The
 % default, \opt{labelseq} uses the labels' shipout sequence, as retrieved from
 % the \file{.aux} file, to infer relative position within the page.  \opt{msg}
 % also uses the same method for checking relative position, but issues a
 % (different) message \textbf{even if the check passes}, to provide a simple
 % workflow for robust checking of ``false negatives'' at a final typesetting
 % stage of the document, considering the label sequence is not fool proof (for
-% details, see Section~\ref{sec:within-page-checks}).  \opt{msg} issues its
-% messages as defined by \opt{msglevel}.  \opt{obeydraft} corresponds to
-% \opt{labelseq} if option \opt{draft} is passed to \cs{documentclass} and to
-% \opt{msg} otherwise.  \opt{obeyfinal} corresponds to \opt{msg} if option
-% \opt{final} is (explicitly) passed to \cs{documentclass}, and to
-% \opt{labelseq} otherwise.
+% details, see Section~\ref{sec:within-page-checks}).  \opt{msg} also issues
+% its messages at the same level defined in \opt{msglevel}.  \opt{obeydraft}
+% corresponds to \opt{labelseq} if option \opt{draft} is passed to
+% \cs{documentclass} and to \opt{msg} otherwise.  \opt{obeyfinal} corresponds
+% to \opt{msg} if option \opt{final} is (explicitly) passed to
+% \cs{documentclass}, and to \opt{labelseq} otherwise.
 %
 %
 % \DescribeOption{closerange}
-% Takes an integer as value.  Defines the width of range of pages relative to
-% the reference, that are considered ``close'' by the \opt{close} check.
-% Default is 5.
+% Defines the width of range of pages relative to the reference, that are
+% considered ``close'' by the \opt{close} check.  Takes an integer as value,
+% with default 5.
 %
 %
 % \section{Label names}
 %
 % All user commands have their \marg{label} arguments protected by
-% \pkg{zref}'s \cs{zref@wrapper@babel} so that we should have equivalent
-% support in that regard, as \pkg{zref} itself does.  However,
-% \pkg{zref-check} sets labels which either start with \texttt{zrefcheck@} or
-% end with \texttt{@zrefcheck}, for internal use.  Label names with either of
-% those are considered reserved by the package.
+% \cs{zref@wrapper@babel}, so that we should have equivalent support in that
+% regard, as \pkg{zref} itself does.  However, \pkg{zref-check} sets labels
+% which either start with \texttt{zrefcheck@} or end with \texttt{@zrefcheck},
+% for internal use.  Label names with either of those are considered reserved
+% by the package.
 %
 %
 % \section{Technique and limitations}
@@ -374,8 +419,8 @@
 % is a solid piece of information, on which we can rely upon.  However,
 % despite that, page number checks may still become ill-defined, if the
 % \marg{text} argument in \cs{zrcheck}, when typeset, crosses page boundaries,
-% and starts in one page, and finishes in another.  The same with the text in
-% \cs{zrctarget} and the \texttt{zrcregion} environment.
+% starting in one page, and finishing in another.  The same can happen with
+% the text in \cs{zrctarget} and the \texttt{zrcregion} environment.
 %
 % This is why the user commands of this package set always a pair or labels
 % around \marg{text}.  So, when checking \cs{zrcheck} against a regular
@@ -412,23 +457,23 @@
 % on a regular page (which, to be fair, is a good result), it is not difficult
 % do conceive situations in which this sequence may not be meaningful, or even
 % correct, for the case.  A number of cases which may do so are: two column
-% documents, text wrapped around boxes, scaling, overlays, etc.  (I don't know
-% if those make the method fail, I just don't know if they don't).  Therefore,
-% the \texttt{labelseq} should be taken as a \emph{proxy} and not fully
-% reliable, meaning that the user should be watchful of its results.
+% documents, text wrapping, scaling, overlays, etc.  (I don't know if those
+% make the method fail, I just don't know if they don't).  Therefore, the
+% \texttt{labelseq} should be taken as a \emph{proxy} and not fully reliable,
+% meaning that the user should be watchful of its results.
 %
 % For this reason, \pkg{zref-check} provides an easy way to do so, by allowing
-% specific control of the messaging of the checks which do within page
-% comparisons, and thus rely on this method, though the option \opt{onpage}.
-% The concern is not really with false positives (we get a warning when it was
-% not due), but with false negatives (we don't get a warning when it was due).
-% Hence, setting \opt{onpage} to \opt{msg} (or to \opt{obeydraft} or
-% \opt{obeyfinal} if that's part of your workflow) at a final typesetting
-% stage provides a way to easily identify all cases of such checks (failing or
-% passing), and double-check them.  In case the test is passing though, the
-% message is different from that of a failing check, to quickly convey why you
-% are getting the message.  This option can also be set at the local level, if
-% the page in question is known to be problematic, or just atypical.
+% specific control of the messaging style of the checks which do within page
+% comparisons though the option \opt{onpage}.  The concern is not really with
+% false positives (getting a warning when it was not due), but with false
+% negatives (not getting a warning when it was due).  Hence, setting
+% \opt{onpage} to \opt{msg} (or to \opt{obeydraft} or \opt{obeyfinal} if
+% that's part of your workflow) at a final typesetting stage provides a way to
+% easily identify all cases of such checks (failing or passing), and
+% double-check them.  In case the test is passing though, the message is
+% different from that of a failing check, to quickly convey why you are
+% getting the message.  This option can also be set at the local level, if the
+% page in question is known to be problematic, or just atypical.
 %
 %
 % \subsection{Sectioning checks}
@@ -447,10 +492,10 @@
 % checks.  First, we are using the new hook system for this, as provided by
 % \pkg{ltcmdhooks}, which means a recent \LaTeX{} kernel is required.  Second,
 % since we are hooking into \cs{chapter} and \cs{section}, these checks
-% presume these commands are being used by the \cs{documentclass} for this
-% purpose (either directly, or internally as, for example, KOMA-Script's
-% \cs{addchap} and \cs{addsec} do).  If that's not the case, additional setup
-% may be required for these checks to work as expected.
+% presume these commands are being used by the document class for this purpose
+% (either directly, or internally as, for example, KOMA-Script's \cs{addchap}
+% and \cs{addsec} do).  If that's not the case, additional setup may be
+% required for these checks to work as expected.
 %
 %
 % \end{documentation}
@@ -507,12 +552,12 @@
 % \section{\pkg{zref} setup}
 %
 % \begin{variable}{\g_@@_abschap_int, \g_@@_abssec_int}
-%   Provide absolute counters for section and chapter, and respective zref
-%   properties, so that we can make checks about relation of chapters/sections
-%   regardless of internal counters, since we don't get those for the
-%   unnumbered (starred) ones.  About the proper place to make the hooks for
-%   this purpose, see \url{https://tex.stackexchange.com/q/605533/105447},
-%   thanks Ulrike.
+%   Provide absolute counters for section and chapter, and respective
+%   \pkg{zref} properties, so that we can make checks about relation of
+%   chapters/sections regardless of internal counters, since we don't get
+%   those for the unnumbered (starred) ones.  About the proper place to make
+%   the hooks for this purpose, see
+%   \url{https://tex.stackexchange.com/q/605533/105447}, thanks Ulrike.
 %    \begin{macrocode}
 \int_new:N \g_@@_abschap_int
 \int_new:N \g_@@_abssec_int
@@ -692,7 +737,7 @@
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
 %    \end{macrocode}
-% \opt{ignore} alias for \opt{msglevel=none}
+% \opt{ignore}: alias for \opt{msglevel=none}
 %    \begin{macrocode}
     ignore .code:n =
       { \msg_warning:nn { zref-check } { ignore-document-only } }
@@ -768,7 +813,7 @@
 %    \end{macrocode}
 %
 % Process load-time package options
-% https://tex.stackexchange.com/a/15840
+% (\url{https://tex.stackexchange.com/a/15840}).
 %    \begin{macrocode}
 \RequirePackage { l3keys2e }
 \ProcessKeysOptions { zref-check }
@@ -822,13 +867,13 @@
 %
 %
 % However, better than the above is to just read it from the \file{.aux} file
-% directly, no need to redefine anything.  That's what David Carlisle's answer
-% at \url{https://tex.stackexchange.com/a/147705} does.  This answer has
-% actually been converted into the package \pkg{listlbls} by Norbert Melzer,
-% but it is made to work with regular labels, not with \pkg{zref}'s.  And it
-% also does not really expose the information in a retrievable way (as far as
-% I can tell).  So, the below is adapted from Carlisle's answer's technique (a
-% poor man's version of it...).
+% directly, which relieves us from hacking into any internals.  That's what
+% David Carlisle's answer at \url{https://tex.stackexchange.com/a/147705}
+% does.  This answer has actually been converted into the package
+% \pkg{listlbls} by Norbert Melzer, but it is made to work with regular
+% labels, not with \pkg{zref}'s.  And it also does not really expose the
+% information in a retrievable way (as far as I can tell).  So, the below is
+% adapted from Carlisle's answer's technique (a poor man's version of it...).
 %
 % There is some subtlety here as to whether this approach makes it safe for us
 % to read the labels at this point without \cs{zref@wrapper@babel}.  The
@@ -848,21 +893,19 @@
 % you inspect the file, you'll find them there.  Besides, there is still the
 % ominous ``except with KeepShorthandsActive''.
 %
-% However, the \emph{method} I'm using here is not quite the same as the usual
-% run of the \file{.aux} file, because I'm actively discarding the lines for
-% which the first token is not equal to \cs{zref@newlabel}.  I have tested the
-% famous sensitive case for this: \pkg{babel} with \opt{french} and labels
-% with colons.  And I was able to retrieve the information as expected.  Well,
-% \emph{if} \opt{KeepShorthandsActive} is enabled \emph{with \opt{french}} and
-% we load the package \emph{after babel} things do break, but not quite
-% because of the colons in the labels.  Even \pkg{siunitx} breaks in the same
-% conditions...
+% However, the \emph{method} we're using here is not quite the same as the
+% usual run of the \file{.aux} file, because we're actively discarding the
+% lines for which the first token is not equal to \cs{zref@newlabel}.  I have
+% tested the famous sensitive case for this: \pkg{babel} \opt{french} and
+% labels with colons.  And things worked as expected.  Well, \emph{if}
+% \opt{KeepShorthandsActive} is enabled \emph{with \opt{french}} and we load
+% the package \emph{after babel} things do break, but not quite because of the
+% colons in the labels.  Even \pkg{siunitx} breaks in the same conditions...
 %
 % For reference: About what are valid characters for use in labels:
 % \url{https://tex.stackexchange.com/a/18312}.  About some problems with
-% active colons: \url{https://tex.stackexchange.com/a/89470}.
-%
-% About the difference between L3 strings and token lists, see
+% active colons: \url{https://tex.stackexchange.com/a/89470}. About the
+% difference between L3 strings and token lists, see
 % \url{https://tex.stackexchange.com/a/446381}, in particular Joseph Wright's
 % comment: ``Strings are for data that will never be typeset, for example file
 % names, identifiers, etc.: if the material may be used in typesetting, it
@@ -978,18 +1021,20 @@
 % \subsection{Label formats}
 %
 % \begin{macro}{\@@_check_lblfmt:n}
-%   \marg{<check id int>}
+%   \begin{syntax}
+%     \cs{@@_check_lblfmt:n} \Arg{check id int}
+%   \end{syntax}
 %    \begin{macrocode}
-\cs_new:Npn \@@_check_lblfmt:n #1
-  { zrefcheck@ \int_use:N #1 }
+\cs_new:Npn \@@_check_lblfmt:n #1 { zrefcheck@ \int_use:N #1 }
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\@@_end_lblfmt:n}
-%   \marg{<label>}
+%   \begin{syntax}
+%     \cs{@@_end_lblfmt:n} \Arg{label}
+%   \end{syntax}
 %    \begin{macrocode}
-\cs_new:Npn \@@_end_lblfmt:n #1
-  { #1 @zrefcheck }
+\cs_new:Npn \@@_end_lblfmt:n #1 { #1 @zrefcheck }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1012,7 +1057,7 @@
 %   because we are passing a local variable around, but it is expected this
 %   function will be called within a group.
 %
-%   I'm returning \cs{c_empty_tl} in case of failure to find the intended
+%   We're returning \cs{c_empty_tl} in case of failure to find the intended
 %   property value (explicitly in \cs{zref@extractdefault}, but that is also
 %   what \cs{tl_clear:N} does).
 %
@@ -1226,11 +1271,10 @@
       \refstepcounter { zrefcheck }
       \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck }
 %    \end{macrocode}
-% Typeset \marg{text}, with hyperlink when appropriate.
-%
-% Even though the first argument can receive a list of labels, there is no
-% meaningful way to set links to multiple targets.  Hence, only the first one
-% is considered for hyperlinking.
+% Typeset \marg{text}, with hyperlink when appropriate.  Even though the first
+% argument can receive a list of labels, there is no meaningful way to set
+% links to multiple targets.  Hence, only the first one is considered for
+% hyperlinking.
 %    \begin{macrocode}
       \tl_set:Nn \l_@@_link_label_tl { \tl_item:nn {#1} {1} }
       \bool_set:Nn \l_@@_link_star_tl {#2}
@@ -1316,14 +1360,14 @@
 %
 % \section{Checks}
 %
-% What is needed for a check to work?
+% What is needed define a \pkg{zref-check} check?
 %
-% First, a conditional/predicate function defined with:
+% First, a conditional function defined with:
 %
 % \cs{prg_new_conditional:Npnn} \cs{@@_check_\meta{check}:nn} \verb|#1#2 { F }|
 %
-% \noindent where \meta{check}, it the name of the check, the first argument
-% is the \Arg{label} and the second the \Arg{reference}.  The existence of the
+% \noindent where \meta{check} is the name of the check, the first argument is
+% the \Arg{label} and the second the \Arg{reference}.  The existence of the
 % check is verified by the existence of the function with this name-scheme
 % (and signatures).  As usual, this function must return either
 % \cs{prg_return_true:} or \cs{prg_return_false:}.  Of course, you can define
@@ -1334,14 +1378,15 @@
 % \meta{reference}.  That is, the ``before'' check should return true if the
 % \meta{label} occurs before the ``reference''.
 %
-% The checks it does are expected to retrieve \pkg{zref}'s label information
-% with \cs{zrefcheck_get_astl:nnn} or \cs{zrefcheck_get_asint:nnn}.  Also,
-% technically speaking, the \meta{reference} argument is also a label,
-% actually a pair of them, as set by \cs{zrcheck}.  For the ``labels'', any
-% \pkg{zref} property in \pkg{zref}'s main list is available, the
-% ``references'' store the properties in the \texttt{zrefcheck} list.  Besides
-% those, there is also the \texttt{lblseq} (fake) property (for either
-% ``labels'' or ``references''), stored in \cs{g_@@_auxfile_lblseq_prop}.
+% The check conditionals are expected to retrieve \pkg{zref}'s label
+% information with \cs{zrefcheck_get_astl:nnn} or
+% \cs{zrefcheck_get_asint:nnn}.  Also, technically speaking, the
+% \meta{reference} argument is also a label, actually a pair of them, as set
+% by \cs{zrcheck}.  For the ``labels'', any \pkg{zref} property in
+% \pkg{zref}'s main list is available, the ``references'' store the properties
+% in the \texttt{zrefcheck} list.  Besides those, there is also the
+% \texttt{lblseq} (fake) property (for either ``labels'' or ``references''),
+% stored in \cs{g_@@_auxfile_lblseq_prop}.
 %
 % Second, the required properties of labels and references must be duly
 % registered for \pkg{zref}.  This can be done with \cs{zref@newprop},
@@ -1352,8 +1397,7 @@
 %
 % \begin{macro}{\@@_run_checks:nnn, \@@_run_checks:nnV}
 %   \begin{syntax}
-%     \cs{@@_run_checks:nnn}
-%       \Arg{list of checks} \Arg{list of labels} \Arg{reference}
+%     \cs{@@_run_checks:nnn} \Arg{checks} \Arg{labels} \Arg{reference}
 %   \end{syntax}
 %    \begin{macrocode}
 \cs_new:Npn \@@_run_checks:nnn #1#2#3
@@ -1497,7 +1541,7 @@
 % \end{macro}
 %
 %
-% \subsection{Definitions}
+% \subsection{Check conditionals}
 %
 % \begin{variable}
 %   {
@@ -1532,10 +1576,10 @@
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
-% `0' is the default value of \texttt{abspage} property, and this value should
-% not happen normally for this property, since even the first page, after it
-% gets shipped out, will store `1'.  So, if we do find `0' here, better signal
-% something is wrong.
+% `0' is the default value of \texttt{abspage}, but this value should not
+% happen normally for this property, since even the first page, after it gets
+% shipped out, will receive value `1'.  So, if we do find `0' here, better
+% signal something is wrong.  This comment extends to all page number checks.
 %    \begin{macrocode}
             ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
             ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
@@ -1640,9 +1684,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1661,9 +1702,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1682,9 +1720,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1704,9 +1739,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1743,9 +1775,6 @@
                 { \l_@@_lbl_int } = { \l_@@_ref_int + 1 }
             )
           ) &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1774,9 +1803,6 @@
             { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } }
             <
             { \l_@@_close_range_int + 1 } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1821,7 +1847,8 @@
 % \cs{chapter} has yet been issued, therefore it cannot be ``this chapter'',
 % nor ``the next chapter'', nor ``the previous chapter'', it is just ``no
 % chapter''.  Note, however, that a statement about a ``future'' chapter does
-% not require the ``current'' one to exist.
+% not require the ``current'' one to exist.  This comment extends to all
+% chapter checks.
 %    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
@@ -1841,9 +1868,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-%    \end{macrocode}
-% Ditto (though redundant, in this case).
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
@@ -1861,9 +1885,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1882,9 +1903,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto (though redundant, in this case).
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
@@ -1902,9 +1920,6 @@
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -1948,7 +1963,7 @@
 % occurs at the beginning of the document and at every chapter.  Hence, as is
 % the case for chapters, `0' is just ``not a section''.  The same observation
 % about the need of the ``current'' section to exist to be able to refer to a
-% ``future'' one also holds.
+% ``future'' one also holds.  This comment extends to all section checks.
 %    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
@@ -1972,9 +1987,6 @@
             { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-%    \end{macrocode}
-% Ditto (though redundant, in this case).
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
@@ -1996,9 +2008,6 @@
             { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
@@ -2021,9 +2030,6 @@
             { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto (though redundant, in this case).
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
@@ -2045,9 +2051,6 @@
             { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-%    \end{macrocode}
-% Ditto.
-%    \begin{macrocode}
           ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
           ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
