@@ -1495,11 +1495,19 @@
 %
 % \subsection{Definitions}
 %
-% \begin{variable}{\l_@@_lbl_int, \l_@@_ref_int}
+% \begin{variable}
+%   {
+%     \l_@@_lbl_int ,
+%     \l_@@_ref_int ,
+%     \l_@@_lbl_b_int ,
+%     \l_@@_ref_b_int
+%   }
 %   More readable scratch variables for the tests.
 %    \begin{macrocode}
 \int_new:N \l_@@_lbl_int
 \int_new:N \l_@@_ref_int
+\int_new:N \l_@@_lbl_b_int
+\int_new:N \l_@@_ref_b_int
 %    \end{macrocode}
 % \end{variable}
 %
@@ -1919,11 +1927,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
+          \int_compare_p:nNn
+            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
@@ -1945,11 +1957,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
+          \int_compare_p:nNn
+            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
 %    \end{macrocode}
@@ -1965,11 +1981,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
+          \int_compare_p:nNn
+            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
 %    \end{macrocode}
@@ -1986,11 +2006,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
+          \int_compare_p:nNn
+            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } > { \l_@@_ref_int } &&
 %    \end{macrocode}
@@ -2006,11 +2030,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
+          \int_compare_p:nNn
+            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
           \int_compare_p:nNn
             { \l_@@_lbl_int } < { \l_@@_ref_int } &&
 %    \end{macrocode}
