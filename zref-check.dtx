@@ -575,9 +575,15 @@
 %
 %    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-failed }
-  { Failed~check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
+  {
+    Failed~check~'#1'~for~label~'#2' \iow_newline:
+    on~page~#3~on~input~line~\msg_line_number:.
+  }
 \msg_new:nnn { zref-check } { double-check }
-  { Double-check~'#1'~for~label~'#2' \\ on~page~#3~on~input~line~\msg_line_number:. }
+  {
+    Double-check~'#1'~for~label~'#2' \iow_newline:
+    on~page~#3~on~input~line~\msg_line_number:.
+  }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -594,14 +600,14 @@
 %    \begin{macrocode}
 \msg_new:nnn { zref-check } { hyperref-preamble-only }
   {
-    Option~'hyperref'~only~available~in~the~preamble. \\
+    Option~'hyperref'~only~available~in~the~preamble. \iow_newline:
     Use~the~starred~version~of~'\protect\zrcheck'~instead.
   }
 \msg_new:nnn { zref-check } { missing-hyperref }
-  { Missing~'hyperref'~package. \\ Setting~'hyperref=false'. }
+  { Missing~'hyperref'~package. \iow_newline: Setting~'hyperref=false'. }
 \msg_new:nnn { zref-check } { ignore-document-only }
   {
-    Option~'ignore'~only~available~in~the~document. \\
+    Option~'ignore'~only~available~in~the~document. \iow_newline:
     Use~option~'msglevel'~instead.
   }
 %    \end{macrocode}
@@ -2060,3 +2066,5 @@
 %    \end{macrocode}
 %
 % \end{implementation}
+%
+% \PrintIndex
