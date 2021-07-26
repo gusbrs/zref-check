@@ -303,11 +303,8 @@ having to worry about how those are used within the document.
 The caveat is that the package does this by hooking into =\chapter= and
 =\section=, which poses two restrictions for the proper working of these checks.
 First, we are using the new hook system for this, as provided by =ltcmdhooks=,
-which means a recent LaTeX kernel is required (this might be circumvented with
-=etoolbox=, but I’m not sure how restrictive this issue may be and, if at all
-possible, I’d prefer to stick to the new hook system).  Second, since we are
-hooking into =\chapter= and =\section=, these checks presume these commands are
-being used by the =documentclass= for this purpose (either directly, or
-internally as, for example, KOMA-Script’s =\addchap= and =\addsec= do).  If that’s
-not the case, additional setup may be required for these checks to work as
-expected.
+which means a recent LaTeX kernel is required.  Second, since we are hooking
+into =\chapter= and =\section=, these checks presume these commands are being used
+by the =documentclass= for this purpose (either directly, or internally as, for
+example, KOMA-Script’s =\addchap= and =\addsec= do).  If that’s not the case,
+additional setup may be required for these checks to work as expected.
