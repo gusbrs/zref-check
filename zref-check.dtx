@@ -366,8 +366,8 @@
 % local use only.  This option only affects the messages issued by the checks
 % in \cs{zrcheck}, not other messages or warnings of the package.  In
 % particular, it does not affect warnings issued for undefined labels, which
-% just use \cs{zrefused} and thus are the same as standard \LaTeX{} ones for
-% this purpose.
+% just use \cs{zref@refused} and thus are the same as standard \LaTeX{} ones
+% for this purpose.
 %
 %
 % \DescribeOption{onpage}
@@ -1301,7 +1301,9 @@
 %    \begin{macrocode}
       \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck }
 %    \end{macrocode}
-% Check definition.
+% Check definition.  Note that, even if not indicated in \pkg{zref}'s
+% documentation by the usual 'babel' markup, \cs{zref@refused} \emph{is}
+% protected by \cs{zref@wrapper@babel}.
 %    \begin{macrocode}
       \tl_map_function:nN {#1} \zref@refused
 %    \end{macrocode}
