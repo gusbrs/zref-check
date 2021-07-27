@@ -1275,7 +1275,7 @@
 % links to multiple targets.  Hence, only the first one is considered for
 % hyperlinking.
 %    \begin{macrocode}
-      \tl_set:Nn \l_@@_link_label_tl { \tl_item:nn {#1} {1} }
+      \tl_set:Nn \l_@@_link_label_tl { \tl_head:n {#1} }
       \bool_set:Nn \l_@@_link_star_tl {#2}
       \zref@ifrefundefined { \l_@@_link_label_tl }
 %    \end{macrocode}
