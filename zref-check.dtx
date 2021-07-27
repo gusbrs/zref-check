@@ -527,8 +527,8 @@
   {%
     \PackageError{zref-check}{LaTeX kernel too old}
       {%
-        'zref-check' requires a LaTeX kernel newer than 2021-06-01.\MessageBreak
-        Loading will abort!%
+        'zref-check' requires a LaTeX kernel newer than 2021-06-01.%
+        \MessageBreak Loading will abort!%
       }%
     \endinput
   }%
@@ -637,7 +637,10 @@
 \msg_new:nnn { zref-check } { property-not-in-label }
   { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
 \msg_new:nnn { zref-check } { property-not-integer }
-  { Property~'#1'~for~label~'#2'~not~an~integer~on~input~line~\msg_line_number:. }
+  {
+    Property~'#1'~for~label~'#2'~not~an~integer \iow_newline:
+    on~input~line~\msg_line_number:.
+  }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1043,7 +1046,7 @@
 % \subsection{Property values}
 %
 %
-% \begin{macro}{\zrefcheck_get_astl:nnn}
+% \begin{macro}[int]{\zrefcheck_get_astl:nnn}
 %   A convenience function to retrieve property values from labels.  Uses
 %   \cs{g_@@_auxfile_lblseq_prop} for \texttt{lblseq}, and calls
 %   \cs{zref@extractdefault} for everything else.
@@ -1142,7 +1145,7 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{macro}{\zrefcheck_get_asint:nnn}
+% \begin{macro}[int]{\zrefcheck_get_asint:nnn}
 %   \begin{syntax}
 %     \cs{zrefcheck_get_asint:nnn} \Arg{label} \Arg{prop} \Arg{int var}
 %   \end{syntax}
@@ -1187,7 +1190,7 @@
       {
 %    \end{macrocode}
 % Thanks egreg: \url{https://tex.stackexchange.com/a/244405}.
-% FIXME This, however, makes \texttt{l3build doc} complain that I’m using an
+% FIXME This, however, makes \texttt{l3build doc} complain that we're using an
 % internal function of the \texttt{int} module, \cs{__int_to_roman:w}.  Which,
 % of course, is true, but I don’t know how to replace this.
 %    \begin{macrocode}
@@ -1338,7 +1341,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{environment}{zrcregion}
+% \begin{macro}{zrcregion}
 %   \begin{syntax}
 %     |\begin{zrcregion}|\marg{label}
 %       |...|
@@ -1355,7 +1358,7 @@
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
   }
 %    \end{macrocode}
-% \end{environment}
+% \end{macro}
 %
 %
 %
