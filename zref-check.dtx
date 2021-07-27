@@ -1268,7 +1268,6 @@
 %    \end{macrocode}
 % Set checkbeg label.
 %    \begin{macrocode}
-      \refstepcounter { zrefcheck }
       \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck }
 %    \end{macrocode}
 % Typeset \marg{text}, with hyperlink when appropriate.  Even though the first
@@ -1300,7 +1299,6 @@
 %    \end{macrocode}
 % Set checkend label.
 %    \begin{macrocode}
-      \refstepcounter { zrefcheck }
       \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck }
 %    \end{macrocode}
 % Check definition.
@@ -1329,7 +1327,6 @@
     \refstepcounter { zrefcheck }
     \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
     #2
-    \refstepcounter { zrefcheck }
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
   }
@@ -1349,7 +1346,6 @@
     \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
   }
   {
-    \refstepcounter { zrefcheck }
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
   }
