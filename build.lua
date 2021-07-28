@@ -5,3 +5,6 @@
 -- Identify the bundle and module
 bundle = ""
 module = "zref-check"
+
+-- Typeset only the .tex files
+typesetfiles = {"*.tex"}
