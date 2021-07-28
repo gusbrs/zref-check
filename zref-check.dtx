@@ -1154,7 +1154,7 @@
 \cs_new:Npn \zrefcheck_get_asint:nnn #1#2#3
   {
     \zrefcheck_get_astl:nnn {#1} {#2} { \l_@@_propval_tl }
-    \@@_is_integer:nTF { \l_@@_propval_tl }
+    \@@_is_integer_rgx:xTF { \l_@@_propval_tl }
       {
 %    \end{macrocode}
 % Make it an integer data type.
@@ -1181,7 +1181,7 @@
 %
 % \begin{macro}{\@@_is_integer:n}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_is_integer:n #1 { p, T, F, TF }
+\prg_new_conditional:Npnn \@@_is_integer:n #1 { TF }
   {
     \tl_if_empty:oTF {#1}
 %    \end{macrocode}
@@ -1191,15 +1191,31 @@
       {
 %    \end{macrocode}
 % Thanks egreg: \url{https://tex.stackexchange.com/a/244405}.
-% FIXME This, however, makes \texttt{l3build doc} complain that we're using an
-% internal function of the \texttt{int} module, \cs{__int_to_roman:w}.  Which,
-% of course, is true, but I don’t know how to replace this.
 %    \begin{macrocode}
         \tl_if_blank:oTF { \__int_to_roman:w -0#1 }
           { \prg_return_true:  }
           { \prg_return_false: }
       }
   }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_is_integer_rgx:n}
+%   While \cs{@@_is_integer:n} works well for the intended use case here, it
+%   uses \cs{__int_to_roman:w}, which is an internal function of the
+%   \texttt{int} module, and this makes \texttt{l3build doc} complain.  An
+%   alternative is to use a straightforward regexp match (see
+%   \url{https://tex.stackexchange.com/a/427559}), with the added benefit that
+%   I understand how the conditional works (and the caveat that it is not
+%   expandable).
+%    \begin{macrocode}
+\prg_new_protected_conditional:Npnn \@@_is_integer_rgx:n #1 { TF }
+  {
+    \regex_match:nnTF { \A\d+\Z } {#1}
+      { \prg_return_true:  }
+      { \prg_return_false: }
+  }
+\prg_generate_conditional_variant:Nnn \@@_is_integer_rgx:n { x } { TF }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1572,7 +1588,7 @@
 %
 % \begin{macro}{\@@_check_thispage:nn}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_thispage:nn #1#2 { T, F , TF }
+\prg_new_conditional:Npnn \@@_check_thispage:nn #1#2 { T , F , TF }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
