@@ -1179,29 +1179,30 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_is_integer:n}
+% \begin{macro}{\@@_is_integer:n, \@@_int_to_roman:w}
 %   Thanks egreg: \url{https://tex.stackexchange.com/a/244405}, also see
-%   \url{https://tex.stackexchange.com/a/19769}.  But I replaced
-%   \cs{__int_to_roman:w} with the equivalent \cs{tex_romannumeral:D}, since
-%   the use of the former raised a warning from \texttt{l3build doc},
-%   complaining of the use of an internal function from the \texttt{int}
-%   module.  And I'm using \cs{tl_if_empty:oTF} instead of
-%   \cs{tl_if_blank:oTF} as in egreg's answer, since \cs{romannumeral} is
-%   defined so that ``the expansion is empty if the number is zero or
-%   negative'', not ``blank''.  A couple of comments about this technique:
-%   \cs{tex_romannumeral:D} ignores space tokens and explicit signs $+$ and
-%   $-$ in the expansion and hence it can only be used to test positive
-%   integers; also the technique cannot distinguish whether it received an
-%   empty argument or if ``the expansion was empty'' as a result of receiving
-%   a zero or negative number as argument, so this must also be controlled for
-%   since, in our use case, this may happen.
+%   \url{https://tex.stackexchange.com/a/19769}.  Following the
+%   \texttt{l3styleguide}, I made a copy of \cs{__int_to_roman:w}, since it is
+%   an internal function from the \texttt{int} module, but we still get a
+%   warning from \texttt{l3build doc}, complaining about it.  And I'm using
+%   \cs{tl_if_empty:oTF} instead of \cs{tl_if_blank:oTF} as in egreg's answer,
+%   since \cs{romannumeral} is defined so that ``the expansion is empty if the
+%   number is zero or negative'', not ``blank''.  A couple of comments about
+%   this technique: the underlying \cs{romannumeral} ignores space tokens and
+%   explicit signs (\texttt{+} and \texttt{-}) in the expansion and hence it
+%   can only be used to test positive integers; also the technique cannot
+%   distinguish whether it received an empty argument or if ``the expansion
+%   was empty'' as a result of receiving a zero or negative number as
+%   argument, so this must also be controlled for since, in our use case, this
+%   may happen.
 %    \begin{macrocode}
+\cs_new_eq:NN \@@_int_to_roman:w \__int_to_roman:w
 \prg_new_conditional:Npnn \@@_is_integer:n #1 { p, T , F , TF }
   {
     \tl_if_empty:oTF {#1}
       { \prg_return_false: }
       {
-        \tl_if_empty:oTF { \tex_romannumeral:D -0#1 }
+        \tl_if_empty:oTF { \@@_int_to_roman:w -0#1 }
           { \prg_return_true:  }
           { \prg_return_false: }
       }
