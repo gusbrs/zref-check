@@ -686,6 +686,7 @@
         \bool_set_false:N \l_@@_use_hyperref_bool
         \bool_set_false:N \l_@@_warn_hyperref_bool
       } ,
+    hyperref .initial:n = auto ,
     hyperref .default:n = auto
   }
 %    \end{macrocode}
@@ -740,6 +741,7 @@
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
+    msglevel .initial:n = warn ,
 %    \end{macrocode}
 % \opt{ignore}: alias for \opt{msglevel=none}
 %    \begin{macrocode}
@@ -787,7 +789,8 @@
         \ifoptionfinal
           { \bool_set_true:N \l_@@_msgonpage_bool }
           { \bool_set_false:N \l_@@_msgonpage_bool }
-      }
+      } ,
+    onpage .initial:n = labelseq
   }
 %    \end{macrocode}
 % \end{variable}
@@ -800,21 +803,11 @@
 \keys_define:nn { zref-check }
   {
     closerange .int_set:N = \l_@@_close_range_int ,
+    closerange .initial:n = 5
   }
 %    \end{macrocode}
 % \end{variable}
 %
-%
-% Set load-time default values
-%    \begin{macrocode}
-\keys_set:nn { zref-check }
-  {
-    hyperref   = auto ,
-    msglevel   = warn ,
-    onpage     = labelseq ,
-    closerange = 5
-  }
-%    \end{macrocode}
 %
 % Process load-time package options
 % (\url{https://tex.stackexchange.com/a/15840}).
