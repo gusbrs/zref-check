@@ -742,9 +742,11 @@
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
+    msglevel .value_required:n = true ,
     msglevel .initial:n = warn ,
 %    \end{macrocode}
-% \opt{ignore}: alias for \opt{msglevel=none}
+% \opt{ignore} is a convenience alias for \opt{msglevel=none}, but only for
+% use in the document body.
 %    \begin{macrocode}
     ignore .code:n =
       { \msg_warning:nn { zref-check } { ignore-document-only } }
@@ -756,15 +758,13 @@
 \AtBeginDocument
   {
     \keys_define:nn { zref-check }
-      {
-        ignore .meta:n =
-          { msglevel = none }
-      }
+      { ignore .meta:n = { msglevel = none } }
   }
 %    \end{macrocode}
 %
 %
 % \opt{onpage} option
+%
 % \begin{variable}{\l_@@_msgonpage_bool}
 %    \begin{macrocode}
 \bool_new:N \l_@@_msgonpage_bool
@@ -791,6 +791,7 @@
           { \bool_set_true:N \l_@@_msgonpage_bool }
           { \bool_set_false:N \l_@@_msgonpage_bool }
       } ,
+    onpage .value_required:n = true ,
     onpage .initial:n = labelseq
   }
 %    \end{macrocode}
@@ -798,12 +799,14 @@
 %
 %
 % \opt{closerange} option
+%
 % \begin{variable}{\l_@@_close_range_int}
 %    \begin{macrocode}
 \int_new:N \l_@@_close_range_int
 \keys_define:nn { zref-check }
   {
     closerange .int_set:N = \l_@@_close_range_int ,
+    closerange .value_required:n = true ,
     closerange .initial:n = 5
   }
 %    \end{macrocode}
