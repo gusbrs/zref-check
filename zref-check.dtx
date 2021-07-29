@@ -33,6 +33,7 @@
 % Have \GetFileInfo pick up date and version data
 \usepackage{zref-check}
 \NewDocumentCommand\opt{m}{\texttt{#1}}
+\MakeShortVerb{\|}
 \begin{document}
   \DocInput{zref-check.dtx}
 \end{document}
@@ -834,7 +835,7 @@
 %
 % Some relevant info about the sequence of things:
 % \url{https://tex.stackexchange.com/a/120978} and \texttt{texdoc lthooks},
-% section ``Hooks provided by \verb|\begin{document}|''.
+% section ``Hooks provided by |\begin{document}|''.
 %
 %
 % One first attempt at this was to use \cs{zref@newlabel}, which is the macro
@@ -850,7 +851,7 @@
 % documentation.  Indeed, \cs{@newl@bel} receives 3 arguments, and
 % \cs{zref@newlabel} just passes the first, the following two will be scanned
 % ahead.  Second, the \pkg{ltcmdhooks} hooks are not actually available when
-% the \file{.aux} file is read, they come only after \verb|\begin{document}|.
+% the \file{.aux} file is read, they come only after |\begin{document}|.
 % Hence, redefinition would be the only alternative.  My attempts at this
 % ended up registered at \url{https://tex.stackexchange.com/a/604744}.  But
 % the best result in these lines was:
@@ -875,19 +876,19 @@
 % There is some subtlety here as to whether this approach makes it safe for us
 % to read the labels at this point without \cs{zref@wrapper@babel}.  The
 % common wisdom is that babel's shorthands are only active after
-% \verb|\begin{document}| (e.g., \url{https://tex.stackexchange.com/a/98897}).
+% |\begin{document}| (e.g., \url{https://tex.stackexchange.com/a/98897}).
 % Alas, it is more complicated than that.  Babel's documentation says (in
 % section 9.5 Shorthands): ``To prevent problems with the loading of other
 % packages after babel we reset the catcode of the character to the original
 % one at the end of the package and of each language file (except with
-% KeepShorthandsActive).  It is re-activate[d] again at
-% \verb|\begin{document}|.  We also need to make sure that the shorthands are
-% active during the processing of the \file{.aux} file.  Otherwise some
-% citations may give unexpected results in the printout when a shorthand was
-% used in the optional argument of \verb|\bibitem| for example.''  This is
-% done with \verb|\if@filesw \immediate\write\@mainaux{...}|.  In other words,
-% the catcode change is written in the \file{.aux} file itself!  Indeed, if
-% you inspect the file, you'll find them there.  Besides, there is still the
+% KeepShorthandsActive).  It is re-activate[d] again at |\begin{document}|.
+% We also need to make sure that the shorthands are active during the
+% processing of the \file{.aux} file.  Otherwise some citations may give
+% unexpected results in the printout when a shorthand was used in the optional
+% argument of |\bibitem| for example.''  This is done with
+% |\if@filesw \immediate\write\@mainaux{...}|.  In other words, the
+% catcode change is written in the \file{.aux} file itself!  Indeed, if you
+% inspect the file, you'll find them there.  Besides, there is still the
 % ominous ``except with KeepShorthandsActive''.
 %
 % However, the \emph{method} we're using here is not quite the same as the
@@ -1390,7 +1391,7 @@
 %
 % First, a conditional function defined with:
 %
-% \cs{prg_new_conditional:Npnn} \cs{@@_check_\meta{check}:nn} \verb|#1#2 { F }|
+% \cs{prg_new_conditional:Npnn} \cs{@@_check_\meta{check}:nn} |#1#2 { F }|
 %
 % \noindent where \meta{check} is the name of the check, the first argument is
 % the \Arg{label} and the second the \Arg{reference}.  The existence of the
@@ -1474,8 +1475,8 @@
 % \meta{label beg} may be defined or not, it is arbitrary user input.  Whether
 % this is the case is checked in \cs{@@_zrcheck:nnnnn}, and due warning
 % already ensues.  And there is no point in checking ``relative position'' of
-% an undefined label.  Hence, in the absence of \verb|#2|, we do nothing at
-% all here.
+% an undefined label.  Hence, in the absence of |#2|, we do nothing at all
+% here.
 %    \begin{macrocode}
       \zref@ifrefundefined {#2}
         {}
