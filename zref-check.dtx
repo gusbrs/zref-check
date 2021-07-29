@@ -395,22 +395,22 @@
 % with default 5.
 %
 %
-%
 % \DescribeOption{labelcmd}
-%
 % Defines the command used to set the user labels in \cs{zrctarget} and
-% \texttt{zrcregion}.  Takes a control sequence as value, and the default sets
-% labels with the minimal required properties, those of the \texttt{zrefcheck}
-% property list.  The specified control sequence must receive one mandatory
-% argument (the \marg{label}) and must generate a \texttt{zref label} with at
-% least the properties in the \texttt{zrefcheck} property list. The intended
-% use case is that of the user creating a convenience macro which calls both
-% \cs{label} and \cs{zlabel}, as suggested in Section~\ref{sec:introduction},
-% so that the same labels are accessible either from the standard reference
-% system or from \pkg{zref}.  Like so:
+% \texttt{zrcregion}.  Takes a control sequence \emph{name} as value, and the
+% default sets labels with the minimal required properties, those of the
+% \texttt{zrefcheck} property list.  This is a preamble only option.  The
+% specified control sequence must receive one mandatory argument (the
+% \marg{label}) and must generate a \texttt{zref label} with at least the
+% properties in the \texttt{zrefcheck} property list.  The intended use case
+% is that of the user creating a convenience macro which calls both \cs{label}
+% and \cs{zlabel}, as suggested in Section~\ref{sec:introduction}, so that the
+% same labels are accessible either from the standard reference system or from
+% \pkg{zref}.  For example:
 %
 % \begin{verbatim}
-%
+%     \NewDocumentCommand\mybothlabels{m}{\label{#1}\zlabel{#1}}
+%     \zrchecksetup{labelcmd=mybothlabels}
 % \end{verbatim}
 %
 %
@@ -849,32 +849,50 @@
 %
 % \opt{labelcmd} option
 %
-% \begin{variable}{\l_@@_target_label_name_tl, \l_@@_target_label_tl}
+% \begin{variable}{\l_@@_target_label_tl}
 %    \begin{macrocode}
-\tl_new:N \l_@@_target_label_name_tl
 \tl_new:N \l_@@_target_label_tl
+\bool_new:N \l_@@_target_label_bool
 \keys_define:nn { zref-check }
   {
-    labelcmd .tl_set:N = \l_@@_target_label_name_tl ,
+    labelcmd .code:n =
+      {
+        \tl_set:NV \l_@@_target_label_tl \l_keys_value_tl
+        \bool_set_true:N \l_@@_target_label_bool
+      } ,
     labelcmd .value_required:n = true ,
-    labelcmd .initial:n = @@_target_label_default:n
   }
 %    \end{macrocode}
 % \end{variable}
 %
+% \begin{macro}{\@@_target_label:n}
+%   Default definition of the function for user label setting in
+%   \cs{zrctarget} and \texttt{zrcregion}.  It may be redefined at
+%   \texttt{begindocument} according to option \opt{labelcmd}.
+%    \begin{macrocode}
+\cs_new:Npn \@@_target_label:n #1
+  { \zref@labelbylist {#1} { zrefcheck } }
+%    \end{macrocode}
+% \end{macro}
+%
 %    \begin{macrocode}
 \AtBeginDocument
   {
-    \cs_if_exist:cTF { \l_@@_target_label_name_tl }
+    \bool_if:NT \l_@@_target_label_bool
       {
-        \tl_set:No \l_@@_target_label_tl
-          { \cs:w \l_@@_target_label_name_tl \cs_end: }
-      }
-      {
-        \exp_args:NnnV \msg_warning:nnn { zref-check }
-          { labelcmd-undefined } { \l_@@_target_label_name_tl }
-        \tl_set:Nn \l_@@_target_label_tl
-          { \@@_target_label_default:n }
+        \cs_if_exist:cTF { \l_@@_target_label_tl }
+          {
+            \cs_set:Npx \@@_target_label:n #1
+              {
+                \exp_not:o
+                  { \cs:w \l_@@_target_label_tl \cs_end: }
+                  {#1}
+              }
+          }
+          {
+            \exp_args:NnnV \msg_warning:nnn { zref-check }
+              { labelcmd-undefined } { \l_@@_target_label_tl }
+          }
       }
     \keys_define:nn { zref-check }
       {
@@ -884,7 +902,6 @@
               { option-preamble-only } { labelcmd }
           }
       }
-
   }
 %    \end{macrocode}
 %
@@ -1426,14 +1443,6 @@
 %
 % \subsection{Targets}
 %
-% \begin{macro}{\@@_target_label_default:n}
-%   Default command to be used for \opt{labelcmd} option.
-%    \begin{macrocode}
-\cs_new:Npn \@@_target_label_default:n #1
-  { \zref@labelbylist {#1} { zrefcheck } }
-%    \end{macrocode}
-% \end{macro}
-%
 % \begin{macro}{\zrctarget}
 %   \begin{syntax}
 %     \cs{zrctarget}\marg{label}\marg{text}
@@ -1442,7 +1451,7 @@
 \NewDocumentCommand \zrctarget { m +m }
   {
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \l_@@_target_label_tl {#1}
+    \zref@wrapper@babel \@@_target_label:n {#1}
     #2
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
@@ -1460,7 +1469,7 @@
 \NewDocumentEnvironment {zrcregion} { m }
   {
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \l_@@_target_label_tl {#1}
+    \zref@wrapper@babel \@@_target_label:n {#1}
   }
   {
     \zref@wrapper@babel
