@@ -413,6 +413,12 @@
 %     \zrchecksetup{labelcmd=mybothlabels}
 % \end{verbatim}
 %
+% Note that the value of the underlying counter used for labels in
+% \cs{zrctarget} and \texttt{zrcregion} -- what you'd get with a plain
+% \cs{ref} here -- is not really meaningful.  But you get to use
+% \cs{pageref}\marg{label}, or \pkg{hyperref}'s
+% \cs{hyperref}\oarg{label}\marg{text} on the labels used in \cs{zrctarget}
+% and \texttt{zrcregion} with this procedure.
 %
 %
 % \section{Label names}
@@ -686,8 +692,8 @@
   }
 \msg_new:nnn { zref-check } { labelcmd-undefined }
   {
-    Control~sequence~'\iow_char:N \\ #1'~used~in~option~'labelcmd'~is~
-    not~defined.~Using~default~value.
+    Control~sequence~named~'#1'~used~in~option~'labelcmd'~is~not~defined.~
+    Using~default~value.
   }
 %    \end{macrocode}
 %
@@ -850,6 +856,9 @@
 % \opt{labelcmd} option
 %
 % \begin{variable}{\l_@@_target_label_tl}
+%   I'd love to receive the macro itself rather than it's name, but this would
+%   bring unwarranted complications:
+%   \url{https://tex.stackexchange.com/a/489570}.
 %    \begin{macrocode}
 \tl_new:N \l_@@_target_label_tl
 \bool_new:N \l_@@_target_label_bool
@@ -880,6 +889,8 @@
   {
     \bool_if:NT \l_@@_target_label_bool
       {
+        \tl_if_blank:VT \l_@@_target_label_tl
+          { \tl_clear:N \l_@@_target_label_tl }
         \cs_if_exist:cTF { \l_@@_target_label_tl }
           {
             \cs_set:Npx \@@_target_label:n #1
