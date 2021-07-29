@@ -66,6 +66,7 @@
 % \begin{documentation}
 %
 % \section{Introduction}
+% \label{sec:introduction}
 %
 % \pkg{zref-check} provides an user interface for making \LaTeX{}
 % cross-references exploiting document contextual information to enrich the
@@ -394,6 +395,26 @@
 % with default 5.
 %
 %
+%
+% \DescribeOption{labelcmd}
+%
+% Defines the command used to set the user labels in \cs{zrctarget} and
+% \texttt{zrcregion}.  Takes a control sequence as value, and the default sets
+% labels with the minimal required properties, those of the \texttt{zrefcheck}
+% property list.  The specified control sequence must receive one mandatory
+% argument (the \marg{label}) and must generate a \texttt{zref label} with at
+% least the properties in the \texttt{zrefcheck} property list. The intended
+% use case is that of the user creating a convenience macro which calls both
+% \cs{label} and \cs{zlabel}, as suggested in Section~\ref{sec:introduction},
+% so that the same labels are accessible either from the standard reference
+% system or from \pkg{zref}.  Like so:
+%
+% \begin{verbatim}
+%
+% \end{verbatim}
+%
+%
+%
 % \section{Label names}
 %
 % All user commands have their \marg{label} arguments protected by
@@ -658,10 +679,21 @@
     Option~'ignore'~only~available~in~the~document. \iow_newline:
     Use~option~'msglevel'~instead.
   }
+\msg_new:nnn { zref-check } { option-preamble-only }
+  {
+    Option~'#1'~only~available~in~the~preamble \iow_newline:
+    on~input~line~\msg_line_number:.
+  }
+\msg_new:nnn { zref-check } { labelcmd-undefined }
+  {
+    Control~sequence~'\iow_char:N \\ #1'~used~in~option~'labelcmd'~is~
+    not~defined.~Using~default~value.
+  }
 %    \end{macrocode}
 %
 %
 % \subsection{Options}
+%
 %
 % \opt{hyperref} option
 %
@@ -717,7 +749,9 @@
   }
 %    \end{macrocode}
 %
+%
 % \opt{msglevel} option
+%
 % \begin{variable}{\l_@@_msglevel_tl}
 %    \begin{macrocode}
 \tl_new:N \l_@@_msglevel_tl
@@ -811,6 +845,48 @@
   }
 %    \end{macrocode}
 % \end{variable}
+%
+%
+% \opt{labelcmd} option
+%
+% \begin{variable}{\l_@@_target_label_name_tl, \l_@@_target_label_tl}
+%    \begin{macrocode}
+\tl_new:N \l_@@_target_label_name_tl
+\tl_new:N \l_@@_target_label_tl
+\keys_define:nn { zref-check }
+  {
+    labelcmd .tl_set:N = \l_@@_target_label_name_tl ,
+    labelcmd .value_required:n = true ,
+    labelcmd .initial:n = @@_target_label_default:n
+  }
+%    \end{macrocode}
+% \end{variable}
+%
+%    \begin{macrocode}
+\AtBeginDocument
+  {
+    \cs_if_exist:cTF { \l_@@_target_label_name_tl }
+      {
+        \tl_set:No \l_@@_target_label_tl
+          { \cs:w \l_@@_target_label_name_tl \cs_end: }
+      }
+      {
+        \exp_args:NnnV \msg_warning:nnn { zref-check }
+          { labelcmd-undefined } { \l_@@_target_label_name_tl }
+        \tl_set:Nn \l_@@_target_label_tl
+          { \@@_target_label_default:n }
+      }
+    \keys_define:nn { zref-check }
+      {
+        labelcmd .code:n =
+          {
+            \msg_warning:nnn { zref-check }
+              { option-preamble-only } { labelcmd }
+          }
+      }
+
+  }
+%    \end{macrocode}
 %
 %
 % Process load-time package options
@@ -1348,8 +1424,15 @@
 % \end{macro}
 %
 %
-%
 % \subsection{Targets}
+%
+% \begin{macro}{\@@_target_label_default:n}
+%   Default command to be used for \opt{labelcmd} option.
+%    \begin{macrocode}
+\cs_new:Npn \@@_target_label_default:n #1
+  { \zref@labelbylist {#1} { zrefcheck } }
+%    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\zrctarget}
 %   \begin{syntax}
@@ -1359,7 +1442,7 @@
 \NewDocumentCommand \zrctarget { m +m }
   {
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
+    \zref@wrapper@babel \l_@@_target_label_tl {#1}
     #2
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
@@ -1377,7 +1460,7 @@
 \NewDocumentEnvironment {zrcregion} { m }
   {
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \zref@labelbylist {#1} { zrefcheck }
+    \zref@wrapper@babel \l_@@_target_label_tl {#1}
   }
   {
     \zref@wrapper@babel
