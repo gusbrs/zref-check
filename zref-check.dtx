@@ -1275,10 +1275,10 @@
 % \end{variable}
 %
 % \begin{macro}{\@@_zrcheck:nnnnn}
-%   An intermediate internal function, which places \Arg{labels} as first
-%   argument, so that it can be protected by \cs{zref@wrapper@babel}.  This is
-%   more or less what the definition of \cs{zref} in \file{zref-user.sty} does
-%   for this.
+%   An intermediate internal function, which does the actual heavy lifting,
+%   and places \Arg{labels} as first argument, so that it can be protected by
+%   \cs{zref@wrapper@babel}.  This is more or less what the definition of
+%   \cs{zref} in \file{zref-user.sty} does for this.
 %
 %   \begin{syntax}
 %     \cs{@@_zrcheck:nnnnn} \Arg{labels} \Arg{*} \Arg{options} \Arg{checks} \Arg{text}
