@@ -1,0 +1,85 @@
+\documentclass{book}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\zrctarget{txt:target-0}{Lorem ipsum}
+
+\zrcheck{txt:target-0}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-1}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-2}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-3}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-4}[chapsafter]{this check should pass}
+
+\OMIT
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+\TIMO
+
+\zrcheck{txt:target-0}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-1}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-2}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-3}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-4}[chapsafter]{this check should pass}
+
+\OMIT
+\chapter{Chapter 2}
+\zlabel{cha:chapter-2}
+\TIMO
+
+\zrcheck{txt:target-0}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-1}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-2}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-3}[chapsafter]{this check should pass}
+
+\zrcheck{cha:chapter-4}[chapsafter]{this check should pass}
+
+\OMIT
+\chapter{Chapter 3}
+\zlabel{cha:chapter-3}
+\TIMO
+
+\zrcheck{txt:target-0}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-1}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-2}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-3}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-4}[chapsafter]{this check should pass}
+
+\OMIT
+\chapter{Chapter 4}
+\zlabel{cha:chapter-4}
+\TIMO
+
+\zrcheck{txt:target-0}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-1}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-2}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-3}[chapsafter]{this check should fail}
+
+\zrcheck{cha:chapter-4}[chapsafter]{this check should fail}
+
+\OMIT
+
+\end{document}

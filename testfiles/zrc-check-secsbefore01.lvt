@@ -1,0 +1,240 @@
+\documentclass{book}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+% The 'section' checks result in multiple possible cases, since they also
+% interact with the 'chapter' counter.  So, instead of "fine tuning" each
+% possibility, I adopted a more "standard" test for all of them, which makes
+% the log files much noisier, specially since most of the checks are made to
+% fail.  However, the standard structure is the way to verify the logs with
+% the intended results: i) the document structure is the same for all section
+% checks, the only thing that varies is whether the check passes of fails; ii)
+% each page has exactly nine checks, so ensuring the ones which should pass
+% are missing from the log, and counting the remaining ones, does the job if
+% the need to verify these checks comes up again.
+
+\begin{document}
+
+\START
+
+\zrctarget{txt:target-0-0}{Lorem ipsum}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+\TIMO
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.1}
+\zlabel{sec:section-1.1}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.2}
+\zlabel{sec:section-1.2}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.3}
+\zlabel{sec:section-1.3}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.4}
+\zlabel{sec:section-1.4}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\chapter{Chapter 2}
+\zlabel{cha:chapter-2}
+\TIMO
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2.1}
+\zlabel{sec:section-2.1}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2.2}
+\zlabel{sec:section-2.2}
+
+\zrcheck{txt:target-0-0}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.1}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.3}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-1.4}[secsbefore]{this check should fail}
+
+\zrcheck{cha:chapter-2}[secsbefore]{this check should fail}
+
+\zrcheck{sec:section-2.1}[secsbefore]{this check should pass}
+
+\zrcheck{sec:section-2.2}[secsbefore]{this check should fail}
+
+\OMIT
+
+\end{document}

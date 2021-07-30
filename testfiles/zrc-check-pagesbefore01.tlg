@@ -1,0 +1,8 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+Package zref-check Warning: Failed check 'pagesbefore' for label
+(zref-check)                'sec:section-1'
+(zref-check)                on page 1 on input line ....
+Package zref-check Warning: Failed check 'pagesbefore' for label
+(zref-check)                'txt:target-1'
+(zref-check)                on page 1 on input line ....

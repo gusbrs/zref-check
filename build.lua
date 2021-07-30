@@ -8,3 +8,6 @@ module = "zref-check"
 
 -- Typeset only the .tex files
 typesetfiles = {"*.tex"}
+
+-- Two runs for label testing
+checkruns = 2
