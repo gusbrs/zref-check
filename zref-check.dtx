@@ -1461,11 +1461,18 @@
 %    \begin{macrocode}
 \NewDocumentCommand \zrctarget { m +m }
   {
+%    \end{macrocode}
+% Group contents of \cs{zrctarget} to avoid leaking the effects of
+% \cs{refstepcounter} over \cs{@currentlabel}.  The same care is not needed
+% for \texttt{zrcregion}, since the environment is already grouped.
+%    \begin{macrocode}
+    \group_begin:
     \refstepcounter { zrefcheck }
     \zref@wrapper@babel \@@_target_label:n {#1}
     #2
     \zref@wrapper@babel
       \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
+    \group_end:
   }
 %    \end{macrocode}
 % \end{macro}
