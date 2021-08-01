@@ -98,7 +98,7 @@
 %
 % \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
 % is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
-% but also with \cs{zrctarget} and the \texttt{zrcregion} environment provided
+% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
 % by this package.  This has some advantages, particularly the data
 % flexibility of \pkg{zref}, and the absence of the ubiquitous ``load-order''
 % and compatibility problems which are well known to afflict \LaTeX{} packages
@@ -111,7 +111,7 @@
 % in tandem with standard references, for example:
 %
 % \begin{verbatim}
-%     ... Figure~\ref{fig:figure-1}, \zrcheck*{fig:figure-1}[nextpage]{on
+%     ... Figure~\ref{fig:figure-1}, \zcheck*{fig:figure-1}[nextpage]{on
 %     the next page}.
 % \end{verbatim}
 %
@@ -188,9 +188,9 @@
 % \section{User interface}
 % \label{sec:user-interface}
 %
-% \begin{function}{\zrcheck}
+% \begin{function}{\zcheck}
 %   \begin{syntax}
-%     \cs{zrcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%     \cs{zcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
 %   \end{syntax}
 %   Typesets \marg{text}, as given, while performing the comma separated list
 %   of \oarg{checks} on each of the comma separated list of \marg{labels}.  In
@@ -201,14 +201,14 @@
 %   \emph{the first} label in \marg{labels}.  The starred version of the
 %   command does the same as the plain one, just does not form a link.  The
 %   \oarg{options} are (mostly) the same as those of the package, and can be
-%   given to local effect.  Note that the \marg{text} argument of \cs{zrcheck}
+%   given to local effect.  Note that the \marg{text} argument of \cs{zcheck}
 %   is not long because, if it was, we'd not be able to use if for building
 %   hyperlinks, besides there is no need for it to be.
 % \end{function}
 %
-% \begin{function}{\zrctarget}
+% \begin{function}{\zctarget}
 %   \begin{syntax}
-%     \cs{zrctarget}\marg{label}\marg{text}
+%     \cs{zctarget}\marg{label}\marg{text}
 %   \end{syntax}
 %   Typesets \marg{text}, as given, and places a pair of \texttt{zlabel}s, one
 %   at the start of \marg{text}, using \marg{label} as label name, another one
@@ -216,23 +216,23 @@
 % \end{function}
 %
 %
-% \begin{function}{zrcregion}
+% \begin{function}{zcregion}
 %   \begin{syntax}
-%     |\begin{zrcregion}|\marg{label}
+%     |\begin{zcregion}|\marg{label}
 %       |  ...|
-%     |\end{zrcregion}|
+%     |\end{zcregion}|
 %   \end{syntax}
-%   Just an environment that does pretty much the same as \cs{zrctarget}, for
+%   Just an environment that does pretty much the same as \cs{zctarget}, for
 %   cases of longer stretches of text.  If you don't like to use the
-%   environment for whatever reason, you may also set two \cs{zrctarget}s
-%   (with empty \marg{text} arguments), one at the beginning and another one
-%   at the end, and run \cs{zrcheck} against both of them to the same effect.
+%   environment for whatever reason, you may also set two \cs{zctarget}s (with
+%   empty \marg{text} arguments), one at the beginning and another one at the
+%   end, and run \cs{zcheck} against both of them to the same effect.
 % \end{function}
 %
 %
-% \begin{function}{\zrchecksetup}
+% \begin{function}{\zchecksetup}
 %   \begin{syntax}
-%     \cs{zrchecksetup}\marg{options}
+%     \cs{zchecksetup}\marg{options}
 %   \end{syntax}
 %   Sets \pkg{zref-check}'s options (see Section~\ref{sec:options}).
 % \end{function}
@@ -241,52 +241,52 @@
 % \section{Checks}
 % \label{sec:checks}
 %
-% \pkg{zref-check} provides several ``checks'' to be used with \cs{zrcheck}.
-% The checks may be combined in a \cs{zrcheck} call, e.g.\ \opt{[close,
+% \pkg{zref-check} provides several ``checks'' to be used with \cs{zcheck}.
+% The checks may be combined in a \cs{zcheck} call, e.g.\ \opt{[close,
 % after]}, or \opt{[thischap, before]}.  In this case, each check in
 % \oarg{checks} is performed against each of the \marg{labels}.  This is done
 % independently for each check, which means, in practice, that the checks bear
 % a logical \texttt{AND} relation to the others.  Whether the combination is
 % meaningful, is up to the user.  As is the correspondence between the
-% \oarg{checks} and the \marg{text>} in \cs{zrcheck}.
+% \oarg{checks} and the \marg{text>} in \cs{zcheck}.
 %
 % Note that the naming convention of the checks adopts the perspective of
-% \cs{zrcheck}.  That is, the name of the check describes the position of the
-% label being checked, relative to the \cs{zrcheck} call being made.  For
+% \cs{zcheck}.  That is, the name of the check describes the position of the
+% label being checked, relative to the \cs{zcheck} call being made.  For
 % example, the \opt{before} check should issue no message if the \marg{label}
-% occurs before \cs{zrcheck}.
+% occurs before \cs{zcheck}.
 %
 % The available checks are the following:
 %
 % \begin{description}[leftmargin=0pt, itemindent=0pt, align=right,
 %   labelsep=1em, font=\MacroFont]
 %
-% \item[thispage] \marg{label} occurs on the same page as \cs{zrcheck}.
+% \item[thispage] \marg{label} occurs on the same page as \cs{zcheck}.
 %
 % \item[prevpage] \marg{label} occurs on the previous page relative to
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
 % \item[nextpage] \marg{label} occurs on the next page relative to
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
 % \item[facing] On a \texttt{twoside} document, both \marg{label} and
-%   \cs{zrcheck} fall onto a double spread, each on one of the two facing
+%   \cs{zcheck} fall onto a double spread, each on one of the two facing
 %   pages.
 %
-% \item[above] \marg{label} and \cs{zrcheck} are both on the same page, and
-%   \marg{label} occurs ``above'' \cs{zrcheck} (for how this is inferred, see
+% \item[above] \marg{label} and \cs{zcheck} are both on the same page, and
+%   \marg{label} occurs ``above'' \cs{zcheck} (for how this is inferred, see
 %   Section~\ref{sec:within-page-checks}).
 %
-% \item[below] \marg{label} and \cs{zrcheck} are both on the same page, and
-%   \marg{label} occurs ``below'' \cs{zrcheck}.
+% \item[below] \marg{label} and \cs{zcheck} are both on the same page, and
+%   \marg{label} occurs ``below'' \cs{zcheck}.
 %
 % \item[pagesbefore] \marg{label} occurs on any page before the one of
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
 % \item[ppbefore] Convenience alias for \opt{pagesbefore}.
 %
 % \item[pagesafter] \marg{label} occurs on any page after the one of
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
 % \item[ppafter] Convenience alias for \opt{pagesafter}.
 %
@@ -294,36 +294,36 @@
 %
 % \item[after]  Either \opt{below} or \opt{pagesafter}.
 %
-% \item[thischap] \marg{label} occurs on the same chapter as \cs{zrcheck}.
+% \item[thischap] \marg{label} occurs on the same chapter as \cs{zcheck}.
 %
 % \item[prevchap] \marg{label} occurs on the previous chapter relative to the
-%   one of \cs{zrcheck}.
+%   one of \cs{zcheck}.
 %
 % \item[nextchap] \marg{label} occurs on the next chapter relative to the one
-%   of \cs{zrcheck}.
+%   of \cs{zcheck}.
 %
 % \item[chapsbefore] \marg{label} occurs on any chapter before the one of
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
 % \item[chapsafter] \marg{label} occurs on any chapter after the one of
-%   \cs{zrcheck}.
+%   \cs{zcheck}.
 %
-% \item[thissec] \marg{label} occurs on the same section as \cs{zrcheck}.
+% \item[thissec] \marg{label} occurs on the same section as \cs{zcheck}.
 %
 % \item[prevsec] \marg{label} occurs on the previous section (of the same
-%   chapter) relative to the one of \cs{zrcheck}.
+%   chapter) relative to the one of \cs{zcheck}.
 %
 % \item[nextsec] \marg{label} occurs on the next section (of the same chapter)
-%   relative to the one of \cs{zrcheck}.
+%   relative to the one of \cs{zcheck}.
 %
 % \item[secsbefore] \marg{label} occurs on any section (of the same chapter)
-%   before the one of \cs{zrcheck}.
+%   before the one of \cs{zcheck}.
 %
 % \item[secsafter] \marg{label} occurs on any section (of the same chapter)
-%   after the one of \cs{zrcheck}.
+%   after the one of \cs{zcheck}.
 %
 % \item[close] \marg{label} occurs within a page range from \opt{closerange}
-%   pages before the one of \cs{zrcheck} to \opt{closerange} pages after it
+%   pages before the one of \cs{zcheck} to \opt{closerange} pages after it
 %   (about \opt{closerange}, see Section~\ref{sec:options}).
 %
 % \item[far] Not \opt{close}.
@@ -337,26 +337,26 @@
 %
 % Options are a standard \texttt{key=value} comma separated list, and can be
 % set globally either as \cs{usepackage}\oarg{options} at load-time (see
-% Section~\ref{sec:loading-package}), or by means of \cs{zrchecksetup} (see
+% Section~\ref{sec:loading-package}), or by means of \cs{zchecksetup} (see
 % Section~\ref{sec:user-interface}) in the preamble.  Most options can also be
 % used with local effects, through the optional argument \oarg{options} of
-% \cs{zrcheck}.
+% \cs{zcheck}.
 %
 % \DescribeOption{hyperref}
 % Controls the use of \pkg{hyperref} by \pkg{zref-check} and takes values
 % \opt{auto}, \opt{true}, \opt{false}.  The default value, \opt{auto}, makes
-% \pkg{zref-check} use \pkg{hyperref} if it is loaded, meaning \cs{zrcheck}
-% can be hyperlinked to the \emph{first label} in \marg{labels}.  \opt{true}
-% does the same thing, but warns if \pkg{hyperref} is not loaded
-% (\pkg{hyperref} is never loaded for you).  In either case, if \pkg{hyperref}
-% is loaded, module \pkg{zref-hyperref} is also loaded by \pkg{zref-check}.
-% \opt{false} means not to use \pkg{hyperref} regardless of its availability.
-% This is a preamble only option, but \cs{zrcheck} provides granular control
-% of hyperlinking by means of its starred version.
+% \pkg{zref-check} use \pkg{hyperref} if it is loaded, meaning \cs{zcheck} can
+% be hyperlinked to the \emph{first label} in \marg{labels}.  \opt{true} does
+% the same thing, but warns if \pkg{hyperref} is not loaded (\pkg{hyperref} is
+% never loaded for you).  In either case, if \pkg{hyperref} is loaded, module
+% \pkg{zref-hyperref} is also loaded by \pkg{zref-check}.  \opt{false} means
+% not to use \pkg{hyperref} regardless of its availability.  This is a
+% preamble only option, but \cs{zcheck} provides granular control of
+% hyperlinking by means of its starred version.
 %
 %
 % \DescribeOption{msglevel}
-% Sets the level of messages issued by \cs{zrcheck} failed checks and takes
+% Sets the level of messages issued by \cs{zcheck} failed checks and takes
 % values \opt{warn}, \opt{info}, \opt{none}, \opt{obeydraft}, \opt{obeyfinal}.
 % The default value, \opt{warn}, issues messages both to the terminal and to
 % the log file, \opt{info} issues messages to the log file only, \opt{none}
@@ -366,7 +366,7 @@
 % is (explicitly) passed to \cs{documentclass} and \opt{info} otherwise.
 % \opt{ignore} is provided as convenience alias for \opt{msglevel=none} for
 % local use only.  This option only affects the messages issued by the checks
-% in \cs{zrcheck}, not other messages or warnings of the package.  In
+% in \cs{zcheck}, not other messages or warnings of the package.  In
 % particular, it does not affect warnings issued for undefined labels, which
 % just use \cs{zref@refused} and thus are the same as standard \LaTeX{} ones
 % for this purpose.
@@ -396,8 +396,8 @@
 %
 %
 % \DescribeOption{labelcmd}
-% Defines the command used to set the user labels in \cs{zrctarget} and
-% \texttt{zrcregion}.  Takes a control sequence \emph{name} as value, and the
+% Defines the command used to set the user labels in \cs{zctarget} and
+% \texttt{zcregion}.  Takes a control sequence \emph{name} as value, and the
 % default sets labels with the minimal required properties, those of the
 % \texttt{zrefcheck} property list.  This is a preamble only option.  The
 % specified control sequence must receive one mandatory argument (the
@@ -410,15 +410,15 @@
 %
 % \begin{verbatim}
 %     \NewDocumentCommand\mybothlabels{m}{\label{#1}\zlabel{#1}}
-%     \zrchecksetup{labelcmd=mybothlabels}
+%     \zchecksetup{labelcmd=mybothlabels}
 % \end{verbatim}
 %
 % Note that the value of the underlying counter used for labels in
-% \cs{zrctarget} and \texttt{zrcregion} -- what you'd get with a plain
-% \cs{ref} here -- is not really meaningful.  But you get to use
+% \cs{zctarget} and \texttt{zcregion} -- what you'd get with a plain \cs{ref}
+% here -- is not really meaningful.  But you get to use
 % \cs{pageref}\marg{label}, or \pkg{hyperref}'s
-% \cs{hyperref}\oarg{label}\marg{text} on the labels used in \cs{zrctarget}
-% and \texttt{zrcregion} with this procedure.
+% \cs{hyperref}\oarg{label}\marg{text} on the labels used in \cs{zctarget} and
+% \texttt{zcregion} with this procedure.
 %
 %
 % \section{Label names}
@@ -434,9 +434,8 @@
 % \section{Technique and limitations}
 %
 % There are three qualitatively different kinds of checks being used by
-% \cs{zrcheck}, according to the source and reliability of the information
-% they mobilize: page number checks, within page checks, and sectioning
-% checks.
+% \cs{zcheck}, according to the source and reliability of the information they
+% mobilize: page number checks, within page checks, and sectioning checks.
 %
 %
 % \subsection{Page number checks}
@@ -446,15 +445,15 @@
 % \texttt{abspage} property provided by the \pkg{zref-abspage} module.  This
 % is a solid piece of information, on which we can rely upon.  However,
 % despite that, page number checks may still become ill-defined, if the
-% \marg{text} argument in \cs{zrcheck}, when typeset, crosses page boundaries,
+% \marg{text} argument in \cs{zcheck}, when typeset, crosses page boundaries,
 % starting in one page, and finishing in another.  The same can happen with
-% the text in \cs{zrctarget} and the \texttt{zrcregion} environment.
+% the text in \cs{zctarget} and the \texttt{zcregion} environment.
 %
 % This is why the user commands of this package set always a pair or labels
-% around \marg{text}.  So, when checking \cs{zrcheck} against a regular
+% around \marg{text}.  So, when checking \cs{zcheck} against a regular
 % \texttt{zlabel} both the start and the end of the \marg{text} are checked
 % against the label, and the check fails if either of them fails.  When
-% checking \cs{zrcheck} against a \cs{zrctarget} or a \texttt{zrcregion}, both
+% checking \cs{zcheck} against a \cs{zctarget} or a \texttt{zcregion}, both
 % beginnings and ends are checked against each other two by two, and if any of
 % them fails, the check fails.  In other words, if a page number checks
 % passes, we know that the entire \marg{text} arguments pass it.
@@ -676,7 +675,7 @@
 \msg_new:nnn { zref-check } { hyperref-preamble-only }
   {
     Option~'hyperref'~only~available~in~the~preamble. \iow_newline:
-    Use~the~starred~version~of~'\noexpand\zrcheck'~instead.
+    Use~the~starred~version~of~'\noexpand\zcheck'~instead.
   }
 \msg_new:nnn { zref-check } { missing-hyperref }
   { Missing~'hyperref'~package. \iow_newline: Setting~'hyperref=false'. }
@@ -875,9 +874,9 @@
 % \end{variable}
 %
 % \begin{macro}{\@@_target_label:n}
-%   Default definition of the function for user label setting in
-%   \cs{zrctarget} and \texttt{zrcregion}.  It may be redefined at
-%   \texttt{begindocument} according to option \opt{labelcmd}.
+%   Default definition of the function for user label setting in \cs{zctarget}
+%   and \texttt{zcregion}.  It may be redefined at \texttt{begindocument}
+%   according to option \opt{labelcmd}.
 %    \begin{macrocode}
 \cs_new:Npn \@@_target_label:n #1
   { \zref@labelbylist {#1} { zrefcheck } }
@@ -925,10 +924,10 @@
 %    \end{macrocode}
 %
 %
-% \begin{macro}{\zrchecksetup}
-%   Provide \cs{zrchecksetup}.
+% \begin{macro}{\zchecksetup}
+%   Provide \cs{zchecksetup}.
 %    \begin{macrocode}
-\NewDocumentCommand \zrchecksetup { m }
+\NewDocumentCommand \zchecksetup { m }
   { \keys_set:nn { zref-check } {#1} }
 %    \end{macrocode}
 % \end{macro}
@@ -1191,7 +1190,7 @@
 % value.
 %
 % The existence of the label is an user facing issue, and a warning for this
-% is placed in \cs{@@_zrcheck:nnnnn} (and done with \cs{zref@refused}).  We do
+% is placed in \cs{@@_zcheck:nnnnn} (and done with \cs{zref@refused}).  We do
 % check here though for definition with \cs{zref@ifrefundefined} and silently
 % do nothing if it is undefined, to reduce irrelevant warnings in a fresh
 % compilation round.  The other two are more ``internal'' problems, either
@@ -1268,7 +1267,7 @@
 %    \end{macrocode}
 % Keep silent if ref is undefined to reduce irrelevant warnings in a fresh
 % compilation round.  Again, this is also not the point to check for undefined
-% references, that's a task for \cs{@@_zrcheck:nnnnn}.
+% references, that's a task for \cs{@@_zcheck:nnnnn}.
 %    \begin{macrocode}
           { }
           {
@@ -1334,10 +1333,10 @@
 % \section{User interface}
 %
 %
-% \subsection{\cs{zrcheck}}
+% \subsection{\cs{zcheck}}
 %
-% \begin{macro}{\zrcheck}
-%   The \marg{text} argument of \cs{zrcheck} should not be long, since
+% \begin{macro}{\zcheck}
+%   The \marg{text} argument of \cs{zcheck} should not be long, since
 %   \cs{hyperlink} cannot receive a long argument.  Besides, there is no
 %   reason for it to be.  Note, also, that hyperlinks crossing page boundaries
 %   have some known issues: \url{https://tex.stackexchange.com/a/182769},
@@ -1345,13 +1344,13 @@
 %   \url{https://tex.stackexchange.com/a/179907}.
 %
 %   \begin{syntax}
-%     \cs{zrcheck}\meta{*}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%     \cs{zcheck}\meta{*}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\NewDocumentCommand \zrcheck
+\NewDocumentCommand \zcheck
   { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } m }
-  { \zref@wrapper@babel \@@_zrcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
+  { \zref@wrapper@babel \@@_zcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1375,18 +1374,18 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{macro}{\@@_zrcheck:nnnnn}
+% \begin{macro}{\@@_zcheck:nnnnn}
 %   An intermediate internal function, which does the actual heavy lifting,
 %   and places \Arg{labels} as first argument, so that it can be protected by
 %   \cs{zref@wrapper@babel}.  This is more or less what the definition of
 %   \cs{zref} in \file{zref-user.sty} does for this.
 %
 %   \begin{syntax}
-%     \cs{@@_zrcheck:nnnnn} \Arg{labels} \Arg{*} \Arg{options} \Arg{checks} \Arg{text}
+%     \cs{@@_zcheck:nnnnn} \Arg{labels} \Arg{*} \Arg{options} \Arg{checks} \Arg{text}
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_zrcheck:nnnnn #1#2#3#4#5
+\cs_new:Npn \@@_zcheck:nnnnn #1#2#3#4#5
   {
     \group_begin:
 %    \end{macrocode}
@@ -1454,17 +1453,17 @@
 %
 % \subsection{Targets}
 %
-% \begin{macro}{\zrctarget}
+% \begin{macro}{\zctarget}
 %   \begin{syntax}
-%     \cs{zrctarget}\marg{label}\marg{text}
+%     \cs{zctarget}\marg{label}\marg{text}
 %   \end{syntax}
 %    \begin{macrocode}
-\NewDocumentCommand \zrctarget { m +m }
+\NewDocumentCommand \zctarget { m +m }
   {
 %    \end{macrocode}
-% Group contents of \cs{zrctarget} to avoid leaking the effects of
+% Group contents of \cs{zctarget} to avoid leaking the effects of
 % \cs{refstepcounter} over \cs{@currentlabel}.  The same care is not needed
-% for \texttt{zrcregion}, since the environment is already grouped.
+% for \texttt{zcregion}, since the environment is already grouped.
 %    \begin{macrocode}
     \group_begin:
     \refstepcounter { zrefcheck }
@@ -1477,14 +1476,14 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{zrcregion}
+% \begin{macro}{zcregion}
 %   \begin{syntax}
-%     |\begin{zrcregion}|\marg{label}
+%     |\begin{zcregion}|\marg{label}
 %       |  ...|
-%     |\end{zrcregion}|
+%     |\end{zcregion}|
 %   \end{syntax}
 %    \begin{macrocode}
-\NewDocumentEnvironment {zrcregion} { m }
+\NewDocumentEnvironment {zcregion} { m }
   {
     \refstepcounter { zrefcheck }
     \zref@wrapper@babel \@@_target_label:n {#1}
@@ -1522,11 +1521,11 @@
 % information with \cs{zrefcheck_get_astl:nnn} or
 % \cs{zrefcheck_get_asint:nnn}.  Also, technically speaking, the
 % \meta{reference} argument is also a label, actually a pair of them, as set
-% by \cs{zrcheck}.  For the ``labels'', any \pkg{zref} property in
-% \pkg{zref}'s main list is available, the ``references'' store the properties
-% in the \texttt{zrefcheck} list.  Besides those, there is also the
-% \texttt{lblseq} (fake) property (for either ``labels'' or ``references''),
-% stored in \cs{g_@@_auxfile_lblseq_prop}.
+% by \cs{zcheck}.  For the ``labels'', any \pkg{zref} property in \pkg{zref}'s
+% main list is available, the ``references'' store the properties in the
+% \texttt{zrefcheck} list.  Besides those, there is also the \texttt{lblseq}
+% (fake) property (for either ``labels'' or ``references''), stored in
+% \cs{g_@@_auxfile_lblseq_prop}.
 %
 % Second, the required properties of labels and references must be duly
 % registered for \pkg{zref}.  This can be done with \cs{zref@newprop},
@@ -1586,10 +1585,9 @@
     \group_begin:
 %    \end{macrocode}
 % \meta{label beg} may be defined or not, it is arbitrary user input.  Whether
-% this is the case is checked in \cs{@@_zrcheck:nnnnn}, and due warning
-% already ensues.  And there is no point in checking ``relative position'' of
-% an undefined label.  Hence, in the absence of |#2|, we do nothing at all
-% here.
+% this is the case is checked in \cs{@@_zcheck:nnnnn}, and due warning already
+% ensues.  And there is no point in checking ``relative position'' of an
+% undefined label.  Hence, in the absence of |#2|, we do nothing at all here.
 %    \begin{macrocode}
       \zref@ifrefundefined {#2}
         {}

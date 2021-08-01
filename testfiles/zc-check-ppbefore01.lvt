@@ -1,0 +1,54 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+\zcheck{sec:section-1}[ppbefore]{this check should fail}
+
+\zcheck{txt:target-1}[ppbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck{sec:section-1}[ppbefore]{this check should pass}
+
+\zcheck{txt:target-1}[ppbefore]{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck{sec:section-1}[ppbefore]{this check should pass}
+
+\zcheck{txt:target-1}[ppbefore]{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck{sec:section-1}[ppbefore]{this check should pass}
+
+\zcheck{txt:target-1}[ppbefore]{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck{sec:section-1}[ppbefore]{this check should pass}
+
+\zcheck{txt:target-1}[ppbefore]{this check should pass}
+
+\OMIT
+
+\end{document}

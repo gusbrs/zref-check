@@ -1,0 +1,240 @@
+\documentclass{book}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+% The 'section' checks result in multiple possible cases, since they also
+% interact with the 'chapter' counter.  So, instead of "fine tuning" each
+% possibility, I adopted a more "standard" test for all of them, which makes
+% the log files much noisier, specially since most of the checks are made to
+% fail.  However, the standard structure is the way to verify the logs with
+% the intended results: i) the document structure is the same for all section
+% checks, the only thing that varies is whether the check passes of fails; ii)
+% each page has exactly nine checks, so ensuring the ones which should pass
+% are missing from the log, and counting the remaining ones, does the job if
+% the need to verify these checks comes up again.
+
+\begin{document}
+
+\START
+
+\zctarget{txt:target-0-0}{Lorem ipsum}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+\TIMO
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.1}
+\zlabel{sec:section-1.1}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should pass}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.2}
+\zlabel{sec:section-1.2}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should pass}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.3}
+\zlabel{sec:section-1.3}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should pass}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 1.4}
+\zlabel{sec:section-1.4}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should pass}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\chapter{Chapter 2}
+\zlabel{cha:chapter-2}
+\TIMO
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2.1}
+\zlabel{sec:section-2.1}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should pass}
+
+\zcheck{sec:section-2.2}[thissec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2.2}
+\zlabel{sec:section-2.2}
+
+\zcheck{txt:target-0-0}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.2}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.3}[thissec]{this check should fail}
+
+\zcheck{sec:section-1.4}[thissec]{this check should fail}
+
+\zcheck{cha:chapter-2}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.1}[thissec]{this check should fail}
+
+\zcheck{sec:section-2.2}[thissec]{this check should pass}
+
+\OMIT
+
+\end{document}

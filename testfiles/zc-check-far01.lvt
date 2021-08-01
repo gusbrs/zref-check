@@ -1,0 +1,177 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\zctarget{txt:target-01}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-02}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-03}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-04}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-05}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-06}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-07}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-08}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-09}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-10}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-11}{Lorem ipsum}
+
+\zcheck{txt:target-01}[far]{this check should pass}
+
+\zcheck{txt:target-02}[far]{this check should pass}
+
+\zcheck{txt:target-03}[far]{this check should pass}
+
+\zcheck{txt:target-04}[far]{this check should pass}
+
+\zcheck{txt:target-05}[far]{this check should pass}
+
+\zcheck{txt:target-06}[far]{this check should fail}
+
+\zcheck{txt:target-07}[far]{this check should fail}
+
+\zcheck{txt:target-08}[far]{this check should fail}
+
+\zcheck{txt:target-09}[far]{this check should fail}
+
+\zcheck{txt:target-10}[far]{this check should fail}
+
+\zcheck{txt:target-11}[far]{this check should fail}
+
+\zcheck{txt:target-12}[far]{this check should fail}
+
+\zcheck{txt:target-13}[far]{this check should fail}
+
+\zcheck{txt:target-14}[far]{this check should fail}
+
+\zcheck{txt:target-15}[far]{this check should fail}
+
+\zcheck{txt:target-16}[far]{this check should fail}
+
+\zcheck{txt:target-17}[far]{this check should pass}
+
+\zcheck{txt:target-18}[far]{this check should pass}
+
+\zcheck{txt:target-19}[far]{this check should pass}
+
+\zcheck{txt:target-20}[far]{this check should pass}
+
+\zcheck{txt:target-21}[far]{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-12}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-13}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-14}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-15}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-16}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-17}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-18}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-19}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-20}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-21}{Lorem ipsum}
+
+\OMIT
+
+\end{document}
