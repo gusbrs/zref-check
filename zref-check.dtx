@@ -230,9 +230,9 @@
 % \end{function}
 %
 %
-% \begin{function}{\zchecksetup}
+% \begin{function}{\zrefchecksetup}
 %   \begin{syntax}
-%     \cs{zchecksetup}\marg{options}
+%     \cs{zrefchecksetup}\marg{options}
 %   \end{syntax}
 %   Sets \pkg{zref-check}'s options (see Section~\ref{sec:options}).
 % \end{function}
@@ -337,7 +337,7 @@
 %
 % Options are a standard \texttt{key=value} comma separated list, and can be
 % set globally either as \cs{usepackage}\oarg{options} at load-time (see
-% Section~\ref{sec:loading-package}), or by means of \cs{zchecksetup} (see
+% Section~\ref{sec:loading-package}), or by means of \cs{zrefchecksetup} (see
 % Section~\ref{sec:user-interface}) in the preamble.  Most options can also be
 % used with local effects, through the optional argument \oarg{options} of
 % \cs{zcheck}.
@@ -410,7 +410,7 @@
 %
 % \begin{verbatim}
 %     \NewDocumentCommand\mybothlabels{m}{\label{#1}\zlabel{#1}}
-%     \zchecksetup{labelcmd=mybothlabels}
+%     \zrefchecksetup{labelcmd=mybothlabels}
 % \end{verbatim}
 %
 % Note that the value of the underlying counter used for labels in
@@ -924,10 +924,10 @@
 %    \end{macrocode}
 %
 %
-% \begin{macro}{\zchecksetup}
-%   Provide \cs{zchecksetup}.
+% \begin{macro}{\zrefchecksetup}
+%   Provide \cs{zrefchecksetup}.
 %    \begin{macrocode}
-\NewDocumentCommand \zchecksetup { m }
+\NewDocumentCommand \zrefchecksetup { m }
   { \keys_set:nn { zref-check } {#1} }
 %    \end{macrocode}
 % \end{macro}
