@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+% This testfile aims at ensuring \zcheck is working properly with multiple
+% checks and multiple labels, there is no particular interest in individual
+% checks, just in them "working together".
+
+\begin{document}
+
+\START
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+% Multiple checks
+\zcheck{sec:section-1}[thispage, above]{Foo bar}\par
+`thispage' on `sec:section-1': this check should pass\par
+`above' on `sec:section-1': this check should pass
+
+\zcheck{txt:target-1}[thispage, below]{Foo bar}\par
+`thispage' on `txt:target-1': this check should pass\par
+`below' on `txt:target-1': this check should fail
+
+\zcheck{sec:section-2}[thispage, before, nextchap]{Foo bar}\par
+`thispage' on `sec:section-2': this check should fail\par
+`before' on `sec:section-2': this check should fail\par
+`nextchap' on `sec:section-2': this check should fail
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec:section-2}
+
+\zctarget{txt:target-2}{Lorem ipsum}
+
+\zcheck{sec:section-1, sec:section-2}[thispage]{Foo bar}\par
+`thispage' on `sec:section-1': this check should fail\par
+`thispage' on `sec:section-2': this check should pass
+
+\zcheck{txt:target-1, txt:target-2}[prevchap]{Foo bar}\par
+`prevchap' on `txt:target-1': this check should fail\par
+`prevchap' on `txt:target-2': this check should fail
+
+\zcheck{sec:section-1, sec:section-2, sec:section-3}[nextsec]{Foo bar}\par
+`nextsec' on `sec:section-1': this check should fail\par
+`nextsec' on `sec:section-2': this check should fail\par
+`nextsec' on `sec:section-3': this check should pass
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 3}
+\zlabel{sec:section-3}
+
+\zctarget{txt:target-3}{Lorem ipsum}
+
+\zcheck{sec:section-2, sec:section-3}[thissec, prevsec]{Foo bar}\par
+`thissec' on `sec:section-2': this check should fail\par
+`thissec' on `sec:section-3': this check should pass\par
+`prevsec' on `sec:section-2': this check should pass\par
+`prevsec' on `sec:section-3': this check should fail
+
+\OMIT
+
+\end{document}
