@@ -788,7 +788,8 @@
 % use in the document body.
 %    \begin{macrocode}
     ignore .code:n =
-      { \msg_warning:nn { zref-check } { ignore-document-only } }
+      { \msg_warning:nn { zref-check } { ignore-document-only } } ,
+    ignore .value_forbidden:n = true
   }
 %    \end{macrocode}
 % \end{variable}
