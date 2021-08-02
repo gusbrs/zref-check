@@ -866,7 +866,7 @@
   {
     labelcmd .code:n =
       {
-        \tl_set:NV \l_@@_target_label_tl \l_keys_value_tl
+        \tl_set:Nn \l_@@_target_label_tl {#1}
         \bool_set_true:N \l_@@_target_label_bool
       } ,
     labelcmd .value_required:n = true ,
