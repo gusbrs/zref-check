@@ -1593,86 +1593,90 @@
       \zref@ifrefundefined {#2}
         {}
         {
-          \bool_set_true:N \l_@@_passedcheck_bool
-          \bool_set_false:N \l_@@_onpage_bool
-          \cs_if_exist:cTF { @@_check_ #1 :nnF }
+          \tl_if_empty:nTF {#1}
+            {}
             {
+              \bool_set_true:N \l_@@_passedcheck_bool
+              \bool_set_false:N \l_@@_onpage_bool
+              \cs_if_exist:cTF { @@_check_ #1 :nnF }
+                {
 %    \end{macrocode}
 % ``label beg'' vs ``reference beg''.
 %    \begin{macrocode}
-              \use:c { @@_check_ #1 :nnF }
-                {#2} {#3}
-                { \bool_set_false:N \l_@@_passedcheck_bool }
+                  \use:c { @@_check_ #1 :nnF }
+                    {#2} {#3}
+                    { \bool_set_false:N \l_@@_passedcheck_bool }
 %    \end{macrocode}
 % ``label beg'' vs ``reference end''.
 %    \begin{macrocode}
-              \exp_args:Nnno \use:c { @@_check_ #1 :nnF }
-                {#2} { \@@_end_lblfmt:n {#3} }
-                { \bool_set_false:N \l_@@_passedcheck_bool }
+                  \exp_args:Nnno \use:c { @@_check_ #1 :nnF }
+                    {#2} { \@@_end_lblfmt:n {#3} }
+                    { \bool_set_false:N \l_@@_passedcheck_bool }
 %    \end{macrocode}
 % ``label end'' \emph{may} have been created by the target commands.
 %    \begin{macrocode}
-              \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
-                {}
-                {
+                  \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                    {}
+                    {
 %    \end{macrocode}
 % ``label end'' vs ``reference beg''.
 %    \begin{macrocode}
-                  \exp_args:Nno \use:c { @@_check_ #1 :nnF }
-                    { \@@_end_lblfmt:n {#2} } {#3}
-                    { \bool_set_false:N \l_@@_passedcheck_bool }
+                      \exp_args:Nno \use:c { @@_check_ #1 :nnF }
+                        { \@@_end_lblfmt:n {#2} } {#3}
+                        { \bool_set_false:N \l_@@_passedcheck_bool }
 %    \end{macrocode}
 % ``label end'' vs ``reference end''.
 %    \begin{macrocode}
-                  \exp_args:Nnoo \use:c { @@_check_ #1 :nnF }
-                    { \@@_end_lblfmt:n {#2} }
-                    { \@@_end_lblfmt:n {#3} }
-                    { \bool_set_false:N \l_@@_passedcheck_bool }
-                }
+                      \exp_args:Nnoo \use:c { @@_check_ #1 :nnF }
+                        { \@@_end_lblfmt:n {#2} }
+                        { \@@_end_lblfmt:n {#3} }
+                        { \bool_set_false:N \l_@@_passedcheck_bool }
+                    }
 %    \end{macrocode}
 % Handle option \opt{onpage=msg}.  This is only granted for tests which
 % perform ``within this page'' checks (\opt{above}, \opt{below}, \opt{before},
 % \opt{after}) \emph{and} if any of the two by two checks uses a ``within this
 % page'' comparison.  If both conditions are met, signal.
 %    \begin{macrocode}
-              \seq_if_in:NnT \c_@@_onpage_checks_seq {#1}
-                {
-                  \@@_check_thispage:nnT
-                    {#2} {#3}
-                    { \bool_set_true:N \l_@@_onpage_bool }
-                  \@@_check_thispage:nnT
-                    {#2} { \@@_end_lblfmt:n {#3} }
-                    { \bool_set_true:N \l_@@_onpage_bool }
-                  \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
-                    {}
+                  \seq_if_in:NnT \c_@@_onpage_checks_seq {#1}
                     {
                       \@@_check_thispage:nnT
-                        { \@@_end_lblfmt:n {#2} } {#3}
+                        {#2} {#3}
                         { \bool_set_true:N \l_@@_onpage_bool }
                       \@@_check_thispage:nnT
-                        { \@@_end_lblfmt:n {#2} }
-                        { \@@_end_lblfmt:n {#3} }
+                        {#2} { \@@_end_lblfmt:n {#3} }
                         { \bool_set_true:N \l_@@_onpage_bool }
+                      \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                        {}
+                        {
+                          \@@_check_thispage:nnT
+                            { \@@_end_lblfmt:n {#2} } {#3}
+                            { \bool_set_true:N \l_@@_onpage_bool }
+                          \@@_check_thispage:nnT
+                            { \@@_end_lblfmt:n {#2} }
+                            { \@@_end_lblfmt:n {#3} }
+                            { \bool_set_true:N \l_@@_onpage_bool }
+                        }
                     }
-                }
-              \bool_if:NTF \l_@@_passedcheck_bool
-                {
-                  \bool_if:nT
+                  \bool_if:NTF \l_@@_passedcheck_bool
                     {
-                      \l_@@_msgonpage_bool &&
-                      \l_@@_onpage_bool
+                      \bool_if:nT
+                        {
+                          \l_@@_msgonpage_bool &&
+                          \l_@@_onpage_bool
+                        }
+                        {
+                          \@@_message:nnnx { double-check } {#1} {#2}
+                            { \zref@extractdefault {#3} {page} {'unknown'} }
+                        }
                     }
                     {
-                      \@@_message:nnnx { double-check } {#1} {#2}
+                      \@@_message:nnnx { check-failed } {#1} {#2}
                         { \zref@extractdefault {#3} {page} {'unknown'} }
                     }
                 }
-                {
-                  \@@_message:nnnx { check-failed } {#1} {#2}
-                    { \zref@extractdefault {#3} {page} {'unknown'} }
-                }
+                { \msg_warning:nnn { zref-check } { check-missing } {#1} }
             }
-            { \msg_warning:nnn { zref-check } { check-missing } {#1} }
         }
     \group_end:
   }
