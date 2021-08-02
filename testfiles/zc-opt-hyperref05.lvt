@@ -1,0 +1,24 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage[hyperref=false]{zref-check}
+
+\usepackage{hyperref}
+
+\begin{document}
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\START
+
+\setbox0=\hbox{\zcheck{sec:section-1}{Foo bar}}
+\showbox0
+
+\setbox1=\hbox{\zcheck*{sec:section-1}{Foo bar}}
+\showbox1
+
+\OMIT
+
+\end{document}

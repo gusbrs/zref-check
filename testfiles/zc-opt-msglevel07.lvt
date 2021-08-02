@@ -1,0 +1,35 @@
+\documentclass[final]{article}
+
+\input{regression-test}
+
+\usepackage[msglevel=obeyfinal]{zref-check}
+
+\begin{document}
+
+\START
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+\zcheck{sec:section-1}[nextpage]{this check should fail}
+
+\zcheck{txt:target-1}[below]{this check should fail}
+
+\zcheck{sec:section-2}[thispage]{this check should fail}
+
+\zcheck{txt:target-2}[nextchap]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec:section-2}
+
+\zctarget{txt:target-2}{Lorem ipsum}
+
+\OMIT
+
+\end{document}

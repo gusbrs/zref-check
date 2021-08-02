@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage[onpage=obeyfinal]{zref-check}
+
+\begin{document}
+
+\START
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 1}
+  \zlabel{fig:figure-1}
+  \rule{5cm}{5cm}
+\end{figure}
+
+\zcheck{fig:figure-1}[above]{this check should pass} and issue no warning.
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck{fig:figure-2}[above]{this check should fail}
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 2}
+  \zlabel{fig:figure-2}
+  \rule{5cm}{5cm}
+\end{figure}
+
+\OMIT
+
+\end{document}

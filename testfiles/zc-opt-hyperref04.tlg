@@ -1,0 +1,49 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+(zc-opt-hyperref04.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line ....
+LaTeX Font Info:    ... okay on input line ....
+Package zref-check Warning: Missing 'hyperref' package.
+(zref-check)                Setting 'hyperref=false'.
+> \box...=
+\hbox(6.94444+0.0)x33.77786
+.\write1{\zref@newlabel{zrefcheck@1}{\abspage{\Z@C@abspage }\abschap{0}\abssec\ETC.}
+.\OT1/cmr/m/n/10 F
+.\kern-0.83334
+.\OT1/cmr/m/n/10 o
+.\kern0.27779
+.\OT1/cmr/m/n/10 o
+.\glue 3.33333 plus 1.66666 minus 1.11111
+.\OT1/cmr/m/n/10 b
+.\OT1/cmr/m/n/10 a
+.\OT1/cmr/m/n/10 r
+.\write1{\zref@newlabel{zrefcheck@1@zrefcheck}{\abspage{\Z@C@abspage }\abschap\ETC.}
+! OK.
+l. ...\showbox0
+> \box...=
+\hbox(6.94444+0.0)x33.77786
+.\write1{\zref@newlabel{zrefcheck@2}{\abspage{\Z@C@abspage }\abschap{0}\abssec\ETC.}
+.\OT1/cmr/m/n/10 F
+.\kern-0.83334
+.\OT1/cmr/m/n/10 o
+.\kern0.27779
+.\OT1/cmr/m/n/10 o
+.\glue 3.33333 plus 1.66666 minus 1.11111
+.\OT1/cmr/m/n/10 b
+.\OT1/cmr/m/n/10 a
+.\OT1/cmr/m/n/10 r
+.\write1{\zref@newlabel{zrefcheck@2@zrefcheck}{\abspage{\Z@C@abspage }\abschap\ETC.}
+! OK.
+l. ...\showbox1
