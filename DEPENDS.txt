@@ -1,0 +1,3 @@
+hard zref
+hard oberdiek
+soft hyperref
