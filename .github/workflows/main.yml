@@ -1,4 +1,4 @@
-name: CI
+name: CI l3build tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    name: Test
+    name: Regression tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,8 +21,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/texlive
-          key: texlive-v1-${{ steps.get-id.outputs.id }}
-          restore-keys: texlive-v1-
+          key: texlive-v0-${{ steps.get-id.outputs.id }}
+          restore-keys: texlive-v0-
       - name: Install TeX Live
         uses: zauguin/install-texlive@v1
         with:
@@ -45,3 +45,47 @@ jobs:
             etexcmds
       - name: Run tests
         run: l3build check -q -H --show-log-on-error
+
+  doc:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Generate unique ID
+        id: get-id
+        run: |
+          echo -n ::set-output name=id::
+          cat /proc/sys/kernel/random/uuid
+      - name: Load cache
+        uses: actions/cache@v2
+        with:
+          path: ~/texlive
+          key: texlive-v0-${{ steps.get-id.outputs.id }}
+          restore-keys: texlive-v0-
+      - name: Install TeX Live
+        uses: zauguin/install-texlive@v1
+        with:
+          packages: |
+            # The test framework
+            l3build
+            # Build formats
+            latex
+            latex-bin
+            # Dependencies for documentation
+            alphalph
+            amsfonts
+            amsmath
+            booktabs
+            colortbl
+            csquotes
+            ec
+            enumitem
+            fancyvrb
+            hologo
+            makeindex
+            psnfss
+            tools
+            underscore
+      - name: Compile documentation
+        run: l3build doc -q -H
