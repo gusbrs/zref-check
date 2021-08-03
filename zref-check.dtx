@@ -1611,8 +1611,7 @@
       \zref@ifrefundefined {#2}
         {}
         {
-          \tl_if_empty:nTF {#1}
-            {}
+          \tl_if_empty:nF {#1}
             {
               \bool_set_true:N \l_@@_passedcheck_bool
               \bool_set_false:N \l_@@_onpage_bool
