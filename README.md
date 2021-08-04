@@ -14,4 +14,4 @@ arbitrary places in the text which can be referred to by `\zcheck`.
 
 The released version of this package is available from CTAN.
 
-For more details, check the [Documentation](zref-check.pdf).
+For more details, check the Documentation.
