@@ -2,3 +2,4 @@ build/
 aux/
 .auctex-auto/
 *.pdf
+*.zip
