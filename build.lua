@@ -1,6 +1,6 @@
 #!/usr/bin/env texlua
 
--- Build script for "zref-check" files
+-- Build script for "zref-check" package
 
 -- Identify the bundle and module
 bundle = ""
@@ -20,44 +20,32 @@ tagfiles = {"zref-check.dtx",
             "zref-check-code.tex"}
 
 function update_tag(file, content, tagname, tagdate)
-   tagname = string.gsub(tagname, "^v", "")
-   local tagyear = string.match(tagdate, "%d%d%d%d")
+   -- Handle release version tag and date.
+   local tagname_safe = string.gsub(tagname, "^v", "")
    if string.match(file, "^zref%-check%.dtx$") then
       content = string.gsub(
          content,
          "\n\\ProvidesExplPackage %{zref%-check%} %{[^}]+%} %{[^}]+%}\n",
          "\n\\ProvidesExplPackage {zref-check} {"
-         .. tagdate .. "} {" .. tagname .. "}\n")
-      if string.match(content, "Copyright%D-%d%d%d%d%-%d%d%d%d") then
-         if not string.find(
-            content, "Copyright%D-%d%d%d%d*%-" .. tagyear) then
-            content = string.gsub(
-               content,
-               "Copyright(%D-)(%d%d%d%d%-)%d%d%d%d",
-               "Copyright%1%2" .. tagyear)
-         end
-      else
-         if not string.find(content, "Copyright%D-" .. tagyear) then
-            content = string.gsub(
-               content,
-               "Copyright(%D-)(%d%d%d%d)",
-               "Copyright%1%2-" .. tagyear)
-         end
-      end
+         .. tagdate .. "} {" .. tagname_safe .. "}\n")
    elseif string.match(file, "^CHANGELOG%.md$") then
       local url = "https://github.com/gusbrs/zref-check/compare/"
       content = string.gsub(
          content,
          "(## %[Unreleased%]%(.-)%.%.%.HEAD%)",
-         "%1...v" .. tagname .. "), " .. tagdate)
+         "%1...v" .. tagname_safe .. ") (" .. tagdate .. ")")
       content = string.gsub(
          content,
          "## %[Unreleased%]",
-         "## [Unreleased](" .. url .. "v" .. tagname .. "...HEAD)\n\n"
-         .. "## [v" .. tagname .. "]")
-   elseif string.match(file, "^zref%-check%.ins$") or
+         "## [Unreleased](" .. url .. "v" .. tagname_safe .. "...HEAD)\n\n"
+         .. "## [v" .. tagname_safe .. "]")
+   end
+   -- Handle copyright notice.
+   if string.match(file, "^zref%-check%.dtx$") or
+      string.match(file, "^zref%-check%.ins$") or
       string.match(file, "^zref%-check%.tex$") or
       string.match(file, "^zref%-check%-code%.tex$") then
+      local tagyear = string.match(tagdate, "%d%d%d%d")
       if string.match(content, "Copyright%D-%d%d%d%d%-%d%d%d%d") then
          if not string.find(
             content, "Copyright%D-%d%d%d%d*%-" .. tagyear) then
@@ -79,6 +67,7 @@ function update_tag(file, content, tagname, tagdate)
 end
 
 function tag_hook(tagname)
-  os.execute('git commit -a -m "Step release tag"')
-  os.execute('git tag -a -m "" ' .. tagname)
+   local tagname_safe = string.gsub(tagname, "^v", "")
+   os.execute('git commit -a -m "Step release tag"')
+   os.execute('git tag -a -m "" v' .. tagname_safe)
 end
