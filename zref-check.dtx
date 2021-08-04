@@ -56,127 +56,73 @@
 % \fi
 %
 %
-% \GetFileInfo{zref-check.sty}
-%
-% \title{^^A
-%   The \pkg{zref-check} package^^A
-%   \thanks{This file describes \fileversion,
-%     last revised \filedate.}^^A
-% }
-%
-% \author{^^A
-%  Gustavo Barros^^A
-%  \thanks{^^A
-%    \url{https://github.com/gusbrs/zref-check}^^A
-%   }^^A
-% }
-%
-% \date{\filedate}
-%
-% \maketitle
-%
-% \tableofcontents
-%
-%
 % \begin{documentation}
 %
 % \section{Introduction}
 % \label{sec:introduction}
 %
-% \pkg{zref-check} provides an user interface for making \LaTeX{}
+% The \pkg{zref-check} package provides an user interface for making \LaTeX{}
 % cross-references exploiting document contextual information to enrich the
-% way the reference can be rendered.  In so doing, it caters to the same kind
-% of need as \pkg{varioref} does.  But the UI concept is quite different.  I
-% think it is fair to say that, in relation to \pkg{varioref},
-% \pkg{zref-check} offers a little less automation and a lot more flexibility.
+% way the reference can be rendered, but at the same time ensuring the means
+% that these cross-references can be done consistently with the document
+% structure.
 %
-% The basic idea is that, instead of trying to provide the text to be typeset
-% based on the contextual information (as \pkg{varioref} does),
-% \pkg{zref-check} lets the user supply an arbitrary text and specify a number
-% of checks to be done on the label(s) being referred to.  If the checks fail,
-% a warning is issued upon compilation, so that the user can go back to that
-% cross-reference and correct it as needed.  In a way, this shares the spirit
-% of \pkg{widows-and-orphans}: instead of trying to fix it for you
-% automatically (as \pkg{nowidow} does), it just provides a warning so that
-% the problem can be identified (and fixed) without having to rely on
+% The usual \LaTeX{} cross-reference is done by referring to a \texttt{label},
+% associated with one or another document structural element, and this
+% reference will typeset for you some content based on the information which
+% is stored in that label.  \cs{zcheck}, the main user command of
+% \pkg{zref-check}, has a somewhat different concept.  Instead of trying to
+% provide the text to be typeset based on the contextual information,
+% \cs{zcheck} lets the user supply an arbitrary text and specify one or more
+% checks to be done on the label(s) being referred to.  If any of the checks
+% fail, a warning is issued upon compilation, so that the user can go back to
+% that cross-reference and correct it as needed, without having to rely on
 % burdensome and error prone manual proof-reading.
 %
-% Though, admittedly, the kind of automation \pkg{varioref} provides may be
-% preferred in a number of use cases, in others there is a lot to gain on the
-% extra flexibility \pkg{zref-check} provides.  The writing style, the variety
-% of expressions you may use for similar situations, does not need to be
-% sacrificed for the convenience.  \pkg{zref-check} cross-references do not
+% This flexibility \pkg{zref-check} grants means that the writing style, the
+% variety of expressions you may use for similar situations, does not need to
+% be sacrificed for the convenience.  \cs{zcheck}'s cross-references do not
 % need to ``feel'' automated to be consistently checked.  Localization is also
-% not an issue, for the same reason.  There is also much more document context
-% we can leverage by separating ``typesetting'' from ``checking'' (see
+% not an issue, since the cross-reference text is provided directly by the
+% user.  Separating ``typesetting'' from ``checking'' also means there is a
+% lot of document context we can leverage for this purpose (see
 % Section~\ref{sec:checks}).
 %
-% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
-% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
-% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
-% by this package.  This has some advantages, particularly the data
-% flexibility of \pkg{zref}, and the absence of the ubiquitous ``load-order''
-% and compatibility problems which are well known to afflict \LaTeX{} packages
-% of this area of functionality.  On the other hand, the reliance on
-% \pkg{zref} labels may be seen as an inconvenience, since users of the
-% standard cross-reference infrastructure will need to add extra labels for
-% this.  That's true.  But \pkg{zref-check} is not meant to replace the
-% existing functionality of the traditional packages (to my knowledge, it only
-% intersects directly with \pkg{varioref}).  Indeed, it is easy to see the use
-% in tandem with standard references, for example:
-%
-% \begin{verbatim}
-%     ... Figure~\ref{fig:figure-1}, \zcheck*{fig:figure-1}[nextpage]{on
-%     the next page}.
-% \end{verbatim}
-%
-% Besides, \pkg{zref} does not share the label name-space with the standard
-% labels, so that you can call both \cs{label} and \cs{zlabel} with the same
-% label name (manually, or through a convenience macro), to ease the label set
-% administration.  The example above presumes that was the case.
-%
-%
-% \subsection{Hard vs.\ soft cross-references}
-%
-% The standard \LaTeX{} cross-reference infrastructure, even considering the
-% package ecosystem, is made to work with and refer to specific numbered
-% document elements.  Chapters, sections, figures, tables, equations, etc.
+% A standard \LaTeX{} cross-reference is made to refer to specific numbered
+% document elements -- chapters, sections, figures, tables, equations, etc.
 % The cross-reference will normally produce that number (which is the
 % element's ``id'') and, eventually, its ``type'' (the counter).  We may also
 % refer to the page that element occurs and even its ``title'' (in which case,
 % atypically, we may even get to refer to an unnumbered section, provided we
-% also implicitly supply by some means the ``id'').  These are what I'm
-% calling here ``hard'' cross-references.
+% also implicitly supply by some means the ``id'').
 %
-% However, there are other kinds of ``soft'' cross-references we routinely do
-% in our documents.  Expressions such as ``as previously discussed'', ``as
-% mentioned before'', ``as will be soon elaborated'', and so on, are a
-% powerful discursive instrument, which enriches the text, by offering hints
-% to the arguments' threads, without necessarily ``smashing them into the
-% reader's face''.  So, we don't say ``on footnote 57, pag.~34'', but
-% ``previously'', not ``on Section 3.4'', but ``below'', or ``later on''.
+% For references to these usual specific document elements, \pkg{zref-check}
+% caters for a particular kind of cross-reference which is common:
+% \emph{relational} statements based on them.  \cs{zcheck} can typeset and
+% meaningfully check cross-references such as ``above'', ``on the next page'',
+% ``on the facing page'', ``on the previous section'', ``later on this
+% chapter'' and so on.  After all, if your reference is being made on page 2
+% and refers to something on the same page, ``on this page'' reads much better
+% than ``on page~2''.  If you are writing chapter~4, ``on the previous
+% chapter'' sounds nicer than ``on chapter~3''.
 %
-% Granted, the need and usage of this type of document self reference
-% certainly depend on the kind of document, on the area of knowledge, etc.
-% However, they do tend to be employed in a number of places, particularly in
-% longer documents.  And that's precisely the scenario in which they may
-% become problematic.  If your document is short (say, a paper/article) and it
-% was made in a reasonably short spurt, you'll probably won't bother with this
-% kind of references.  In this case, and to use \pkg{varioref}'s expression,
-% you ``usually know (!)'' them to be correct.  However, if you are preparing
-% one of those long, complex, and ``long ground'' documents, with several
-% rounds of editing and content rearranging, this kind of references will
-% likely bring you trouble.  They are not only hard to check and find, but
-% they are also hard to fix.  After all, if you are making one such reference,
-% you are taking that statement as a premisse at the current point in the
-% text.  So, if that reference is missing, or relocated, you may need to bring
-% in the support to the premisse for your argument to close, rather than just
-% ``adjust the reference text''.
+% However, there is another kind of ``looser'' cross-reference we routinely do
+% in our documents.  Expressions such as ``previously'', ``as mentioned
+% before'', ``as will be discussed'', and so on, are a powerful discursive
+% instrument, which enriches the text, by offering hints to the arguments'
+% threads, without necessarily pressing them too hard onto the reader.  So, we
+% might not want to say ``on footnote 57, pag.~34'', but prefer
+% ``previously'', not ``on Section 3.4'', but rather ``below'', or ``later
+% on''.  Besides, we also may refer to certain passages in the text in this
+% way, rather than to numbered document elements.  And this kind of reference
+% is not only hard to check and find, but also hard to fix.  After all, if you
+% are making one such reference, you are taking that statement as a premisse
+% at the current point in the text.  So, if that reference is missing, or
+% relocated, you may need to bring in the support to the premisse for your
+% argument to close, rather than just ``adjust the reference text''.
+% \pkg{zref-check} provides support for this kind of cross-reference, allowing
+% for them to be consistently verified.
 %
-% To my knowledge, there is no \LaTeX{} package providing support for this
-% kind of cross-reference, \pkg{zref-check} does so.  Of course, this is
-% already possible with the standard infrastructure, \pkg{zref-check} just
-% streamlines the task.
 %
 %
 % \section{Loading the package}
@@ -194,10 +140,11 @@
 %
 % \pkg{zref} is required, of course, but in particular, its modules
 % \pkg{zref-user} and \pkg{zref-abspage} are loaded by default.  \pkg{ifdraft}
-% is also loaded by default.  A recent \LaTeX{} kernel is required, since we
-% rely on the new hook system from \pkg{ltcmdhooks} for the sectioning checks.
-% If \pkg{hyperref} is loaded and option \pkg{hyperref} is given,
-% \pkg{zref-check} makes use of it, but it does not load the package for you.
+% (from the \pkg{oberdiek} bundle) is also loaded by default.  A \LaTeX{}
+% kernel later than 2021-06-01 is required, since we rely on the new hook
+% system from \pkg{ltcmdhooks} for the sectioning checks.  If \pkg{hyperref}
+% is loaded and option \pkg{hyperref} is given, \pkg{zref-check} makes use of
+% it, but it does not load the package for you.
 %
 %
 % \section{User interface}
@@ -208,17 +155,12 @@
 %     \cs{zcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
 %   \end{syntax}
 %   Typesets \marg{text}, as given, while performing the comma separated list
-%   of \oarg{checks} on each of the comma separated list of \marg{labels}.  In
-%   addition to that, it places a pair of (internal) \texttt{zlabel}s, one at
-%   the start of \marg{text}, another one at the end of \marg{text}, which are
-%   used to run the checks against each of the \marg{labels}.  When
-%   \pkg{hyperref} support is enabled, \marg{text} will be made a hyperlink to
-%   \emph{the first} label in \marg{labels}.  The starred version of the
-%   command does the same as the plain one, just does not form a link.  The
-%   \oarg{options} are (mostly) the same as those of the package, and can be
-%   given to local effect.  Note that the \marg{text} argument of \cs{zcheck}
-%   is not long because, if it was, we'd not be able to use if for building
-%   hyperlinks, besides there is no need for it to be.
+%   of \oarg{checks} on each of the comma separated list of \marg{labels}.
+%   When \pkg{hyperref} support is enabled, \marg{text} will be made a
+%   hyperlink to \emph{the first} label in \marg{labels}.  The starred version
+%   of the command does the same as the plain one, just does not form a link.
+%   The \oarg{options} are (mostly) the same as those of the package, and can
+%   be given to local effect.
 % \end{function}
 %
 % \begin{function}{\zctarget}
@@ -237,11 +179,8 @@
 %       |  ...|
 %     |\end{zcregion}|
 %   \end{syntax}
-%   Just an environment that does pretty much the same as \cs{zctarget}, for
-%   cases of longer stretches of text.  If you don't like to use the
-%   environment for whatever reason, you may also set two \cs{zctarget}s (with
-%   empty \marg{text} arguments), one at the beginning and another one at the
-%   end, and run \cs{zcheck} against both of them to the same effect.
+%   An environment that does the same as \cs{zctarget}, for cases of longer
+%   stretches of text.
 % \end{function}
 %
 %
@@ -267,9 +206,10 @@
 %
 % Note that the naming convention of the checks adopts the perspective of
 % \cs{zcheck}.  That is, the name of the check describes the position of the
-% label being checked, relative to the \cs{zcheck} call being made.  For
-% example, the \opt{before} check should issue no message if the \marg{label}
-% occurs before \cs{zcheck}.
+% label being referred to, relative to the \cs{zcheck} call being made.  For
+% example, the \opt{before} check should issue no message if the
+% \cs{zlabel}\marg{label} (or equivalent) occurs before
+% \cs{zcheck}\marg{label}|[before]|\marg{text}.
 %
 % The available checks are the following:
 %
@@ -436,7 +376,31 @@
 % \texttt{zcregion} with this procedure.
 %
 %
-% \section{Label names}
+% \section{Labels}
+%
+% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
+% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
+% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
+% by this package.  This has some advantages, particularly the data
+% flexibility of \pkg{zref}, and the absence of the ubiquitous ``load-order''
+% and compatibility problems which are well known to afflict \LaTeX{} packages
+% of this area of functionality.  On the other hand, the reliance on
+% \pkg{zref} labels may be seen as an inconvenience, since users of the
+% standard cross-reference infrastructure may need to add extra labels for
+% this.  That's true.  But \pkg{zref-check} is not meant to replace the
+% existing functionality of the traditional packages (to my knowledge, it only
+% intersects directly with \pkg{varioref}).  Indeed, it is easy to see the use
+% in tandem with standard references, for example:
+%
+% \begin{verbatim}
+%     ... Figure~\ref{fig:figure-1}, \zcheck*{fig:figure-1}[nextpage]{on
+%     the next page}.
+% \end{verbatim}
+%
+% Besides, \pkg{zref} does not share the label name-space with the standard
+% labels, so that you can call both \cs{label} and \cs{zlabel} with the same
+% label name (manually, or through a convenience macro), to ease the label set
+% administration.  The example above presumes that was the case.
 %
 % All user commands have their \marg{label} arguments protected by
 % \cs{zref@wrapper@babel}, so that we should have equivalent support in that
@@ -446,7 +410,7 @@
 % by the package.
 %
 %
-% \section{Technique and limitations}
+% \section{Limitations}
 %
 % There are three qualitatively different kinds of checks being used by
 % \cs{zcheck}, according to the source and reliability of the information they
@@ -532,12 +496,12 @@
 % The caveat is that the package does this by hooking into \cs{chapter} and
 % \cs{section}, which poses two restrictions for the proper working of these
 % checks.  First, we are using the new hook system for this, as provided by
-% \pkg{ltcmdhooks}, which means a recent \LaTeX{} kernel is required.  Second,
-% since we are hooking into \cs{chapter} and \cs{section}, these checks
-% presume these commands are being used by the document class for this purpose
-% (either directly, or internally as, for example, KOMA-Script's \cs{addchap}
-% and \cs{addsec} do).  If that's not the case, additional setup may be
-% required for these checks to work as expected.
+% \pkg{ltcmdhooks}, which means a \LaTeX{} kernel later than 2021-06-01 is
+% required.  Second, since we are hooking into \cs{chapter} and \cs{section},
+% these checks presume these commands are being used by the document class for
+% this purpose (either directly, or internally as, for example, KOMA-Script's
+% \cs{addchap} and \cs{addsec} do).  If that's not the case, additional setup
+% may be needed for these checks to work as expected.
 %
 %
 % \end{documentation}
@@ -545,7 +509,7 @@
 %
 % \begin{implementation}
 %
-% \part{\cs{zref-check} implementation}
+% \section{Initial setup}
 %
 % Start the \pkg{DocStrip} guards.
 %    \begin{macrocode}
@@ -557,7 +521,6 @@
 %<@@=zrefcheck>
 %    \end{macrocode}
 %
-% \section{Initial setup}
 %
 % For the \texttt{chapter} and \texttt{section} checks, \pkg{zref-check} uses
 % the new hook system in \pkg{ltcmdhooks}, which was released with the
@@ -576,7 +539,7 @@
   }%
 %    \end{macrocode}
 %
-%
+% Identify the package.
 %    \begin{macrocode}
 \ProvidesExplPackage {zref-check} {2021-07-27} {0.1.0-alpha}
   {Flexible cross-references with contextual checks based on zref}
@@ -753,7 +716,7 @@
 % \begin{macro}{\@@_is_integer_rgx:n}
 %   A possible alternative to \cs{@@_is_integer:n} is to use a straightforward
 %   regexp match (see \url{https://tex.stackexchange.com/a/427559}).  It does
-%   not suffer from the mentioned caveats from the \cs{tex_romannumeral:D}
+%   not suffer from the mentioned caveats from the \cs{__int_to_roman:w}
 %   technique, however, while \cs{@@_is_integer:n} is expandable,
 %   \cs{@@_is_integer_rgx:n} is not.  Also, \cs{@@_is_integer_rgx:n} is
 %   probably slower.
@@ -773,7 +736,7 @@
 % \subsection{Options}
 %
 %
-% \opt{hyperref} option
+% \subsubsection*{\opt{hyperref} option}
 %
 % \begin{variable}{\l_@@_use_hyperref_bool, \l_@@_warn_hyperref_bool}
 %    \begin{macrocode}
@@ -828,7 +791,7 @@
 %    \end{macrocode}
 %
 %
-% \opt{msglevel} option
+% \subsubsection*{\opt{msglevel} option}
 %
 % \begin{variable}{\l_@@_msglevel_tl}
 %    \begin{macrocode}
@@ -876,7 +839,7 @@
 %    \end{macrocode}
 %
 %
-% \opt{onpage} option
+% \subsubsection*{\opt{onpage} option}
 %
 % \begin{variable}{\l_@@_msgonpage_bool}
 %    \begin{macrocode}
@@ -911,7 +874,7 @@
 % \end{variable}
 %
 %
-% \opt{closerange} option
+% \subsubsection*{\opt{closerange} option}
 %
 % \begin{variable}{\l_@@_close_range_int}
 %    \begin{macrocode}
@@ -934,7 +897,7 @@
 % \end{variable}
 %
 %
-% \opt{labelcmd} option
+% \subsubsection*{\opt{labelcmd} option}
 %
 % \begin{variable}{\l_@@_target_label_tl}
 %   I'd love to receive the macro itself rather than it's name, but this would
@@ -998,6 +961,8 @@
 %    \end{macrocode}
 %
 %
+% \subsubsection*{Package options}
+%
 % Process load-time package options
 % (\url{https://tex.stackexchange.com/a/15840}).
 %    \begin{macrocode}
@@ -1006,13 +971,14 @@
 %    \end{macrocode}
 %
 %
-% \begin{macro}{\zrefchecksetup}
+% \begin{macro}[int]{\zrefchecksetup}
 %   Provide \cs{zrefchecksetup}.
 %    \begin{macrocode}
 \NewDocumentCommand \zrefchecksetup { m }
   { \keys_set:nn { zref-check } {#1} }
 %    \end{macrocode}
 % \end{macro}
+%
 %
 %
 % \subsection{Position on page}
@@ -1189,10 +1155,9 @@
 % able to set proper anchors with \cs{refstepcounter}.  And, since I couldn't
 % find a \cs{refstepcounter} equivalent in L3, we use a standard 2e counter
 % here.  I'm also using the technique to ensure the counter is never reset
-% that is used by \file{zref-abspage.sty} and \cs{zref@require@unique}.  I
-% don't know why it is needed, but if Oberdiek does it, there must be a
-% reason.  In any case, the requirements are the same, we need numbers ensured
-% to be \emph{unique} in the counter.
+% that is used by \file{zref-abspage.sty} and \cs{zref@require@unique}.
+% Indeed, the requirements are the same, we need numbers ensured to be
+% \emph{unique} in the counter.
 %
 %    \begin{macrocode}
 \begingroup
@@ -1369,7 +1334,7 @@
 %
 % \subsection{\cs{zcheck}}
 %
-% \begin{macro}{\zcheck}
+% \begin{macro}[int]{\zcheck}
 %   The \marg{text} argument of \cs{zcheck} should not be long, since
 %   \cs{hyperlink} cannot receive a long argument.  Besides, there is no
 %   reason for it to be.  Note, also, that hyperlinks crossing page boundaries
@@ -1487,7 +1452,7 @@
 %
 % \subsection{Targets}
 %
-% \begin{macro}{\zctarget}
+% \begin{macro}[int]{\zctarget}
 %   \begin{syntax}
 %     \cs{zctarget}\marg{label}\marg{text}
 %   \end{syntax}
@@ -1510,7 +1475,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{zcregion}
+% \begin{macro}[int]{zcregion}
 %   \begin{syntax}
 %     |\begin{zcregion}|\marg{label}
 %       |  ...|

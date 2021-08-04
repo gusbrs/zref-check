@@ -3,18 +3,15 @@
 **Flexible LaTeX cross-references with contextual checks based on zref**
 
 `zref-check` provides an user interface for making LaTeX cross-references
-exploiting document contextual information to enrich the way the reference can
-be rendered.
+flexibly, while allowing to have them checked for consistency with the
+document structure as typeset.  Statements such as “above”, “on the next
+page”, “previously”, “as will be discussed”, “on the previous chapter” and so
+on can be given to `\zcheck` in free-form, and a set of “checks” can be
+specified to be run against a given `label`, which will result in a warning at
+compilation time if any of these checks fail.  `\zctarget` and the `zcregion`
+environment are also defined as a means to easily set label targets to
+arbitrary places in the text which can be referred to by `\zcheck`.
 
-The basic idea is that, instead of trying to provide the text to be typeset
-based on the contextual information, `zref-check` lets the user supply an
-arbitrary text and specify a number of checks to be done on the label(s) being
-referred to.  If the checks fail, a warning is issued upon compilation, so
-that the user can go back to that cross-reference and correct it as needed.
-Hence, `zref-check` does not automate the format of your cross-reference text
-is typeset, it just provides instead a warning so that the problem can be
-identified (and fixed) without having to rely on burdensome and error prone
-manual proof-reading.
+The released version of this package is available from CTAN.
 
 For more details, check the [Documentation](zref-check.pdf).
-

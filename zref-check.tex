@@ -51,6 +51,37 @@
 
 \begin{document}
 
+\GetFileInfo{zref-check.sty}
+
+\title{%
+  The \pkg{zref-check} package%
+  \thanks{This file describes \fileversion, last revised \filedate.}%
+}
+
+\author{%
+  Gustavo Barros%
+  \thanks{\url{https://github.com/gusbrs/zref-check}}%
+}
+
+\date{\filedate}
+
+\maketitle
+
+\begin{abstract}
+  \pkg{zref-check} provides an user interface for making \LaTeX{}
+  cross-references flexibly, while allowing to have them checked for
+  consistency with the document structure as typeset.  Statements such as
+  ``above'', ``on the next page'', ``previously'', ``as will be discussed'',
+  ``on the previous chapter'' and so on can be given to \cs{zcheck} in
+  free-form, and a set of ``checks'' can be specified to be run against a
+  given \texttt{label}, which will result in a warning at compilation time if
+  any of these checks fail.  \cs{zctarget} and the \texttt{zcregion}
+  environment are also defined as a means to easily set label targets to
+  arbitrary places in the text which can be referred to by \cs{zcheck}.
+\end{abstract}
+
+\tableofcontents
+
 \DisableImplementation
 
 \DocInput{zref-check.dtx}

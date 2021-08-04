@@ -49,7 +49,36 @@
 
 \NewDocumentCommand\opt{m}{\texttt{#1}}
 
+% Have the Index at 'section' level rather than 'part'.  Otherwise it is just
+% the same definition from 'l3doc.cls'.
+\IndexPrologue{%
+  \section*{Index}
+  \markboth{Index}{Index}
+  \addcontentsline{toc}{section}{Index}
+  The italic numbers denote the pages where the corresponding entry is
+  described, numbers underlined point to the definition, all others indicate
+  the places where it is used.%
+}
+
 \begin{document}
+
+\GetFileInfo{zref-check.sty}
+
+\title{%
+  The \pkg{zref-check} package implementation%
+  \thanks{This file describes \fileversion, last revised \filedate.}%
+}
+
+\author{%
+  Gustavo Barros%
+  \thanks{\url{https://github.com/gusbrs/zref-check}}%
+}
+
+\date{\filedate}
+
+\maketitle
+
+\tableofcontents
 
 \DisableDocumentation
 
