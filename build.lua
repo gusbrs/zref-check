@@ -6,6 +6,9 @@
 bundle = ""
 module = "zref-check"
 
+-- Use a dedicated readme for CTAN to meet upload requirements
+ctanreadme = "readme-ctan.md"
+
 -- Typeset only the .tex files
 typesetfiles = {"*.tex"}
 
