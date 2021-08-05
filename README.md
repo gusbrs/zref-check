@@ -12,6 +12,6 @@ compilation time if any of these checks fail.  `\zctarget` and the `zcregion`
 environment are also defined as a means to easily set label targets to
 arbitrary places in the text which can be referred to by `\zcheck`.
 
-The released version of this package is available from CTAN.
+The released version of this package is available [from CTAN](https://ctan.org/pkg/zref-check).
 
-For more details, check the Documentation.
+For more details, check the [Documentation](https://mirrors.ctan.org/macros/latex/contrib/zref-check/zref-check.pdf).
