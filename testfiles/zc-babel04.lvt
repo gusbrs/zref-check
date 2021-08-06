@@ -1,0 +1,169 @@
+\documentclass{article}
+
+\input{regression-test}
+
+% The intent of these 'babel' tests is to ensure 'zref's '\zref@wrapper@babel'
+% is working as expected in the 'zref-check' makes of it.  So, we deliberately
+% use 'babel' active characters in the labels.  The '\START' call is made
+% *before* '\begin{document}' so that we capture the reading of the '.aux'
+% file, even if it makes the test somewhat noisier and require engine specific
+% compilation.
+
+\usepackage[T1]{fontenc}
+
+\usepackage[spanish,es-tilden]{babel}
+
+\newcommand\lipsumi{Lorem ipsum dolor sit amet, consectetuer adipiscing
+  elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae,
+  felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget,
+  consectetuer id, vulputate a, magna. Donec vehicula augue eu
+  neque. Pellentesque habitant morbi tristique senectus et netus et malesuada
+  fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus
+  sem. Nulla et lectus vestibulum urna fringilla ultrices.  Phasellus eu
+  tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in,
+  pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices
+  bibendum. Aenean faucibus.  Morbi dolor nulla, malesuada eu, pulvinar at,
+  mollis ac, nulla.  Curabitur auctor semper nulla. Donec varius orci eget
+  risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis
+  eget orci sit amet orci dignissim rutrum.}
+
+\newcommand\lipsumii{Nam dui ligula, fringilla a, euismod sodales,
+  sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero,
+  pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed
+  accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a
+  mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec
+  ante. Pellentesque a nulla.  Cum sociis natoque penatibus et magnis dis
+  parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla
+  ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.}
+
+\usepackage{zref-check}
+
+\START
+
+\begin{document}
+
+\section{Section 1}
+\zlabel{sec"section-1}
+
+\zctarget{txt"target-1-1}{Lorem ipsum}
+
+\begin{zcregion}{txt"target-1-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec"section-1}[thispage]{this check should pass}
+
+\zcheck{txt"target-1-1}[nextpage]{this check should fail}
+
+\zcheck{txt"target-1-2}[prevsec]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec.section-2}
+
+\zctarget{txt.target-2-1}{Lorem ipsum}
+
+\begin{zcregion}{txt.target-2-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec.section-2}[after]{this check should fail}
+
+\zcheck{txt.target-2-1}[above]{this check should pass}
+
+\zcheck{txt.target-2-2}[nextpage]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 3}
+\zlabel{sec<section-3}
+
+\zctarget{txt<target-3-1}{Lorem ipsum}
+
+\begin{zcregion}{txt<target-3-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec<section-3}[prevchap]{this check should fail}
+
+\zcheck{txt<target-3-1}[nextsec]{this check should fail}
+
+\zcheck{txt<target-3-2}[before]{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 4}
+\zlabel{sec>section-4}
+
+\zctarget{txt>target-4-1}{Lorem ipsum}
+
+\begin{zcregion}{txt>target-4-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec>section-4}[above]{this check should pass}
+
+\zcheck{txt>target-4-1}[far]{this check should fail}
+
+\zcheck{txt>target-4-2}[below]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 5}
+\zlabel{sec'section-5}
+
+\zctarget{txt'target-5-1}{Lorem ipsum}
+
+\begin{zcregion}{txt'target-5-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec'section-5}[facing]{this check should fail}
+
+\zcheck{txt'target-5-1}[close]{this check should pass}
+
+\zcheck{txt'target-5-2}[chapsbefore]{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 6}
+\zlabel{sec~section-6}
+
+\zctarget{txt~target-6-1}{Lorem ipsum}
+
+\begin{zcregion}{txt~target-6-2}
+  \lipsumi{}
+
+  \lipsumii{}
+\end{zcregion}
+
+\zcheck{sec~section-6}[ppafter]{this check should fail}
+
+\zcheck{txt~target-6-1}[secsafter]{this check should fail}
+
+\zcheck{txt~target-6-2}[thispage]{this check should above}
+
+\OMIT
+
+\end{document}
