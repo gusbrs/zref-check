@@ -15,10 +15,28 @@ typesetfiles = {"*.tex"}
 -- Two runs for label testing
 checkruns = 2
 
+-- CTAN upload settings
+
+uploadconfig = {
+  version = "0.1.0", -- first line for tagging
+  pkg = "zref-check",
+  author = "Gustavo Barros",
+  uploader = "Gustavo Barros",
+  summary = "Flexible cross-references with contextual checks based on zref",
+  license = "lppl1.3c",
+  ctanPath = "/macros/latex/contrib/zref-check",
+  repository = "https://github.com/gusbrs/zref-check",
+  bugtracker = "https://github.com/gusbrs/zref-check/issues",
+  update = true,
+  announcement_file = "ctan-announcement.txt",
+  note_file = "ctan-note.txt",
+}
+
 -- Set version, release date and copyright automatically
 tagfiles = {
   "zref-check.dtx",
   "CHANGELOG.md",
+  "build.lua",
   "zref-check.ins",
   "zref-check.tex",
   "zref-check-code.tex"
@@ -46,6 +64,30 @@ function update_tag(file, content, tagname, tagdate)
       "## %[Unreleased%]",
       "## [Unreleased](" .. url .. "v" .. tagname_safe .. "...HEAD)\n\n"
       .. "## [v" .. tagname_safe .. "]"
+    )
+    -- Handle CTAN release announcement.
+    local announcement = string.match(
+      content, "\n(## %[v" .. tagname_safe .. "%].-\n)## %[v"
+    )
+    announcement = string.gsub(
+      announcement,
+      "## %[v" .. tagname_safe .. "%]%(https.-%)",
+      "## v" .. tagname_safe
+    )
+    -- File operations based on 'update_file_tag' function of
+    -- 'l3build-tagging.lua'.
+    local filename = basename(uploadconfig.announcement_file)
+    local path = dirname(uploadconfig.announcement_file)
+    ren(path,filename,filename .. ".bak")
+    f = assert(io.open(uploadconfig.announcement_file,"w"))
+    f:write((string.gsub(announcement,"\n",os_newline)))
+    f:close()
+    rm(path,filename .. ".bak")
+  elseif string.match(file, "^build%.lua$") then
+    content = string.gsub(
+      content,
+      "(\nuploadconfig%s*=%s*%{\n%s*version%s*=%s*\")[^\"]*(\")",
+      "%1" .. tagname_safe .. "%2"
     )
   end
   -- Handle copyright notice.
