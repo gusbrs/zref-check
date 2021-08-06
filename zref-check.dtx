@@ -153,22 +153,22 @@
 %   \begin{syntax}
 %     \cs{zcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
 %   \end{syntax}
-%   Typesets \marg{text}, as given, while performing the comma separated list
-%   of \oarg{checks} on each of the comma separated list of \marg{labels}.
-%   When \pkg{hyperref} support is enabled, \marg{text} will be made a
-%   hyperlink to \emph{the first} label in \marg{labels}.  The starred version
-%   of the command does the same as the plain one, just does not form a link.
-%   The \oarg{options} are (mostly) the same as those of the package, and can
-%   be given to local effect.
+%   Typesets \meta{text}, as given, while performing the comma separated list
+%   of \meta{checks} on each of the comma separated list of \meta{labels}.
+%   When \pkg{hyperref} support is enabled, \meta{text} will be made a
+%   hyperlink to \emph{the first} \meta{label} in \meta{labels}.  The starred
+%   version of the command does the same as the plain one, just does not form
+%   a link.  The \meta{options} are (mostly) the same as those of the package,
+%   and can be given to local effect.
 % \end{function}
 %
 % \begin{function}{\zctarget}
 %   \begin{syntax}
 %     \cs{zctarget}\marg{label}\marg{text}
 %   \end{syntax}
-%   Typesets \marg{text}, as given, and places a pair of \texttt{zlabel}s, one
-%   at the start of \marg{text}, using \marg{label} as label name, another one
-%   (internal) at the end of \marg{text}.
+%   Typesets \meta{text}, as given, and places a pair of \texttt{zlabel}s, one
+%   at the start of \meta{text}, using \meta{label} as label name, another one
+%   (internal) at the end of \meta{text}.
 % \end{function}
 %
 %
@@ -197,11 +197,11 @@
 % \pkg{zref-check} provides several ``checks'' to be used with \cs{zcheck}.
 % The checks may be combined in a \cs{zcheck} call, e.g.\ \opt{[close,
 % after]}, or \opt{[thischap, before]}.  In this case, each check in
-% \oarg{checks} is performed against each of the \marg{labels}.  This is done
+% \meta{checks} is performed against each of the \meta{labels}.  This is done
 % independently for each check, which means, in practice, that the checks bear
 % a logical \texttt{AND} relation to the others.  Whether the combination is
 % meaningful, is up to the user.  As is the correspondence between the
-% \oarg{checks} and the \marg{text>} in \cs{zcheck}.
+% \meta{checks} and the \meta{text} in \cs{zcheck}.
 %
 % The use of checks which perform ``within the page'' comparisons -- namely
 % \opt{above} and \opt{below} and, through them, \opt{before} and \opt{after}
@@ -298,14 +298,14 @@
 % set globally either as \cs{usepackage}\oarg{options} at load-time (see
 % Section~\ref{sec:loading-package}), or by means of \cs{zrefchecksetup} (see
 % Section~\ref{sec:user-interface}) in the preamble.  Most options can also be
-% used with local effects, through the optional argument \oarg{options} of
+% used with local effects, through the optional argument \meta{options} of
 % \cs{zcheck}.
 %
 % \DescribeOption{hyperref}
 % Controls the use of \pkg{hyperref} by \pkg{zref-check} and takes values
 % \opt{auto}, \opt{true}, \opt{false}.  The default value, \opt{auto}, makes
 % \pkg{zref-check} use \pkg{hyperref} if it is loaded, meaning \cs{zcheck} can
-% be hyperlinked to the \emph{first label} in \marg{labels}.  \opt{true} does
+% be hyperlinked to the \emph{first label} in \meta{labels}.  \opt{true} does
 % the same thing, but warns if \pkg{hyperref} is not loaded (\pkg{hyperref} is
 % never loaded for you).  In either of these cases, if \pkg{hyperref} is
 % loaded, module \pkg{zref-hyperref} is also loaded by \pkg{zref-check}.
@@ -431,12 +431,12 @@
 % \texttt{abspage} property provided by the \pkg{zref-abspage} module.  This
 % is a solid piece of information, on which we can rely upon.  However,
 % despite that, page number checks may still become ill-defined, if the
-% \marg{text} argument in \cs{zcheck}, when typeset, crosses page boundaries,
+% \meta{text} argument in \cs{zcheck}, when typeset, crosses page boundaries,
 % starting in one page, and finishing in another.  The same can happen with
 % the text in \cs{zctarget} and the \texttt{zcregion} environment.
 %
-% This is why the user commands of this package set always a pair or labels
-% around \meta{text}.  So, when checking \cs{zcheck} against a regular
+% This is why the user commands of this package set a pair or labels around
+% \meta{text}.  So, when checking \cs{zcheck} against a regular
 % \texttt{zlabel} both the start and the end of the \meta{text} are checked
 % against the label, and the check fails if either of them fails.  When
 % checking \cs{zcheck} against a \cs{zctarget} or a \texttt{zcregion}, both
