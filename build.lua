@@ -76,17 +76,18 @@ function update_tag(file, content, tagname, tagdate)
     )
     -- File operations based on 'update_file_tag' function of
     -- 'l3build-tagging.lua'.
-    local filename = basename(uploadconfig.announcement_file)
-    local path = dirname(uploadconfig.announcement_file)
-    ren(path,filename,filename .. ".bak")
-    f = assert(io.open(uploadconfig.announcement_file,"w"))
-    f:write((string.gsub(announcement,"\n",os_newline)))
-    f:close()
-    rm(path,filename .. ".bak")
+    local annfile = uploadconfig.announcement_file
+    local annfilename = basename(annfile)
+    local annpath = dirname(annfile)
+    ren(annpath,annfilename,annfilename .. ".bak")
+    local af = assert(io.open(annfile,"w"))
+    af:write((string.gsub(announcement,"\n",os_newline)))
+    af:close()
+    rm(annpath,annfilename .. ".bak")
   elseif string.match(file, "^build%.lua$") then
     content = string.gsub(
       content,
-      "(\nuploadconfig%s*=%s*%{\n%s*version%s*=%s*\")[^\"]*(\")",
+      "(\nuploadconfig%s*=%s*%{%s*version%s*=%s*\")[^\"]*(\")",
       "%1" .. tagname_safe .. "%2"
     )
   end
