@@ -1147,9 +1147,11 @@
 % circumstances, and except for outrageous label placement by the user, it
 % would return the expected results.  We don't really need exact coordinates
 % to decide ``above/below''.  Besides, it would do an exact job for the
-% dedicated target macros of this package.  However, I could not conceive a
-% situation where the \texttt{yx} criterion would perform clearly better than
-% the \texttt{labelseq} one.  And, if that's the case, and considering the
+% dedicated target macros of this package.  It is also true that the ``page''
+% for \cs{pageref} is stored with the value of where the \cs{label} is placed,
+% wherever that may be.  However, I could not conceive a situation where the
+% \texttt{yx} criterion would perform clearly better than the
+% \texttt{labelseq} one.  And, if that's the case, and considering the
 % complications it brings, this check was a slippery slope.  All in all, I've
 % decided to drop it.
 %
