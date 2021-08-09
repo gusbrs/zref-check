@@ -2,19 +2,19 @@ This is a generated file for the l3build validation system.
 Don't change this file in any respect.
 > \box...=
 \hbox(6.94+0.10999)x33.79
-.\write1{\zref@newlabel{zrefcheck@1}{\abspage{\Z@C@abspage }\abschap{0}\abssec\ETC.}
+.\write1{\zref@newlabel{zrefcheck@1}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
 .\TU/lmr/m/n/10 Foo
 .\glue 3.33 plus 1.665 minus 1.11
 .\TU/lmr/m/n/10 bar
-.\write1{\zref@newlabel{zrefcheck@1@zrefcheck}{\abspage{\Z@C@abspage }\abschap\ETC.}
+.\write1{\zref@newlabel{zrefcheck@1@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox0
 > \box...=
 \hbox(6.94+0.10999)x33.79
-.\write1{\zref@newlabel{zrefcheck@2}{\abspage{\Z@C@abspage }\abschap{0}\abssec\ETC.}
+.\write1{\zref@newlabel{zrefcheck@2}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
 .\TU/lmr/m/n/10 Foo
 .\glue 3.33 plus 1.665 minus 1.11
 .\TU/lmr/m/n/10 bar
-.\write1{\zref@newlabel{zrefcheck@2@zrefcheck}{\abspage{\Z@C@abspage }\abschap\ETC.}
+.\write1{\zref@newlabel{zrefcheck@2@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox1

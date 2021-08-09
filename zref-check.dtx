@@ -587,15 +587,15 @@
     \int_gincr:N \g_@@_abschap_int
     \int_zero:N \g_@@_abssec_int
   }
-\zref@newprop { abschap } [0] { \int_use:N \g_@@_abschap_int }
-\zref@addprop \ZREF@mainlist { abschap }
+\zref@newprop { zc@abschap } [0] { \int_use:N \g_@@_abschap_int }
+\zref@addprop \ZREF@mainlist { zc@abschap }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \AddToHook { cmd / section / before }
   { \int_gincr:N \g_@@_abssec_int }
-\zref@newprop { abssec } [0] { \int_use:N \g_@@_abssec_int }
-\zref@addprop \ZREF@mainlist { abssec }
+\zref@newprop { zc@abssec } [0] { \int_use:N \g_@@_abssec_int }
+\zref@addprop \ZREF@mainlist { zc@abssec }
 %    \end{macrocode}
 %
 %
@@ -606,10 +606,10 @@
 \zref@newlist { zrefcheck }
 \zref@addprops { zrefcheck }
   {
+    page ,
     abspage ,
-    abschap ,
-    abssec ,
-    page
+    zc@abschap ,
+    zc@abssec
   }
 %    \end{macrocode}
 %
@@ -1981,15 +1981,15 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
-% `0' is the default value of \texttt{abschap} property, and means here no
+% `0' is the default value of \texttt{zc@abschap} property, and means here no
 % \cs{chapter} has yet been issued, therefore it cannot be ``this chapter'',
 % nor ``the next chapter'', nor ``the previous chapter'', it is just ``no
 % chapter''.  Note, however, that a statement about a ``future'' chapter does
@@ -2007,8 +2007,8 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2024,8 +2024,8 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2042,8 +2042,8 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2059,8 +2059,8 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2092,10 +2092,10 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2104,7 +2104,7 @@
           \int_compare_p:nNn
             { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
-% `0' is the default value of \texttt{abssec} property, and means here no
+% `0' is the default value of \texttt{zc@abssec} property, and means here no
 % \cs{section} has yet been issued since its counter has been reset, which
 % occurs at the beginning of the document and at every chapter.  Hence, as is
 % the case for chapters, `0' is just ``not a section''.  The same observation
@@ -2122,10 +2122,10 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2143,10 +2143,10 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2165,10 +2165,10 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
@@ -2186,10 +2186,10 @@
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { abschap } { \l_@@_ref_b_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
       \bool_lazy_and:nnTF
         { \l_@@_integer_bool }
         {
