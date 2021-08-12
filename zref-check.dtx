@@ -773,7 +773,7 @@
 % \end{variable}
 %
 %    \begin{macrocode}
-\AtBeginDocument
+\AddToHook { begindocument }
   {
     \@ifpackageloaded { hyperref }
       {
@@ -837,7 +837,7 @@
 % \end{variable}
 %
 %    \begin{macrocode}
-\AtBeginDocument
+\AddToHook { begindocument }
   {
     \keys_define:nn { zref-check }
       { ignore .meta:n = { msglevel = none } }
@@ -935,7 +935,7 @@
 % \end{macro}
 %
 %    \begin{macrocode}
-\AtBeginDocument
+\AddToHook { begindocument }
   {
     \bool_if:NT \l_@@_target_label_bool
       {
