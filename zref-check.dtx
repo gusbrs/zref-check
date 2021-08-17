@@ -1370,7 +1370,7 @@
 %     \l_@@_checkend_tl ,
 %     \l_@@_link_label_tl ,
 %     \l_@@_link_anchor_tl ,
-%     \l_@@_link_star_tl
+%     \l_@@_link_star_bool
 %   }
 %    \begin{macrocode}
 \int_new:N \g_@@_id_int
@@ -1378,7 +1378,7 @@
 \tl_new:N \l_@@_checkend_tl
 \tl_new:N \l_@@_link_label_tl
 \tl_new:N \l_@@_link_anchor_tl
-\bool_new:N \l_@@_link_star_tl
+\bool_new:N \l_@@_link_star_bool
 %    \end{macrocode}
 % \end{variable}
 %
@@ -1420,7 +1420,7 @@
 % hyperlinking.
 %    \begin{macrocode}
       \tl_set:Nn \l_@@_link_label_tl { \tl_head:n {#1} }
-      \bool_set:Nn \l_@@_link_star_tl {#2}
+      \bool_set:Nn \l_@@_link_star_bool {#2}
       \zref@ifrefundefined { \l_@@_link_label_tl }
 %    \end{macrocode}
 % If the reference is undefined, just typeset.
@@ -1430,7 +1430,7 @@
           \bool_if:nTF
             {
               \l_@@_use_hyperref_bool &&
-              ! \l_@@_link_star_tl
+              ! \l_@@_link_star_bool
             }
             {
               \exp_args:Nx \zrefcheck_get_astl:nnn
