@@ -1,4 +1,16 @@
-## v0.1.0 (2021-08-04)
+## v0.2.0 (2021-08-17)
+
+### Changed
+- The syntax of user command `\zcheck` has changed.  Previously, it received
+  the `<checks>` as a second optional argument, now both `<checks>` and
+  `<options>` can be passed together in the single optional argument to
+  `\zcheck`.
+- (Internal) Use new hook management system syntax for begindocument hooks.
+- (Internal) Use prefix for internal zref properties.
+- Small adjustments in User manual.
 
 ### Added
-- Initial release.
+- CTAN upload automation with l3build.
+- Regression tests for labels with `babel` active characters.
+- Dedicated Readme for CTAN.
+

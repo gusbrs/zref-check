@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.1.0...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.0...HEAD)
+
+## [v0.2.0](https://github.com/gusbrs/zref-check/compare/v0.1.0...v0.2.0) (2021-08-17)
 
 ### Changed
 - The syntax of user command `\zcheck` has changed.  Previously, it received
