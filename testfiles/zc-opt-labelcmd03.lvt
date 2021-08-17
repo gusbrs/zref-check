@@ -11,7 +11,7 @@
 \section{Section 1}
 \zlabel{sec:section-1}
 
-\zcheck[labelcmd=zlabel]{sec:section-1}[thispage]{this check should pass} but
+\zcheck[thispage, labelcmd=zlabel]{sec:section-1}{this check should pass} but
 we should get a ``preamble only option'' warning.
 
 \OMIT

@@ -18,17 +18,17 @@
 
 \zctarget{txt:target-1-2}{Lorem ipsum}
 
-\zcheck{txt:target-1-1}[facing]{this check should fail}
+\zcheck[facing]{txt:target-1-1}{this check should fail}
 
-\zcheck{txt:target-1-2}[facing]{this check should fail}
+\zcheck[facing]{txt:target-1-2}{this check should fail}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{txt:target-1-1}[facing]{this check should pass}
+\zcheck[facing]{txt:target-1-1}{this check should pass}
 
-\zcheck{txt:target-1-2}[facing]{this check should pass}
+\zcheck[facing]{txt:target-1-2}{this check should pass}
 
 \OMIT
 \chapter{Chapter 2}
@@ -38,9 +38,9 @@
 
 \zctarget{txt:target-2-1}{Lorem ipsum}
 
-\zcheck{txt:target-2-1}[facing]{this check should fail}
+\zcheck[facing]{txt:target-2-1}{this check should fail}
 
-\zcheck{txt:target-2-2}[facing]{this check should pass}
+\zcheck[facing]{txt:target-2-2}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -48,18 +48,18 @@
 
 \zctarget{txt:target-2-2}{Lorem ipsum}
 
-\zcheck{txt:target-2-1}[facing]{this check should pass}
+\zcheck[facing]{txt:target-2-1}{this check should pass}
 
-\zcheck{txt:target-2-2}[facing]{this check should fail}
+\zcheck[facing]{txt:target-2-2}{this check should fail}
 
 \OMIT
 \chapter{Chapter 3}
 \zlabel{cha:chapter-3}
 \TIMO
 
-\zcheck{cha:chapter-3}[facing]{this check should fail}
+\zcheck[facing]{cha:chapter-3}{this check should fail}
 
-\zcheck{txt:target-3}[facing]{this check should fail}
+\zcheck[facing]{txt:target-3}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -67,9 +67,9 @@
 
 \zctarget{txt:target-3}{Lorem ipsum}
 
-\zcheck{cha:chapter-3}[facing]{this check should fail}
+\zcheck[facing]{cha:chapter-3}{this check should fail}
 
-\zcheck{txt:target-3}[facing]{this check should fail}
+\zcheck[facing]{txt:target-3}{this check should fail}
 
 \OMIT
 

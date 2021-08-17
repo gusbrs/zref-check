@@ -74,7 +74,7 @@
 % provide the text to be typeset based on the contextual information,
 % \cs{zcheck} lets the user supply an arbitrary text and specify one or more
 % checks to be done on the label(s) being referred to.  If any of the checks
-% fail, a warning is issued upon compilation, so that the user can go back to
+% fails, a warning is issued upon compilation, so that the user can go back to
 % that cross-reference and correct it as needed, without having to rely on
 % burdensome and error prone manual proof-reading.
 %
@@ -151,15 +151,17 @@
 %
 % \begin{function}{\zcheck}
 %   \begin{syntax}
-%     \cs{zcheck}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%     \cs{zcheck}\oarg{checks/options}\marg{labels}\marg{text}
 %   \end{syntax}
-%   Typesets \meta{text}, as given, while performing the comma separated list
-%   of \meta{checks} on each of the comma separated list of \meta{labels}.
-%   When \pkg{hyperref} support is enabled, \meta{text} will be made a
-%   hyperlink to \emph{the first} \meta{label} in \meta{labels}.  The starred
-%   version of the command does the same as the plain one, just does not form
-%   a link.  The \meta{options} are (mostly) the same as those of the package,
-%   and can be given to local effect.
+%   Typesets \meta{text}, as given, while performing a list of \meta{checks}
+%   on each of the \meta{labels}.  When \pkg{hyperref} support is enabled,
+%   \meta{text} will be made a hyperlink to \emph{the first} \meta{label} in
+%   \meta{labels}.  The starred version of the command does the same as the
+%   plain one, just does not form a link.  The \meta{options} are (mostly) the
+%   same as those of the package, and can be given to local effect.
+%   \meta{checks} and \meta{options} can be given side by side as a comma
+%   separated list in the optional argument.  \meta{labels} is also a comma
+%   separated list.
 % \end{function}
 %
 % \begin{function}{\zctarget}
@@ -214,7 +216,7 @@
 % label being referred to, relative to the \cs{zcheck} call being made.  For
 % example, the \opt{before} check should issue no message if
 % \cs{ztarget}|{mylabel}{...}| occurs before
-% \cs{zcheck}|{mylabel}[before]{...}|.
+% \cs{zcheck}|[before]{mylabel}{...}|.
 %
 % The available checks are the following:
 %
@@ -298,8 +300,7 @@
 % set globally either as \cs{usepackage}\oarg{options} at load-time (see
 % Section~\ref{sec:loading-package}), or by means of \cs{zrefchecksetup} (see
 % Section~\ref{sec:user-interface}) in the preamble.  Most options can also be
-% used with local effects, through the optional argument \meta{options} of
-% \cs{zcheck}.
+% used with local effects, through the optional argument of \cs{zcheck}.
 %
 % \DescribeOption{hyperref}
 % Controls the use of \pkg{hyperref} by \pkg{zref-check} and takes values
@@ -399,7 +400,7 @@
 % in tandem with standard references, for example:
 %
 % \begin{verbatim}
-%     ... Figure~\ref{fig:figure-1}, \zcheck*{fig:figure-1}[nextpage]{on
+%     ... Figure~\ref{fig:figure-1}, \zcheck*[nextpage]{fig:figure-1}{on
 %     the next page}.
 % \end{verbatim}
 %
@@ -1352,13 +1353,13 @@
 %   \url{https://tex.stackexchange.com/a/179907}.
 %
 %   \begin{syntax}
-%     \cs{zcheck}\meta{*}\oarg{options}\marg{labels}\oarg{checks}\marg{text}
+%     \cs{zcheck}\meta{*}\oarg{checks/options}\marg{labels}\marg{text}
 %   \end{syntax}
 %
 %    \begin{macrocode}
 \NewDocumentCommand \zcheck
-  { s O { } > { \SplitList { , } } m > { \SplitList { , } } O { } m }
-  { \zref@wrapper@babel \@@_zcheck:nnnnn {#3} {#1} {#2} {#4} {#5} }
+  { s O { } > { \SplitList { , } } m m }
+  { \zref@wrapper@babel \@@_zcheck:nnnn {#3} {#1} {#2} {#4} }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1382,7 +1383,7 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{macro}{\@@_zcheck:nnnnn}
+% \begin{macro}{\@@_zcheck:nnnn}
 %   An intermediate internal function, which does the actual heavy lifting,
 %   and places \Arg{labels} as first argument, so that it can be protected by
 %   \cs{zref@wrapper@babel} in \cs{zcheck}.  This is the same procedure as the
@@ -1390,15 +1391,19 @@
 %   protection of \pkg{babel} active characters.
 %
 %   \begin{syntax}
-%     \cs{@@_zcheck:nnnnn} \Arg{labels} \Arg{*} \Arg{options} \Arg{checks} \Arg{text}
+%     \cs{@@_zcheck:nnnn} \Arg{labels} \Arg{*} \Arg{checks/options} \Arg{text}
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_zcheck:nnnnn #1#2#3#4#5
+\cs_new:Npn \@@_zcheck:nnnn #1#2#3#4
   {
     \group_begin:
 %    \end{macrocode}
-% Process local options.
+% Set checks keys.
+%    \begin{macrocode}
+      \@@_set_checks_keys:
+%    \end{macrocode}
+% Process local options and checks.
 %    \begin{macrocode}
       \keys_set:nn { zref-check } {#3}
 %    \end{macrocode}
@@ -1425,7 +1430,7 @@
 %    \end{macrocode}
 % If the reference is undefined, just typeset.
 %    \begin{macrocode}
-        {#5}
+        {#4}
         {
           \bool_if:nTF
             {
@@ -1436,9 +1441,9 @@
               \exp_args:Nx \zrefcheck_get_astl:nnn
                 { \l_@@_link_label_tl }
                 { anchor } { \l_@@_link_anchor_tl }
-              \hyperlink { \l_@@_link_anchor_tl } {#5}
+              \hyperlink { \l_@@_link_anchor_tl } {#4}
             }
-            {#5}
+            {#4}
         }
 %    \end{macrocode}
 % Set checkend label.
@@ -1451,7 +1456,8 @@
 %    \end{macrocode}
 % Run the checks.
 %    \begin{macrocode}
-      \@@_run_checks:nnV {#4} {#1} { \l_@@_checkbeg_tl }
+      \@@_run_checks:nnv
+        { \l_@@_zcheck_checks_seq } {#1} { l_@@_checkbeg_tl }
     \group_end:
   }
 %    \end{macrocode}
@@ -1538,25 +1544,146 @@
 % registered for \pkg{zref}.  This can be done with \cs{zref@newprop},
 % \cs{zref@addprop} and friends, as usual.
 %
+% Third, the check must be registered as a key which gets setup in
+% \cs{zcheck} by \cs{@@_set_checks_keys:}.
+%
+%
+% \subsection{Setup}
+%
+% \begin{variable}{\l_@@_zcheck_checks_seq}
+%    \begin{macrocode}
+\seq_new:N \l_@@_zcheck_checks_seq
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{macro}{\@@_set_checks_keys:}
+%    \begin{macrocode}
+\cs_new:Npn \@@_set_checks_keys:
+  {
+    \keys_define:nn  { zref-check }
+      {
+        thispage .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thispage } } ,
+        thispage .value_forbidden:n = true ,
+
+        prevpage .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevpage } } ,
+        prevpage .value_forbidden:n = true ,
+
+        nextpage .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextpage } } ,
+        nextpage .value_forbidden:n = true ,
+
+        facing .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { facing } } ,
+        facing .value_forbidden:n = true ,
+
+        above .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { above } } ,
+        above .value_forbidden:n = true ,
+
+        below .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { below } } ,
+        below .value_forbidden:n = true ,
+
+        pagesbefore .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesbefore } } ,
+        pagesbefore .value_forbidden:n = true ,
+
+        ppbefore .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppbefore } } ,
+        ppbefore .value_forbidden:n = true ,
+
+        pagesafter .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesafter } } ,
+        pagesafter .value_forbidden:n = true ,
+
+        ppafter .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppafter } } ,
+        ppafter .value_forbidden:n = true ,
+
+        before .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { before } } ,
+        before .value_forbidden:n = true ,
+
+        after .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { after } } ,
+        after .value_forbidden:n = true ,
+
+        thischap .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thischap } } ,
+        thischap .value_forbidden:n = true ,
+
+        prevchap .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevchap } } ,
+        prevchap .value_forbidden:n = true ,
+
+        nextchap .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextchap } } ,
+        nextchap .value_forbidden:n = true ,
+
+        chapsbefore .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsbefore } } ,
+        chapsbefore .value_forbidden:n = true ,
+
+        chapsafter .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsafter } } ,
+        chapsafter .value_forbidden:n = true ,
+
+        thissec .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thissec } } ,
+        thissec .value_forbidden:n = true ,
+
+        prevsec .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevsec } } ,
+        prevsec .value_forbidden:n = true ,
+
+        nextsec .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextsec } } ,
+        nextsec .value_forbidden:n = true ,
+
+        secsbefore .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsbefore } } ,
+        secsbefore .value_forbidden:n = true ,
+
+        secsafter .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsafter } } ,
+        secsafter .value_forbidden:n = true ,
+
+        close .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { close } } ,
+        close .value_forbidden:n = true ,
+
+        far .code:n =
+          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { far } } ,
+        far .value_forbidden:n = true ,
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
 %
 % \subsection{Running}
 %
-% \begin{macro}{\@@_run_checks:nnn, \@@_run_checks:nnV}
+% \begin{macro}{\@@_run_checks:nnn, \@@_run_checks:nnv}
 %   \begin{syntax}
 %     \cs{@@_run_checks:nnn} \Arg{checks} \Arg{labels} \Arg{reference}
 %   \end{syntax}
+%   \meta{checks} are expected to be received as a sequence variable.
 %    \begin{macrocode}
 \cs_new:Npn \@@_run_checks:nnn #1#2#3
   {
     \group_begin:
       \tl_map_inline:nn {#2}
         {
-          \tl_map_inline:nn {#1}
+          \seq_map_inline:Nn #1
             { \@@_do_check:nnn {####1} {##1} {#3} }
         }
     \group_end:
   }
-\cs_generate_variant:Nn \@@_run_checks:nnn { nnV }
+\cs_generate_variant:Nn \@@_run_checks:nnn { nnv }
 %    \end{macrocode}
 % \end{macro}
 %

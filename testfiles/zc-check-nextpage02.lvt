@@ -31,7 +31,7 @@
 
 \START
 
-\zcheck{txt:target-1}[nextpage]{this check should pass}
+\zcheck[nextpage]{txt:target-1}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -49,7 +49,7 @@
 \clearpage{}
 \TIMO
 
-\zcheck{txt:target-2}[nextpage]{this check should fail}
+\zcheck[nextpage]{txt:target-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -57,7 +57,7 @@
 
 \section{Section 2}
 
-\zcheck{txt:target-2}[nextpage]{this check should fail}
+\zcheck[nextpage]{txt:target-2}{this check should fail}
 
 \vspace{30\baselineskip}
 

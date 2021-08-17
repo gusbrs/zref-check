@@ -8,7 +8,7 @@
 
 \START
 
-\zcheck{fig:figure-1}[below]{this check should pass}
+\zcheck[below]{fig:figure-1}{this check should pass}
 
 \begin{figure}[h]
   \centering
@@ -28,7 +28,7 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck{fig:figure-2}[below]{this check should fail}
+\zcheck[below]{fig:figure-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -41,13 +41,13 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck{fig:figure-3}[below]{this check should pass}
+\zcheck[below]{fig:figure-3}{this check should pass}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{fig:figure-4}[below]{this check should fail}
+\zcheck[below]{fig:figure-4}{this check should fail}
 
 \begin{figure}[t]
   \centering

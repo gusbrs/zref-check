@@ -3,8 +3,12 @@
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.1.0...HEAD)
 
 ### Changed
-- Use new hook management system syntax for begindocument hooks.
-- Use prefix for internal zref properties.
+- The syntax of user command `\zcheck` has changed.  Previously, it received
+  the `<checks>` as a second optional argument, now both `<checks>` and
+  `<options>` can be passed together in the single optional argument to
+  `\zcheck`.
+- (Internal) Use new hook management system syntax for begindocument hooks.
+- (Internal) Use prefix for internal zref properties.
 - Small adjustments in User manual.
 
 ### Added

@@ -15,7 +15,7 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[onpage=labelseq]{fig:figure-1}[above]{this check should pass} and
+\zcheck[above, onpage=labelseq]{fig:figure-1}{this check should pass} and
 issue no warning.
 
 \OMIT
@@ -29,7 +29,7 @@ issue no warning.
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[onpage=msg]{fig:figure-2}[above]{this check should pass} but issue a
+\zcheck[above, onpage=msg]{fig:figure-2}{this check should pass} but issue a
 `double-check' warning.
 
 \OMIT
@@ -43,7 +43,7 @@ issue no warning.
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[onpage=obeydraft]{fig:figure-3}[above]{this check should pass} but
+\zcheck[above, onpage=obeydraft]{fig:figure-3}{this check should pass} but
 issue a `double-check' warning.
 
 \OMIT
@@ -57,7 +57,7 @@ issue a `double-check' warning.
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[onpage=obeyfinal]{fig:figure-4}[above]{this check should pass} and
+\zcheck[above, onpage=obeyfinal]{fig:figure-4}{this check should pass} and
 issue no warning.
 
 \OMIT

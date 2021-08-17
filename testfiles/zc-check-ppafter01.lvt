@@ -10,33 +10,33 @@
 
 \section{Section 1}
 
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
 
-\zcheck{txt:target-2}[pagesafter]{this check should pass}
-
-\OMIT
-\clearpage{}
-\TIMO
-
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
-
-\zcheck{txt:target-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{txt:target-2}{this check should pass}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
 
-\zcheck{txt:target-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{txt:target-2}{this check should pass}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
 
-\zcheck{txt:target-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{txt:target-2}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
+
+\zcheck[pagesafter]{txt:target-2}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -47,9 +47,9 @@
 
 \zctarget{txt:target-2}{Lorem ipsum}
 
-\zcheck{sec:section-2}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{sec:section-2}{this check should fail}
 
-\zcheck{txt:target-2}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-2}{this check should fail}
 
 \OMIT
 

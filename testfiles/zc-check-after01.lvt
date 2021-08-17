@@ -43,7 +43,7 @@
 \clearpage{}
 \TIMO
 
-\zcheck{txt:target-1}[after]{this check should fail}
+\zcheck[after]{txt:target-1}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -62,7 +62,7 @@
 
 \TIMO
 
-\zcheck{txt:target-2}[after]{this check should fail}
+\zcheck[after]{txt:target-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -70,7 +70,7 @@
 
 \section{Section 3}
 
-\zcheck{txt:target-3}[after]{this check should pass}
+\zcheck[after]{txt:target-3}{this check should pass}
 
 \vspace{30\baselineskip}
 
@@ -86,7 +86,7 @@
 
 \section{Section 4}
 
-\zcheck{txt:target-4}[after]{this check should pass}
+\zcheck[after]{txt:target-4}{this check should pass}
 
 \OMIT
 \clearpage{}

@@ -53,11 +53,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec"section-1}[thispage]{this check should pass}
+\zcheck[thispage]{sec"section-1}{this check should pass}
 
-\zcheck{txt"target-1-1}[nextpage]{this check should fail}
+\zcheck[nextpage]{txt"target-1-1}{this check should fail}
 
-\zcheck{txt"target-1-2}[prevsec]{this check should fail}
+\zcheck[prevsec]{txt"target-1-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -74,11 +74,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec.section-2}[after]{this check should fail}
+\zcheck[after]{sec.section-2}{this check should fail}
 
-\zcheck{txt.target-2-1}[above]{this check should pass}
+\zcheck[above]{txt.target-2-1}{this check should pass}
 
-\zcheck{txt.target-2-2}[nextpage]{this check should fail}
+\zcheck[nextpage]{txt.target-2-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -95,11 +95,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec<section-3}[prevchap]{this check should fail}
+\zcheck[prevchap]{sec<section-3}{this check should fail}
 
-\zcheck{txt<target-3-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt<target-3-1}{this check should fail}
 
-\zcheck{txt<target-3-2}[before]{this check should pass}
+\zcheck[before]{txt<target-3-2}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -116,11 +116,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec>section-4}[above]{this check should pass}
+\zcheck[above]{sec>section-4}{this check should pass}
 
-\zcheck{txt>target-4-1}[far]{this check should fail}
+\zcheck[far]{txt>target-4-1}{this check should fail}
 
-\zcheck{txt>target-4-2}[below]{this check should fail}
+\zcheck[below]{txt>target-4-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -137,11 +137,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec'section-5}[facing]{this check should fail}
+\zcheck[facing]{sec'section-5}{this check should fail}
 
-\zcheck{txt'target-5-1}[close]{this check should pass}
+\zcheck[close]{txt'target-5-1}{this check should pass}
 
-\zcheck{txt'target-5-2}[chapsbefore]{this check should fail}
+\zcheck[chapsbefore]{txt'target-5-2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -158,11 +158,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec~section-6}[ppafter]{this check should fail}
+\zcheck[ppafter]{sec~section-6}{this check should fail}
 
-\zcheck{txt~target-6-1}[secsafter]{this check should fail}
+\zcheck[secsafter]{txt~target-6-1}{this check should fail}
 
-\zcheck{txt~target-6-2}[thispage]{this check should above}
+\zcheck[thispage]{txt~target-6-2}{this check should above}
 
 \OMIT
 

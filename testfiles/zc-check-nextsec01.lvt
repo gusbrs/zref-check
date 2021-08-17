@@ -21,46 +21,46 @@
 
 \zctarget{txt:target-0-0}{Lorem ipsum}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \chapter{Chapter 1}
 \zlabel{cha:chapter-1}
 \TIMO
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-1.1}{this check should pass}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -69,23 +69,23 @@
 \section{Section 1.1}
 \zlabel{sec:section-1.1}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-1.2}{this check should pass}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -94,23 +94,23 @@
 \section{Section 1.2}
 \zlabel{sec:section-1.2}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-1.3}{this check should pass}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -119,23 +119,23 @@
 \section{Section 1.3}
 \zlabel{sec:section-1.3}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-1.4}{this check should pass}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -144,46 +144,46 @@
 \section{Section 1.4}
 \zlabel{sec:section-1.4}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \chapter{Chapter 2}
 \zlabel{cha:chapter-2}
 \TIMO
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-2.1}{this check should pass}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 \clearpage{}
@@ -192,23 +192,23 @@
 \section{Section 2.1}
 \zlabel{sec:section-2.1}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should pass}
+\zcheck[nextsec]{sec:section-2.2}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -217,23 +217,23 @@
 \section{Section 2.2}
 \zlabel{sec:section-2.2}
 
-\zcheck{txt:target-0-0}[nextsec]{this check should fail}
+\zcheck[nextsec]{txt:target-0-0}{this check should fail}
 
-\zcheck{cha:chapter-1}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-1}{this check should fail}
 
-\zcheck{sec:section-1.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.1}{this check should fail}
 
-\zcheck{sec:section-1.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.2}{this check should fail}
 
-\zcheck{sec:section-1.3}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.3}{this check should fail}
 
-\zcheck{sec:section-1.4}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-1.4}{this check should fail}
 
-\zcheck{cha:chapter-2}[nextsec]{this check should fail}
+\zcheck[nextsec]{cha:chapter-2}{this check should fail}
 
-\zcheck{sec:section-2.1}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.1}{this check should fail}
 
-\zcheck{sec:section-2.2}[nextsec]{this check should fail}
+\zcheck[nextsec]{sec:section-2.2}{this check should fail}
 
 \OMIT
 

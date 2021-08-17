@@ -13,41 +13,41 @@
 
 \zctarget{txt:target-1}{Lorem ipsum}
 
-\zcheck{sec:section-1}[ppbefore]{this check should fail}
+\zcheck[ppbefore]{sec:section-1}{this check should fail}
 
-\zcheck{txt:target-1}[ppbefore]{this check should fail}
-
-\OMIT
-\clearpage{}
-\TIMO
-
-\zcheck{sec:section-1}[ppbefore]{this check should pass}
-
-\zcheck{txt:target-1}[ppbefore]{this check should pass}
+\zcheck[ppbefore]{txt:target-1}{this check should fail}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{sec:section-1}[ppbefore]{this check should pass}
+\zcheck[ppbefore]{sec:section-1}{this check should pass}
 
-\zcheck{txt:target-1}[ppbefore]{this check should pass}
-
-\OMIT
-\clearpage{}
-\TIMO
-
-\zcheck{sec:section-1}[ppbefore]{this check should pass}
-
-\zcheck{txt:target-1}[ppbefore]{this check should pass}
+\zcheck[ppbefore]{txt:target-1}{this check should pass}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{sec:section-1}[ppbefore]{this check should pass}
+\zcheck[ppbefore]{sec:section-1}{this check should pass}
 
-\zcheck{txt:target-1}[ppbefore]{this check should pass}
+\zcheck[ppbefore]{txt:target-1}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck[ppbefore]{sec:section-1}{this check should pass}
+
+\zcheck[ppbefore]{txt:target-1}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zcheck[ppbefore]{sec:section-1}{this check should pass}
+
+\zcheck[ppbefore]{txt:target-1}{this check should pass}
 
 \OMIT
 

@@ -15,14 +15,14 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck{fig:figure-1}[above]{this check should pass} but issue a
+\zcheck[above]{fig:figure-1}{this check should pass} but issue a
 `double-check' warning.
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{fig:figure-2}[above]{this check should fail}
+\zcheck[above]{fig:figure-2}{this check should fail}
 
 \begin{figure}[h]
   \centering

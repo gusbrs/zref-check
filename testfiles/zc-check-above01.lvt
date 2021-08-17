@@ -15,13 +15,13 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck{fig:figure-1}[above]{this check should pass}
+\zcheck[above]{fig:figure-1}{this check should pass}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{fig:figure-2}[above]{this check should fail}
+\zcheck[above]{fig:figure-2}{this check should fail}
 
 \begin{figure}[h]
   \centering
@@ -34,7 +34,7 @@
 \clearpage{}
 \TIMO
 
-\zcheck{fig:figure-3}[above]{this check should pass}
+\zcheck[above]{fig:figure-3}{this check should pass}
 
 \begin{figure}[t]
   \centering
@@ -54,7 +54,7 @@
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck{fig:figure-4}[above]{this check should fail}
+\zcheck[above]{fig:figure-4}{this check should fail}
 
 \OMIT
 

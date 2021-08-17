@@ -53,11 +53,11 @@
   \lipsumii{}
 \end{zcregion}
 
-\zcheck{sec"section-1}[thispage]{this check should pass}
+\zcheck[thispage]{sec"section-1}{this check should pass}
 
-\zcheck{txt"target-1-1}[nextpage]{this check should fail}
+\zcheck[nextpage]{txt"target-1-1}{this check should fail}
 
-\zcheck{txt"target-1-2}[prevsec]{this check should fail}
+\zcheck[prevsec]{txt"target-1-2}{this check should fail}
 
 \OMIT
 

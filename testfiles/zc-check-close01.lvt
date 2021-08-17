@@ -70,47 +70,47 @@
 
 \zctarget{txt:target-11}{Lorem ipsum}
 
-\zcheck{txt:target-01}[close]{this check should fail}
+\zcheck[close]{txt:target-01}{this check should fail}
 
-\zcheck{txt:target-02}[close]{this check should fail}
+\zcheck[close]{txt:target-02}{this check should fail}
 
-\zcheck{txt:target-03}[close]{this check should fail}
+\zcheck[close]{txt:target-03}{this check should fail}
 
-\zcheck{txt:target-04}[close]{this check should fail}
+\zcheck[close]{txt:target-04}{this check should fail}
 
-\zcheck{txt:target-05}[close]{this check should fail}
+\zcheck[close]{txt:target-05}{this check should fail}
 
-\zcheck{txt:target-06}[close]{this check should pass}
+\zcheck[close]{txt:target-06}{this check should pass}
 
-\zcheck{txt:target-07}[close]{this check should pass}
+\zcheck[close]{txt:target-07}{this check should pass}
 
-\zcheck{txt:target-08}[close]{this check should pass}
+\zcheck[close]{txt:target-08}{this check should pass}
 
-\zcheck{txt:target-09}[close]{this check should pass}
+\zcheck[close]{txt:target-09}{this check should pass}
 
-\zcheck{txt:target-10}[close]{this check should pass}
+\zcheck[close]{txt:target-10}{this check should pass}
 
-\zcheck{txt:target-11}[close]{this check should pass}
+\zcheck[close]{txt:target-11}{this check should pass}
 
-\zcheck{txt:target-12}[close]{this check should pass}
+\zcheck[close]{txt:target-12}{this check should pass}
 
-\zcheck{txt:target-13}[close]{this check should pass}
+\zcheck[close]{txt:target-13}{this check should pass}
 
-\zcheck{txt:target-14}[close]{this check should pass}
+\zcheck[close]{txt:target-14}{this check should pass}
 
-\zcheck{txt:target-15}[close]{this check should pass}
+\zcheck[close]{txt:target-15}{this check should pass}
 
-\zcheck{txt:target-16}[close]{this check should pass}
+\zcheck[close]{txt:target-16}{this check should pass}
 
-\zcheck{txt:target-17}[close]{this check should fail}
+\zcheck[close]{txt:target-17}{this check should fail}
 
-\zcheck{txt:target-18}[close]{this check should fail}
+\zcheck[close]{txt:target-18}{this check should fail}
 
-\zcheck{txt:target-19}[close]{this check should fail}
+\zcheck[close]{txt:target-19}{this check should fail}
 
-\zcheck{txt:target-20}[close]{this check should fail}
+\zcheck[close]{txt:target-20}{this check should fail}
 
-\zcheck{txt:target-21}[close]{this check should fail}
+\zcheck[close]{txt:target-21}{this check should fail}
 
 \OMIT
 \clearpage{}

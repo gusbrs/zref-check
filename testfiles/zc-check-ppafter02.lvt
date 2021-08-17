@@ -33,11 +33,11 @@
 
 \section{Section 1}
 
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
 
-\zcheck{txt:target-1}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-1}{this check should fail}
 
-\zcheck{txt:target-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{txt:target-2}{this check should pass}
 
 \vspace{30\baselineskip}
 
@@ -50,11 +50,11 @@
 
 \TIMO
 
-\zcheck{sec:section-2}[pagesafter]{this check should pass}
+\zcheck[pagesafter]{sec:section-2}{this check should pass}
 
-\zcheck{txt:target-1}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-1}{this check should fail}
 
-\zcheck{txt:target-2}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-2}{this check should fail}
 
 \vspace{30\baselineskip}
 
@@ -70,11 +70,11 @@
 \section{Section 2}
 \zlabel{sec:section-2}
 
-\zcheck{sec:section-2}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{sec:section-2}{this check should fail}
 
-\zcheck{txt:target-1}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-1}{this check should fail}
 
-\zcheck{txt:target-2}[pagesafter]{this check should fail}
+\zcheck[pagesafter]{txt:target-2}{this check should fail}
 
 \OMIT
 

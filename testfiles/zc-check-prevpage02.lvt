@@ -43,7 +43,7 @@
 \clearpage{}
 \TIMO
 
-\zcheck{txt:target-1}[prevpage]{this check should pass}
+\zcheck[prevpage]{txt:target-1}{this check should pass}
 
 \OMIT
 \clearpage{}
@@ -62,13 +62,13 @@
 
 \TIMO
 
-\zcheck{txt:target-2}[prevpage]{this check should fail}
+\zcheck[prevpage]{txt:target-2}{this check should fail}
 
 \OMIT
 \clearpage{}
 \TIMO
 
-\zcheck{txt:target-2}[prevpage]{this check should fail}
+\zcheck[prevpage]{txt:target-2}{this check should fail}
 
 \OMIT
 

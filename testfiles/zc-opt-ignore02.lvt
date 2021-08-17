@@ -13,13 +13,13 @@
 
 \zctarget{txt:target-1}{Lorem ipsum}
 
-\zcheck[ignore]{sec:section-1}[nextpage]{this check should fail}
+\zcheck[nextpage, ignore]{sec:section-1}{this check should fail}
 
-\zcheck[ignore]{txt:target-1}[below]{this check should fail}
+\zcheck[below, ignore]{txt:target-1}{this check should fail}
 
-\zcheck[ignore]{sec:section-2}[thispage]{this check should fail}
+\zcheck[thispage, ignore]{sec:section-2}{this check should fail}
 
-\zcheck[ignore]{txt:target-2}[nextchap]{this check should fail}
+\zcheck[nextchap, ignore]{txt:target-2}{this check should fail}
 
 \OMIT
 \clearpage{}
