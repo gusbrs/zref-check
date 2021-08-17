@@ -28,8 +28,8 @@ uploadconfig = {
   repository = "https://github.com/gusbrs/zref-check",
   bugtracker = "https://github.com/gusbrs/zref-check/issues",
   update = true,
-  announcement_file = "ctan-announcement.txt",
-  note_file = "ctan-note.txt",
+  announcement_file = "ctan-announcement.text",
+  note_file = "ctan-note.text",
 }
 
 -- Set version, release date and copyright automatically
