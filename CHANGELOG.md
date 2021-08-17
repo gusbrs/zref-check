@@ -3,6 +3,8 @@
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.1.0...HEAD)
 
 ### Changed
+- Use new hook management system syntax for begindocument hooks.
+- Use prefix for internal zref properties.
 - Small adjustments in User manual.
 
 ### Added
