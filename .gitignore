@@ -3,3 +3,4 @@ aux/
 .auctex-auto/
 *.pdf
 *.zip
+zref-check-ctan.curlopt
