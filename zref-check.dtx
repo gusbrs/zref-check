@@ -621,7 +621,7 @@
 %
 % \begin{macro}{\@@_message:nnnn, \@@_message:nnnx}
 %    \begin{macrocode}
-\cs_new:Npn \@@_message:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_message:nnnn #1#2#3#4
   {
     \use:c { msg_ \l_@@_msglevel_tl :nnnnn }
       { zref-check } {#1} {#2} {#3} {#4}
@@ -930,7 +930,7 @@
 %   and \texttt{zcregion}.  It may be redefined at \texttt{begindocument}
 %   according to option \opt{labelcmd}.
 %    \begin{macrocode}
-\cs_new:Npn \@@_target_label:n #1
+\cs_new_protected:Npn \@@_target_label:n #1
   { \zref@labelbylist {#1} { zrefcheck } }
 %    \end{macrocode}
 % \end{macro}
@@ -944,7 +944,7 @@
           { \tl_clear:N \l_@@_target_label_tl }
         \cs_if_exist:cTF { \l_@@_target_label_tl }
           {
-            \cs_set:Npx \@@_target_label:n #1
+            \cs_set_protected:Npx \@@_target_label:n #1
               {
                 \exp_not:o
                   { \cs:w \l_@@_target_label_tl \cs_end: }
@@ -1214,9 +1214,11 @@
 %   property values as arguments in the checks, however we use here a number
 %   of non-expandable operations.  Hence, we receive a local \texttt{tl/int}
 %   variable as third argument and set that, so that it is available (and
-%   expandable) at the place of use.  For this reason, we do not group here,
-%   because we are passing a local variable around, but it is expected this
-%   function will be called within a group.
+%   expandable) at the place of use, and also make these functions `protected'
+%   (see egreg's \url{https://tex.stackexchange.com/a/572903}: ``a function
+%   that performs assignments should be \texttt{protected}'').  For this
+%   reason, we do not group here, because we are passing a local variable
+%   around, but it is expected this function will be called within a group.
 %
 %   We're returning \cs{c_empty_tl} in case of failure to find the intended
 %   property value (explicitly in \cs{zref@extractdefault}, but that is also
@@ -1226,7 +1228,7 @@
 %     \cs{zrefcheck_get_astl:nnn} \Arg{label} \Arg{prop} \Arg{tl var}
 %   \end{syntax}
 %    \begin{macrocode}
-\cs_new:Npn \zrefcheck_get_astl:nnn #1#2#3
+\cs_new_protected:Npn \zrefcheck_get_astl:nnn #1#2#3
   {
     \tl_clear:N #3
     \tl_if_eq:nnTF {#2} { lblseq }
@@ -1308,7 +1310,7 @@
 %     \cs{zrefcheck_get_asint:nnn} \Arg{label} \Arg{prop} \Arg{int var}
 %   \end{syntax}
 %    \begin{macrocode}
-\cs_new:Npn \zrefcheck_get_asint:nnn #1#2#3
+\cs_new_protected:Npn \zrefcheck_get_asint:nnn #1#2#3
   {
     \zrefcheck_get_astl:nnn {#1} {#2} { \l_@@_propval_tl }
     \@@_is_integer:nTF { \l_@@_propval_tl }
@@ -1395,7 +1397,7 @@
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_zcheck:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_zcheck:nnnn #1#2#3#4
   {
     \group_begin:
 %    \end{macrocode}
@@ -1516,7 +1518,7 @@
 %
 % First, a conditional function defined with:
 %
-% \cs{prg_new_conditional:Npnn} \cs{@@_check_\meta{check}:nn} |#1#2 { F }|
+% \cs{prg_new_protected_conditional:Npnn} \cs{@@_check_\meta{check}:nn} |#1#2 { F }|
 %
 % \noindent where \meta{check} is the name of the check, the first argument is
 % the \Arg{label} and the second the \Arg{reference}.  The existence of the
@@ -1558,7 +1560,7 @@
 %
 % \begin{macro}{\@@_set_checks_keys:}
 %    \begin{macrocode}
-\cs_new:Npn \@@_set_checks_keys:
+\cs_new_protected:Npn \@@_set_checks_keys:
   {
     \keys_define:nn  { zref-check }
       {
@@ -1673,7 +1675,7 @@
 %   \end{syntax}
 %   \meta{checks} are expected to be received as a sequence variable.
 %    \begin{macrocode}
-\cs_new:Npn \@@_run_checks:nnn #1#2#3
+\cs_new_protected:Npn \@@_run_checks:nnn #1#2#3
   {
     \group_begin:
       \tl_map_inline:nn {#2}
@@ -1714,7 +1716,7 @@
 %     \cs{@@_do_check:nnn} \Arg{check} \Arg{label beg} \Arg{reference beg}
 %   \end{syntax}
 %    \begin{macrocode}
-\cs_new:Npn \@@_do_check:nnn #1#2#3
+\cs_new_protected:Npn \@@_do_check:nnn #1#2#3
   {
     \group_begin:
 %    \end{macrocode}
@@ -1839,7 +1841,7 @@
 %
 % \begin{macro}{\@@_check_thispage:nn}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_thispage:nn #1#2 { T , F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_thispage:nn #1#2 { T , F , TF }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -1871,7 +1873,7 @@
 %
 % \begin{macro}{\@@_check_above:nn, \@@_check_below:nn}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_above:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_above:nn #1#2 { F , TF }
   {
     \group_begin:
       \@@_check_thispage:nnTF {#1} {#2}
@@ -1893,7 +1895,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_below:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_below:nn #1#2 { F , TF }
   {
     \@@_check_thispage:nnTF {#1} {#2}
       {
@@ -1911,7 +1913,7 @@
 %
 % \begin{macro}{\@@_check_before:nn, \@@_check_after:nn}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_before:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_before:nn #1#2 { F }
   {
     \@@_check_pagesbefore:nnTF {#1} {#2}
       { \prg_return_true: }
@@ -1921,7 +1923,7 @@
           { \prg_return_false: }
       }
   }
-\prg_new_conditional:Npnn \@@_check_after:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_after:nn #1#2 { F }
   {
     \@@_check_pagesafter:nnTF {#1} {#2}
       { \prg_return_true: }
@@ -1948,7 +1950,7 @@
 %     \@@_check_facing:nn
 %   }
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_nextpage:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_nextpage:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -1966,7 +1968,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_prevpage:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_prevpage:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -1984,7 +1986,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_pagesbefore:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_pagesbefore:nn #1#2 { F , TF }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2003,7 +2005,7 @@
     \group_end:
   }
 \cs_new_eq:NN \@@_check_ppbefore:nnF \@@_check_pagesbefore:nnF
-\prg_new_conditional:Npnn \@@_check_pagesafter:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_pagesafter:nn #1#2 { F , TF }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2022,7 +2024,7 @@
     \group_end:
   }
 \cs_new_eq:NN \@@_check_ppafter:nnF \@@_check_pagesafter:nnF
-\prg_new_conditional:Npnn \@@_check_facing:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_facing:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2065,7 +2067,7 @@
 %
 % \begin{macro}{\@@_check_close:nn, \@@_check_far:nn}
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_close:nn #1#2 { F , TF }
+\prg_new_protected_conditional:Npnn \@@_check_close:nn #1#2 { F , TF }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2085,7 +2087,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_far:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_far:nn #1#2 { F }
   {
     \@@_check_close:nnTF {#1} {#2}
       { \prg_return_false: }
@@ -2106,7 +2108,7 @@
 %     \@@_check_chapsbefore:nn
 %   }
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_thischap:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_thischap:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2132,7 +2134,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_nextchap:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_nextchap:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2149,7 +2151,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_prevchap:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_prevchap:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2167,7 +2169,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_chapsafter:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_chapsafter:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2184,7 +2186,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_chapsbefore:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_chapsbefore:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2217,7 +2219,7 @@
 %     \@@_check_secsbefore:nn
 %   }
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_check_thissec:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_thissec:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2247,7 +2249,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_nextsec:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_nextsec:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2268,7 +2270,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_prevsec:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_prevsec:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2290,7 +2292,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_secsafter:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_secsafter:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
@@ -2311,7 +2313,7 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
-\prg_new_conditional:Npnn \@@_check_secsbefore:nn #1#2 { F }
+\prg_new_protected_conditional:Npnn \@@_check_secsbefore:nn #1#2 { F }
   {
     \group_begin:
       \bool_set_true:N \l_@@_integer_bool
