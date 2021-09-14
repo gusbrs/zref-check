@@ -1376,8 +1376,7 @@
 %   \end{syntax}
 %
 %    \begin{macrocode}
-\NewDocumentCommand \zcheck
-  { s O { } > { \SplitList { , } } m m }
+\NewDocumentCommand \zcheck { s O { } m m }
   { \zref@wrapper@babel \@@_zcheck:nnnn {#3} {#1} {#2} {#4} }
 %    \end{macrocode}
 % \end{macro}
@@ -1385,6 +1384,7 @@
 %
 % \begin{variable}
 %   {
+%     \l_@@_zcheck_labels_seq ,
 %     \g_@@_id_int ,
 %     \l_@@_checkbeg_tl ,
 %     \l_@@_checkend_tl ,
@@ -1393,6 +1393,7 @@
 %     \l_@@_link_star_bool
 %   }
 %    \begin{macrocode}
+\seq_new:N \l_@@_zcheck_labels_seq
 \int_new:N \g_@@_id_int
 \tl_new:N \l_@@_checkbeg_tl
 \tl_new:N \l_@@_checkend_tl
@@ -1421,6 +1422,7 @@
 % Process local options and checks.
 %    \begin{macrocode}
       \keys_set:nn { zref-check / zcheck } {#3}
+      \seq_set_from_clist:Nn \l_@@_zcheck_labels_seq {#1}
 %    \end{macrocode}
 % Names of the labels for this zcheck call.
 %    \begin{macrocode}
@@ -1437,7 +1439,7 @@
 % links to multiple targets.  Hence, only the first one is considered for
 % hyperlinking.
 %    \begin{macrocode}
-      \tl_set:Nn \l_@@_link_label_tl { \tl_head:n {#1} }
+      \seq_get:NN \l_@@_zcheck_labels_seq \l_@@_link_label_tl
       \bool_set:Nn \l_@@_link_star_bool {#2}
       \zref@ifrefundefined { \l_@@_link_label_tl }
 %    \end{macrocode}
@@ -1470,12 +1472,12 @@
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
 %    \begin{macrocode}
-      \tl_map_function:nN {#1} \zref@refused
+      \seq_map_function:NN \l_@@_zcheck_labels_seq \zref@refused
 %    \end{macrocode}
 % Run the checks.
 %    \begin{macrocode}
-      \@@_run_checks:nnv
-        { \l_@@_zcheck_checks_seq } {#1} { l_@@_checkbeg_tl }
+      \@@_run_checks:nnv { \l_@@_zcheck_checks_seq }
+        { \l_@@_zcheck_labels_seq } { l_@@_checkbeg_tl }
     \group_end:
   }
 %    \end{macrocode}
@@ -1671,7 +1673,7 @@
 \cs_new_protected:Npn \@@_run_checks:nnn #1#2#3
   {
     \group_begin:
-      \tl_map_inline:nn {#2}
+      \seq_map_inline:Nn #2
         {
           \seq_map_inline:Nn #1
             { \@@_do_check:nnn {####1} {##1} {#3} }
