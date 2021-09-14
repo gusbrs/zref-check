@@ -1427,8 +1427,6 @@
       \int_gincr:N \g_@@_id_int
       \tl_set:Nx \l_@@_checkbeg_tl
         { \@@_check_lblfmt:n { \g_@@_id_int } }
-      \tl_set:Nx \l_@@_checkend_tl
-        { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
 %    \end{macrocode}
 % Set checkbeg label.
 %    \begin{macrocode}
@@ -1464,7 +1462,11 @@
 % Set checkend label.
 %    \begin{macrocode}
       \bool_if:NT \l_@@_zcheck_end_label_bool
-        { \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end } }
+        {
+          \tl_set:Nx \l_@@_checkend_tl
+            { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
+          \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end }
+        }
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
 %    \begin{macrocode}
