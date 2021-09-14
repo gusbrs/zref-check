@@ -32,7 +32,6 @@ Package zref-check Warning: Missing 'hyperref' package.
 .\TU/lmr/m/n/10 b
 .\TU/lmr/m/n/10 a
 .\TU/lmr/m/n/10 r
-.\write1{\zref@newlabel{zrefcheck@1@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox0
 > \box...=
@@ -47,6 +46,5 @@ l. ...\showbox0
 .\TU/lmr/m/n/10 b
 .\TU/lmr/m/n/10 a
 .\TU/lmr/m/n/10 r
-.\write1{\zref@newlabel{zrefcheck@2@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox1

@@ -29,7 +29,6 @@ Package zref-check Warning: Missing 'hyperref' package.
 .\OT1/cmr/m/n/10 b
 .\OT1/cmr/m/n/10 a
 .\OT1/cmr/m/n/10 r
-.\write1{\zref@newlabel{zrefcheck@1@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox0
 > \box...=
@@ -44,6 +43,5 @@ l. ...\showbox0
 .\OT1/cmr/m/n/10 b
 .\OT1/cmr/m/n/10 a
 .\OT1/cmr/m/n/10 r
-.\write1{\zref@newlabel{zrefcheck@2@zrefcheck}{\page{\Z@C@page }\abspage{\Z@C@abspage \ETC.}
 ! OK.
 l. ...\showbox1

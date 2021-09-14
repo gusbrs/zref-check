@@ -1444,7 +1444,8 @@
 %    \end{macrocode}
 % Set checkend label.
 %    \begin{macrocode}
-      \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck }
+      \bool_if:NT \l_@@_zcheck_end_label_bool
+        { \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck } }
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
 %    \begin{macrocode}
@@ -1541,14 +1542,47 @@
 % \cs{zref@addprop} and friends, as usual.
 %
 % Third, the check must be registered as a key which gets setup in
-% \cs{zcheck} by \cs{@@_set_checks_keys:}.
+% \cs{zcheck} by the \texttt{ zref-check / zcheck } key set.
+%
+% Fourth, if the check requires only a single label to work, it should be
+% registered in \{c_@@_single_label_checks_seq}.
+%
+%
+% \subsection{Single label checks}
+%
+%
+% Some checks do not require an ``end label'' in \cs{zcheck}, notably the
+% sectioning ones, which don't rely on page boundaries.  Hence, in case
+% \cs{zcheck} only calls checks in this set, we can spare the setting of the
+% end label.
+%
+% \begin{variable}{\c_@@_single_label_checks_seq}
+%    \begin{macrocode}
+\seq_new:N \c_@@_single_label_checks_seq
+\seq_set_from_clist:Nn \c_@@_single_label_checks_seq
+  {
+    thischap ,
+    prevchap ,
+    nextchap ,
+    chapsbefore ,
+    chapsafter ,
+    thissec ,
+    prevsec ,
+    nextsec ,
+    secsbefore ,
+    secsafter ,
+  }
+%    \end{macrocode}
+% \end{variable}
+%
 %
 %
 % \subsection{Setup}
 %
-% \begin{variable}{\l_@@_zcheck_checks_seq}
+% \begin{variable}{\l_@@_zcheck_checks_seq,\l_@@_end_label_required_bool}
 %    \begin{macrocode}
 \seq_new:N \l_@@_zcheck_checks_seq
+\bool_new:N \l_@@_zcheck_end_label_bool
 %    \end{macrocode}
 % \end{variable}
 %
@@ -1561,103 +1595,44 @@
 %
 % Then we add the checks to it.
 %    \begin{macrocode}
-\keys_define:nn { zref-check / zcheck }
+\clist_map_inline:nn
   {
-    thispage .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thispage } } ,
-    thispage .value_forbidden:n = true ,
-
-    prevpage .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevpage } } ,
-    prevpage .value_forbidden:n = true ,
-
-    nextpage .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextpage } } ,
-    nextpage .value_forbidden:n = true ,
-
-    facing .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { facing } } ,
-    facing .value_forbidden:n = true ,
-
-    above .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { above } } ,
-    above .value_forbidden:n = true ,
-
-    below .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { below } } ,
-    below .value_forbidden:n = true ,
-
-    pagesbefore .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesbefore } } ,
-    pagesbefore .value_forbidden:n = true ,
-
-    ppbefore .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppbefore } } ,
-    ppbefore .value_forbidden:n = true ,
-
-    pagesafter .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesafter } } ,
-    pagesafter .value_forbidden:n = true ,
-
-    ppafter .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppafter } } ,
-    ppafter .value_forbidden:n = true ,
-
-    before .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { before } } ,
-    before .value_forbidden:n = true ,
-
-    after .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { after } } ,
-    after .value_forbidden:n = true ,
-
-    thischap .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thischap } } ,
-    thischap .value_forbidden:n = true ,
-
-    prevchap .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevchap } } ,
-    prevchap .value_forbidden:n = true ,
-
-    nextchap .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextchap } } ,
-    nextchap .value_forbidden:n = true ,
-
-    chapsbefore .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsbefore } } ,
-    chapsbefore .value_forbidden:n = true ,
-
-    chapsafter .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsafter } } ,
-    chapsafter .value_forbidden:n = true ,
-
-    thissec .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thissec } } ,
-    thissec .value_forbidden:n = true ,
-
-    prevsec .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevsec } } ,
-    prevsec .value_forbidden:n = true ,
-
-    nextsec .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextsec } } ,
-    nextsec .value_forbidden:n = true ,
-
-    secsbefore .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsbefore } } ,
-    secsbefore .value_forbidden:n = true ,
-
-    secsafter .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsafter } } ,
-    secsafter .value_forbidden:n = true ,
-
-    close .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { close } } ,
-    close .value_forbidden:n = true ,
-
-    far .code:n =
-      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { far } } ,
-    far .value_forbidden:n = true ,
+    thispage ,
+    prevpage ,
+    nextpage ,
+    facing ,
+    above ,
+    below ,
+    pagesbefore ,
+    ppbefore ,
+    pagesafter ,
+    ppafter ,
+    before ,
+    after ,
+    thischap ,
+    prevchap ,
+    nextchap ,
+    chapsbefore ,
+    chapsafter ,
+    thissec ,
+    prevsec ,
+    nextsec ,
+    secsbefore ,
+    secsafter ,
+    close ,
+    far ,
+  }
+  {
+    \keys_define:nn { zref-check / zcheck }
+      {
+        #1 .code:n =
+          {
+            \seq_put_right:Nn \l_@@_zcheck_checks_seq {#1}
+            \seq_if_in:NnF \c_@@_single_label_checks_seq {#1}
+              { \bool_set_true:N \l_@@_zcheck_end_label_bool }
+          } ,
+        #1 .value_forbidden:n = true ,
+     }
   }
 %    \end{macrocode}
 %
@@ -1730,37 +1705,45 @@
               \bool_set_false:N \l_@@_onpage_bool
               \cs_if_exist:cTF { @@_check_ #1 :nnF }
                 {
-%    \end{macrocode}
-% ``label beg'' vs ``reference beg''.
-%    \begin{macrocode}
+                  % ``label beg'' vs ``reference beg''.
                   \use:c { @@_check_ #1 :nnF }
                     {#2} {#3}
                     { \bool_set_false:N \l_@@_passedcheck_bool }
-%    \end{macrocode}
-% ``label beg'' vs ``reference end''.
-%    \begin{macrocode}
-                  \exp_args:Nnno \use:c { @@_check_ #1 :nnF }
-                    {#2} { \@@_end_lblfmt:n {#3} }
-                    { \bool_set_false:N \l_@@_passedcheck_bool }
-%    \end{macrocode}
-% ``label end'' \emph{may} have been created by the target commands.
-%    \begin{macrocode}
-                  \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
-                    {}
+                  % ``reference end'' \emph{may} exist or not depending on the
+                  % checks.
+                  \zref@ifrefundefined { \@@_end_lblfmt:n {#3} }
                     {
-%    \end{macrocode}
-% ``label end'' vs ``reference beg''.
-%    \begin{macrocode}
-                      \exp_args:Nno \use:c { @@_check_ #1 :nnF }
-                        { \@@_end_lblfmt:n {#2} } {#3}
+                      % ``label end'' \emph{may} have been created by the
+                      % target commands.
+                      \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                        {}
+                        {
+                          % ``label end'' vs ``reference beg''.
+                          \exp_args:Nno \use:c { @@_check_ #1 :nnF }
+                            { \@@_end_lblfmt:n {#2} } {#3}
+                            { \bool_set_false:N \l_@@_passedcheck_bool }
+                        }
+                    }
+                    {
+                      % ``label beg'' vs ``reference end''.
+                      \exp_args:Nnno \use:c { @@_check_ #1 :nnF }
+                        {#2} { \@@_end_lblfmt:n {#3} }
                         { \bool_set_false:N \l_@@_passedcheck_bool }
-%    \end{macrocode}
-% ``label end'' vs ``reference end''.
-%    \begin{macrocode}
-                      \exp_args:Nnoo \use:c { @@_check_ #1 :nnF }
-                        { \@@_end_lblfmt:n {#2} }
-                        { \@@_end_lblfmt:n {#3} }
-                        { \bool_set_false:N \l_@@_passedcheck_bool }
+                      % ``label end'' \emph{may} have been created by the
+                      % target commands.
+                      \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                        {}
+                        {
+                          % ``label end'' vs ``reference beg''.
+                          \exp_args:Nno \use:c { @@_check_ #1 :nnF }
+                            { \@@_end_lblfmt:n {#2} } {#3}
+                            { \bool_set_false:N \l_@@_passedcheck_bool }
+                          % ``label end'' vs ``reference end''.
+                          \exp_args:Nnoo \use:c { @@_check_ #1 :nnF }
+                            { \@@_end_lblfmt:n {#2} }
+                            { \@@_end_lblfmt:n {#3} }
+                            { \bool_set_false:N \l_@@_passedcheck_bool }
+                        }
                     }
 %    \end{macrocode}
 % Handle option \opt{onpage=msg}.  This is only granted for tests which
