@@ -610,14 +610,29 @@
 %    \end{macrocode}
 %
 %
-% This is the list of properties to be used by \pkg{zref-check}, that is, the
-% list of properties the references and targets store.  This is the minimum
-% set required, more properties may be added according to options.
+% These are the lists of properties to be used by \pkg{zref-check}, that is,
+% the list of properties the references and targets store.  This is the
+% minimum set required, more properties may be added according to options.
 %    \begin{macrocode}
-\zref@newlist { zrefcheck }
-\zref@addprops { zrefcheck }
+\zref@newlist { zrefcheck-check }
+\zref@addprops { zrefcheck-check }
   {
-    page ,
+    page , % for messages
+    abspage ,
+    zc@abschap ,
+    zc@abssec
+  }
+\zref@newlist { zrefcheck-target }
+\zref@addprops { zrefcheck-target }
+  {
+    page , % so that \zpageref can refer to it
+    abspage ,
+    zc@abschap ,
+    zc@abssec
+  }
+\zref@newlist { zrefcheck-end }
+\zref@addprops { zrefcheck-end }
+  {
     abspage ,
     zc@abschap ,
     zc@abssec
@@ -779,7 +794,7 @@
         \bool_if:NT \l_@@_use_hyperref_bool
           {
             \RequirePackage { zref-hyperref }
-            \zref@addprop { zrefcheck } { anchor }
+            \zref@addprop { zrefcheck-target } { anchor }
           }
       }
       {
@@ -929,7 +944,7 @@
 %   according to option \opt{labelcmd}.
 %    \begin{macrocode}
 \cs_new_protected:Npn \@@_target_label:n #1
-  { \zref@labelbylist {#1} { zrefcheck } }
+  { \zref@labelbylist {#1} { zrefcheck-target } }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1413,7 +1428,7 @@
 %    \end{macrocode}
 % Set checkbeg label.
 %    \begin{macrocode}
-      \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck }
+      \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-check }
 %    \end{macrocode}
 % Typeset \marg{text}, with hyperlink when appropriate.  Even though the first
 % argument can receive a list of labels, there is no meaningful way to set
@@ -1445,7 +1460,7 @@
 % Set checkend label.
 %    \begin{macrocode}
       \bool_if:NT \l_@@_zcheck_end_label_bool
-        { \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck } }
+        { \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end } }
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
 %    \begin{macrocode}
@@ -1480,7 +1495,7 @@
     \zref@wrapper@babel \@@_target_label:n {#1}
     #2
     \zref@wrapper@babel
-      \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
+      \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck-end }
     \group_end:
   }
 %    \end{macrocode}
@@ -1500,7 +1515,7 @@
   }
   {
     \zref@wrapper@babel
-      \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck }
+      \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck-end }
   }
 %    \end{macrocode}
 % \end{macro}
