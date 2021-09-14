@@ -632,29 +632,20 @@
 %
 %    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-failed }
-  {
-    Failed~check~'#1'~for~label~'#2' \iow_newline:
-    on~page~#3~on~input~line~\msg_line_number:.
-  }
+  { Failed~check~'#1'~for~label~'#2'~on~page~#3~\msg_line_context:. }
 \msg_new:nnn { zref-check } { double-check }
-  {
-    Double-check~'#1'~for~label~'#2' \iow_newline:
-    on~page~#3~on~input~line~\msg_line_number:.
-  }
+  { Double-check~'#1'~for~label~'#2'~on~page~#3~\msg_line_context:. }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-missing }
-  { Check~'#1'~not~defined~on~input~line~\msg_line_number:. }
+  { Check~'#1'~not~defined~\msg_line_context:. }
 \msg_new:nnn { zref-check } { property-undefined }
-  { Property~'#1'~not~defined~on~input~line~\msg_line_number:. }
+  { Property~'#1'~not~defined~\msg_line_context:. }
 \msg_new:nnn { zref-check } { property-not-in-label }
-  { Label~'#1'~has~no~property~'#2'~on~input~line~\msg_line_number:. }
+  { Label~'#1'~has~no~property~'#2'~\msg_line_context:. }
 \msg_new:nnn { zref-check } { property-not-integer }
-  {
-    Property~'#1'~for~label~'#2'~not~an~integer \iow_newline:
-    on~input~line~\msg_line_number:.
-  }
+  { Property~'#1'~for~label~'#2'~not~an~integer~\msg_line_context:. }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -671,14 +662,11 @@
     Use~option~'msglevel'~instead.
   }
 \msg_new:nnn { zref-check } { option-preamble-only }
-  {
-    Option~'#1'~only~available~in~the~preamble \iow_newline:
-    on~input~line~\msg_line_number:.
-  }
+  { Option~'#1'~only~available~in~the~preamble~\msg_line_context:. }
 \msg_new:nnn { zref-check } { closerange-not-positive-integer }
   {
-    Option~'closerange'~not~a~positive~integer \iow_newline:
-    on~input~line~\msg_line_number:.~Using~default~value.
+    Option~'closerange'~not~a~positive~integer~\msg_line_context:.~
+    Using~default~value.
   }
 \msg_new:nnn { zref-check } { labelcmd-undefined }
   {

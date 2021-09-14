@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.0...HEAD)
 
+### Changed
+- Use `\msg_line_context:` instead of `\msg_line_number:` for package
+  messages.
+
 ## [v0.2.0](https://github.com/gusbrs/zref-check/compare/v0.1.0...v0.2.0) (2021-08-17)
 
 ### Changed
