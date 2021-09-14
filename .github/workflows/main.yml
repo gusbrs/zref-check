@@ -42,6 +42,7 @@ jobs:
             # Fonts
             metafont
             mfware
+            ec
             # Dependencies for zref-check
             zref
             oberdiek
@@ -91,6 +92,7 @@ jobs:
             mfware
             # Dependencies for documentation
             alphalph
+            infwarerr
             amsfonts
             amsmath
             booktabs
