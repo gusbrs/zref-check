@@ -5,6 +5,7 @@
 ### Changed
 - Use `\msg_line_context:` instead of `\msg_line_number:` for package
   messages.
+- Use more efficient way to set checks as option keys in `\zcheck`.
 
 ## [v0.2.0](https://github.com/gusbrs/zref-check/compare/v0.1.0...v0.2.0) (2021-08-17)
 

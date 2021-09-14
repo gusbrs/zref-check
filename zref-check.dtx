@@ -1399,15 +1399,11 @@
   {
     \group_begin:
 %    \end{macrocode}
-% Set checks keys.
-%    \begin{macrocode}
-      \@@_set_checks_keys:
-%    \end{macrocode}
 % Process local options and checks.
 %    \begin{macrocode}
-      \keys_set:nn { zref-check } {#3}
+      \keys_set:nn { zref-check / zcheck } {#3}
 %    \end{macrocode}
-% Names of the labels for this zrefcheck call.
+% Names of the labels for this zcheck call.
 %    \begin{macrocode}
       \int_gincr:N \g_@@_id_int
       \tl_set:Nx \l_@@_checkbeg_tl
@@ -1556,112 +1552,114 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{macro}{\@@_set_checks_keys:}
+%
+% First, we inherit all the main options into the keys of \texttt{zref-check /
+% zcheck}.
 %    \begin{macrocode}
-\cs_new_protected:Npn \@@_set_checks_keys:
+\keys_define:nn { } { zref-check / zcheck .inherit:n = zref-check }
+%    \end{macrocode}
+%
+% Then we add the checks to it.
+%    \begin{macrocode}
+\keys_define:nn { zref-check / zcheck }
   {
-    \keys_define:nn  { zref-check }
-      {
-        thispage .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thispage } } ,
-        thispage .value_forbidden:n = true ,
+    thispage .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thispage } } ,
+    thispage .value_forbidden:n = true ,
 
-        prevpage .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevpage } } ,
-        prevpage .value_forbidden:n = true ,
+    prevpage .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevpage } } ,
+    prevpage .value_forbidden:n = true ,
 
-        nextpage .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextpage } } ,
-        nextpage .value_forbidden:n = true ,
+    nextpage .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextpage } } ,
+    nextpage .value_forbidden:n = true ,
 
-        facing .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { facing } } ,
-        facing .value_forbidden:n = true ,
+    facing .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { facing } } ,
+    facing .value_forbidden:n = true ,
 
-        above .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { above } } ,
-        above .value_forbidden:n = true ,
+    above .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { above } } ,
+    above .value_forbidden:n = true ,
 
-        below .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { below } } ,
-        below .value_forbidden:n = true ,
+    below .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { below } } ,
+    below .value_forbidden:n = true ,
 
-        pagesbefore .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesbefore } } ,
-        pagesbefore .value_forbidden:n = true ,
+    pagesbefore .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesbefore } } ,
+    pagesbefore .value_forbidden:n = true ,
 
-        ppbefore .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppbefore } } ,
-        ppbefore .value_forbidden:n = true ,
+    ppbefore .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppbefore } } ,
+    ppbefore .value_forbidden:n = true ,
 
-        pagesafter .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesafter } } ,
-        pagesafter .value_forbidden:n = true ,
+    pagesafter .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { pagesafter } } ,
+    pagesafter .value_forbidden:n = true ,
 
-        ppafter .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppafter } } ,
-        ppafter .value_forbidden:n = true ,
+    ppafter .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { ppafter } } ,
+    ppafter .value_forbidden:n = true ,
 
-        before .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { before } } ,
-        before .value_forbidden:n = true ,
+    before .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { before } } ,
+    before .value_forbidden:n = true ,
 
-        after .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { after } } ,
-        after .value_forbidden:n = true ,
+    after .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { after } } ,
+    after .value_forbidden:n = true ,
 
-        thischap .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thischap } } ,
-        thischap .value_forbidden:n = true ,
+    thischap .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thischap } } ,
+    thischap .value_forbidden:n = true ,
 
-        prevchap .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevchap } } ,
-        prevchap .value_forbidden:n = true ,
+    prevchap .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevchap } } ,
+    prevchap .value_forbidden:n = true ,
 
-        nextchap .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextchap } } ,
-        nextchap .value_forbidden:n = true ,
+    nextchap .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextchap } } ,
+    nextchap .value_forbidden:n = true ,
 
-        chapsbefore .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsbefore } } ,
-        chapsbefore .value_forbidden:n = true ,
+    chapsbefore .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsbefore } } ,
+    chapsbefore .value_forbidden:n = true ,
 
-        chapsafter .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsafter } } ,
-        chapsafter .value_forbidden:n = true ,
+    chapsafter .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { chapsafter } } ,
+    chapsafter .value_forbidden:n = true ,
 
-        thissec .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thissec } } ,
-        thissec .value_forbidden:n = true ,
+    thissec .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { thissec } } ,
+    thissec .value_forbidden:n = true ,
 
-        prevsec .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevsec } } ,
-        prevsec .value_forbidden:n = true ,
+    prevsec .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { prevsec } } ,
+    prevsec .value_forbidden:n = true ,
 
-        nextsec .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextsec } } ,
-        nextsec .value_forbidden:n = true ,
+    nextsec .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { nextsec } } ,
+    nextsec .value_forbidden:n = true ,
 
-        secsbefore .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsbefore } } ,
-        secsbefore .value_forbidden:n = true ,
+    secsbefore .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsbefore } } ,
+    secsbefore .value_forbidden:n = true ,
 
-        secsafter .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsafter } } ,
-        secsafter .value_forbidden:n = true ,
+    secsafter .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { secsafter } } ,
+    secsafter .value_forbidden:n = true ,
 
-        close .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { close } } ,
-        close .value_forbidden:n = true ,
+    close .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { close } } ,
+    close .value_forbidden:n = true ,
 
-        far .code:n =
-          { \seq_put_right:Nn \l_@@_zcheck_checks_seq { far } } ,
-        far .value_forbidden:n = true ,
-      }
+    far .code:n =
+      { \seq_put_right:Nn \l_@@_zcheck_checks_seq { far } } ,
+    far .value_forbidden:n = true ,
   }
 %    \end{macrocode}
-% \end{macro}
-%
 %
 %
 %
