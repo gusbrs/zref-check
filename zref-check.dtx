@@ -231,6 +231,10 @@
 % \item[nextpage] \meta{label} occurs on the next page relative to
 %   \cs{zcheck}.
 %
+% \item[pagegap] There is a page gap between \meta{label} and \cs{zcheck}, in
+%   other words, \meta{label} does \emph{not} occur on \opt{thispage},
+%   \opt{prevpage} or \opt{nextpage}.
+%
 % \item[facing] On a \texttt{twoside} document, both \meta{label} and
 %   \cs{zcheck} fall onto a double spread, each on one of the two facing
 %   pages.
@@ -1616,6 +1620,7 @@
     prevpage ,
     nextpage ,
     facing ,
+    pagegap ,
     above ,
     below ,
     pagesbefore ,
@@ -1941,6 +1946,7 @@
 %     \@@_check_ppbefore:nn ,
 %     \@@_check_pagesafter:nn ,
 %     \@@_check_ppafter:nn ,
+%     \@@_check_pagegap:nn ,
 %     \@@_check_facing:nn
 %   }
 %    \begin{macrocode}
@@ -2018,6 +2024,24 @@
     \group_end:
   }
 \cs_new_eq:NN \@@_check_ppafter:nnF \@@_check_pagesafter:nnF
+\prg_new_protected_conditional:Npnn \@@_check_pagegap:nn #1#2 { F }
+  {
+    \group_begin:
+      \bool_set_true:N \l_@@_integer_bool
+      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+      \bool_lazy_and:nnTF
+        { \l_@@_integer_bool }
+        {
+          \int_compare_p:nNn
+            { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } } > { 1 } &&
+          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+        }
+        { \group_insert_after:N \prg_return_true:  }
+        { \group_insert_after:N \prg_return_false: }
+    \group_end:
+  }
 \prg_new_protected_conditional:Npnn \@@_check_facing:nn #1#2 { F }
   {
     \group_begin:

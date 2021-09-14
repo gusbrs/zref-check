@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\zctarget{txt:target-01}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-02}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-03}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-04}{Lorem ipsum}
+
+\zcheck[pagegap]{txt:target-01}{this check should pass}
+
+\zcheck[pagegap]{txt:target-02}{this check should pass}
+
+\zcheck[pagegap]{txt:target-03}{this check should fail}
+
+\zcheck[pagegap]{txt:target-04}{this check should fail}
+
+\zcheck[pagegap]{txt:target-05}{this check should fail}
+
+\zcheck[pagegap]{txt:target-06}{this check should pass}
+
+\zcheck[pagegap]{txt:target-07}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-05}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-06}{Lorem ipsum}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\zctarget{txt:target-07}{Lorem ipsum}
+
+\OMIT
+
+\end{document}

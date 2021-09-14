@@ -9,6 +9,9 @@
 - Separate `zref` property lists for checks and targets, so that only the
   minimum set of required properties for each are used.
 
+### Added
+- New `pagegap` check.
+
 ## [v0.2.0](https://github.com/gusbrs/zref-check/compare/v0.1.0...v0.2.0) (2021-08-17)
 
 ### Changed
