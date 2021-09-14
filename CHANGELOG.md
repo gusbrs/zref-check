@@ -11,6 +11,7 @@
 
 ### Added
 - New `pagegap` check.
+- Provide infrastructure for integration with `zref-clever`.
 
 ## [v0.2.0](https://github.com/gusbrs/zref-check/compare/v0.1.0...v0.2.0) (2021-08-17)
 

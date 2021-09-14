@@ -2361,6 +2361,50 @@
 % \end{macro}
 %
 %
+%
+% \section{\pkg{zref-clever} integration}
+%
+%
+% There are four tasks \pkg{zref-clever} needs to do, in order to offer
+% integration with \pkg{zref-check} from the options of \cs{zcref}: i) set the
+% ``beg label''; ii) set the checks options; iii) run the checks; iv)
+% (possibly) set the ``end label''.  Since `ii)' can be done directly by
+% running |\keys_set:nn { zref-check / zcheck }| on the options received, we
+% provide convenience functions for the other three tasks.
+%
+%
+% \begin{macro}
+%   {
+%     \zrefcheck_zcref_beg_label: ,
+%     \zrefcheck_zcref_end_label_maybe: ,
+%     \zrefcheck_zcref_run_checks_on_labels:n
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \zrefcheck_zcref_beg_label:
+  {
+    \int_gincr:N \g_@@_id_int
+    \tl_set:Nx \l_@@_checkbeg_tl
+      { \@@_check_lblfmt:n { \g_@@_id_int } }
+    \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-check }
+  }
+\cs_new_protected:Npn \zrefcheck_zcref_end_label_maybe:
+  {
+    \bool_if:NT \l_@@_zcheck_end_label_bool
+      {
+        \tl_set:Nx \l_@@_checkend_tl
+          { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
+        \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end }
+      }
+  }
+\cs_new_protected:Npn \zrefcheck_zcref_run_checks_on_labels:n #1
+  {
+    \@@_run_checks:nnv
+      { \l_@@_zcheck_checks_seq } {#1} { l_@@_checkbeg_tl }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
 %    \begin{macrocode}
 %</package>
 %    \end{macrocode}
