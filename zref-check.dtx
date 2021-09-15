@@ -1387,7 +1387,6 @@
 %     \l_@@_zcheck_labels_seq ,
 %     \g_@@_id_int ,
 %     \l_@@_checkbeg_tl ,
-%     \l_@@_checkend_tl ,
 %     \l_@@_link_label_tl ,
 %     \l_@@_link_anchor_tl ,
 %     \l_@@_link_star_bool
@@ -1396,7 +1395,6 @@
 \seq_new:N \l_@@_zcheck_labels_seq
 \int_new:N \g_@@_id_int
 \tl_new:N \l_@@_checkbeg_tl
-\tl_new:N \l_@@_checkend_tl
 \tl_new:N \l_@@_link_label_tl
 \tl_new:N \l_@@_link_anchor_tl
 \bool_new:N \l_@@_link_star_bool
@@ -1465,9 +1463,9 @@
 %    \begin{macrocode}
       \bool_if:NT \l_@@_zcheck_end_label_bool
         {
-          \tl_set:Nx \l_@@_checkend_tl
+          \zref@labelbylist
             { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
-          \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end }
+            { zrefcheck-end }
         }
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
@@ -2391,9 +2389,9 @@
   {
     \bool_if:NT \l_@@_zcheck_end_label_bool
       {
-        \tl_set:Nx \l_@@_checkend_tl
+        \zref@labelbylist
           { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
-        \zref@labelbylist { \l_@@_checkend_tl } { zrefcheck-end }
+          { zrefcheck-end }
       }
   }
 \cs_new_protected:Npn \zrefcheck_zcref_run_checks_on_labels:n #1
