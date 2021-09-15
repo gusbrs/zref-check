@@ -1474,8 +1474,8 @@
 %    \end{macrocode}
 % Run the checks.
 %    \begin{macrocode}
-      \@@_run_checks:nnv { \l_@@_zcheck_checks_seq }
-        { \l_@@_zcheck_labels_seq } { l_@@_checkbeg_tl }
+      \@@_run_checks:nnx { \l_@@_zcheck_checks_seq }
+        { \l_@@_zcheck_labels_seq } { \l_@@_checkbeg_tl }
     \group_end:
   }
 %    \end{macrocode}
@@ -1662,7 +1662,7 @@
 %
 % \subsection{Running}
 %
-% \begin{macro}{\@@_run_checks:nnn, \@@_run_checks:nnv}
+% \begin{macro}{\@@_run_checks:nnn}
 %   \begin{syntax}
 %     \cs{@@_run_checks:nnn} \Arg{checks} \Arg{labels} \Arg{reference}
 %   \end{syntax}
@@ -1678,7 +1678,7 @@
         }
     \group_end:
   }
-\cs_generate_variant:Nn \@@_run_checks:nnn { nnv }
+\cs_generate_variant:Nn \@@_run_checks:nnn { nnx }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2396,8 +2396,8 @@
   }
 \cs_new_protected:Npn \zrefcheck_zcref_run_checks_on_labels:n #1
   {
-    \@@_run_checks:nnv
-      { \l_@@_zcheck_checks_seq } {#1} { l_@@_checkbeg_tl }
+    \@@_run_checks:nnx
+      { \l_@@_zcheck_checks_seq } {#1} { \l_@@_checkbeg_tl }
   }
 %    \end{macrocode}
 % \end{macro}
