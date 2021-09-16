@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.0...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.1...HEAD)
+
+## [v0.2.1](https://github.com/gusbrs/zref-check/compare/v0.2.0...v0.2.1) (2021-09-16)
 
 ### Changed
 - Use `\msg_line_context:` instead of `\msg_line_number:` for messages.
