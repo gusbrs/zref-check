@@ -102,6 +102,7 @@ jobs:
             enumitem
             fancyvrb
             hologo
+            intcalc
             makeindex
             psnfss
             tools
