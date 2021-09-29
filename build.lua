@@ -66,9 +66,12 @@ function update_tag(file, content, tagname, tagdate)
       .. "## [v" .. tagname_safe .. "]"
     )
     -- Handle CTAN release announcement.
+    -- The `or ""` is meant to cover the case of the *first* release, for
+    -- which there will be no match for that pattern.  It must be done
+    -- manually.
     local announcement = string.match(
       content, "\n(## %[v" .. tagname_safe .. "%].-\n)## %[v"
-    )
+    ) or ""
     announcement = string.gsub(
       announcement,
       "## %[v" .. tagname_safe .. "%]%(https.-%)",
