@@ -1,5 +1,3 @@
-#!/usr/bin/env texlua
-
 -- Build script for "zref-check" package
 
 -- Identify the bundle and module
