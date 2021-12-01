@@ -1,6 +1,6 @@
 build/
 aux/
-.auctex-auto/
+.auctex/
 *.pdf
 *.zip
 zref-check-ctan.curlopt
