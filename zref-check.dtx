@@ -1526,8 +1526,11 @@
     \refstepcounter { zrefcheck }
     \zref@wrapper@babel \@@_target_label:n {#1}
     #2
-    \zref@wrapper@babel
-      \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck-end }
+    \tl_if_empty:nF {#2}
+      {
+        \zref@wrapper@babel
+          \zref@labelbylist { \@@_end_lblfmt:n {#1} } { zrefcheck-end }
+      }
     \group_end:
   }
 %    \end{macrocode}
