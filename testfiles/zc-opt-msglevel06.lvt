@@ -2,7 +2,7 @@
 
 \input{regression-test}
 
-\usepackage[msglevel=obeyfinal]{zref-check}
+\usepackage[msglevel=warniffinal]{zref-check}
 
 \begin{document}
 

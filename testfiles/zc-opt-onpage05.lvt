@@ -2,7 +2,7 @@
 
 \input{regression-test}
 
-\usepackage[onpage=obeyfinal]{zref-check}
+\usepackage[onpage=msgiffinal]{zref-check}
 
 \begin{document}
 

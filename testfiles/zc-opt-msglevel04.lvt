@@ -2,7 +2,7 @@
 
 \input{regression-test}
 
-\usepackage[msglevel=obeydraft]{zref-check}
+\usepackage[msglevel=infoifdraft]{zref-check}
 
 \begin{document}
 

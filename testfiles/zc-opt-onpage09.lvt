@@ -1,0 +1,13 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\START
+\zrefchecksetup{onpage=obeyfinal}
+\OMIT
+
+\begin{document}
+
+\end{document}

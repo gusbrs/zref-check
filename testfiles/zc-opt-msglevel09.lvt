@@ -1,0 +1,13 @@
+\documentclass[draft]{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\START
+\zrefchecksetup{msglevel=obeydraft}
+\OMIT
+
+\begin{document}
+
+\end{document}

@@ -43,7 +43,7 @@ issue no warning.
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[above, onpage=obeydraft]{fig:figure-3}{this check should pass} but
+\zcheck[above, onpage=labelseqifdraft]{fig:figure-3}{this check should pass} but
 issue a `double-check' warning.
 
 \OMIT
@@ -57,7 +57,37 @@ issue a `double-check' warning.
   \rule{5cm}{5cm}
 \end{figure}
 
-\zcheck[above, onpage=obeyfinal]{fig:figure-4}{this check should pass} and
+\zcheck[above, onpage=msgiffinal]{fig:figure-4}{this check should pass} and
+issue no warning.
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 5}
+  \zlabel{fig:figure-5}
+  \rule{5cm}{5cm}
+\end{figure}
+
+% deprecated option value
+\zcheck[above, onpage=obeydraft]{fig:figure-5}{this check should pass} but
+issue a `double-check' warning.
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\begin{figure}[h]
+  \centering
+  \caption{Figure 6}
+  \zlabel{fig:figure-6}
+  \rule{5cm}{5cm}
+\end{figure}
+
+% deprecated option value
+\zcheck[above, onpage=obeyfinal]{fig:figure-6}{this check should pass} and
 issue no warning.
 
 \OMIT

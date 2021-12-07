@@ -319,34 +319,34 @@
 %
 % \DescribeOption{msglevel} %
 % Sets the level of messages issued by \cs{zcheck} failed checks and takes
-% values \opt{warn}, \opt{info}, \opt{none}, \opt{obeydraft}, \opt{obeyfinal}.
-% The default value, \opt{warn}, issues messages both to the terminal and to
-% the log file, \opt{info} issues messages to the log file only, \opt{none}
-% suppresses all messages.  \opt{obeydraft} corresponds to \opt{info} if
-% option \opt{draft} is passed to \cs{documentclass}, and to \opt{warn}
-% otherwise.  \opt{obeyfinal} corresponds to \opt{warn} if option \opt{final}
-% is (explicitly) passed to \cs{documentclass} and \opt{info} otherwise.
-% \opt{ignore} is provided as convenience alias for \opt{msglevel=none} for
-% local use only.  This option only affects the messages issued by the checks
-% in \cs{zcheck}, not other messages or warnings of the package.  In
-% particular, it does not affect warnings issued for undefined labels, which
-% just use \cs{zref@refused} and thus are the same as standard \LaTeX{} ones
-% for this purpose.
+% values \opt{warn}, \opt{info}, \opt{none}, \opt{infoifdraft},
+% \opt{warniffinal}.  The default value, \opt{warn}, issues messages both to
+% the terminal and to the log file, \opt{info} issues messages to the log file
+% only, \opt{none} suppresses all messages.  \opt{infoifdraft} corresponds to
+% \opt{info} if option \opt{draft} is passed to \cs{documentclass}, and to
+% \opt{warn} otherwise.  \opt{warniffinal} corresponds to \opt{warn} if option
+% \opt{final} is (explicitly) passed to \cs{documentclass} and \opt{info}
+% otherwise.  \opt{ignore} is provided as convenience alias for
+% \opt{msglevel=none} for local use only.  This option only affects the
+% messages issued by the checks in \cs{zcheck}, not other messages or warnings
+% of the package.  In particular, it does not affect warnings issued for
+% undefined labels, which just use \cs{zref@refused} and thus are the same as
+% standard \LaTeX{} ones for this purpose.
 %
 %
 % \DescribeOption{onpage} %
 % Allows to control the messaging style for ``within page checks'', and takes
-% values \opt{labelseq}, \opt{msg}, \opt{obeydraft}, \opt{obeyfinal}.  The
-% default, \opt{labelseq}, uses the labels' shipout sequence, as retrieved
+% values \opt{labelseq}, \opt{msg}, \opt{labelseqifdraft}, \opt{msgiffinal}.
+% The default, \opt{labelseq}, uses the labels' shipout sequence, as retrieved
 % from the \file{.aux} file, to infer relative position within the page.
 % \opt{msg} also uses the same method for checking relative position, but
 % issues a (different) message \emph{even if the check passes}, to provide a
 % simple workflow for robust checking of ``false negatives'', considering the
 % label sequence is not fool proof (for details and workflow recommendations,
 % see Section~\ref{sec:within-page-checks}).  \opt{msg} also issues its
-% messages at the same level defined in \opt{msglevel}.  \opt{obeydraft}
+% messages at the same level defined in \opt{msglevel}.  \opt{labelseqifdraft}
 % corresponds to \opt{labelseq} if option \opt{draft} is passed to
-% \cs{documentclass} and to \opt{msg} otherwise.  \opt{obeyfinal} corresponds
+% \cs{documentclass} and to \opt{msg} otherwise.  \opt{msgiffinal} corresponds
 % to \opt{msg} if option \opt{final} is (explicitly) passed to
 % \cs{documentclass}, and to \opt{labelseq} otherwise.
 %
@@ -484,12 +484,12 @@
 % false positives (getting a warning when it was not due), but with false
 % negatives (not getting a warning when it was due).  Hence, setting
 % \opt{onpage} to \opt{msg} at a final typesetting stage (or just set it to
-% \opt{obeydraft} or \opt{obeyfinal} if that's part of your workflow) provides
-% a way to easily identify all cases of such checks (failing or passing), and
-% double-check them.  In case the test is passing though, the message is
-% different from that of a failing check, to quickly convey why you are
-% getting the message.  This option can also be set at the local level, if the
-% page in question is known to be problematic, or just atypical.
+% \opt{labelseqifdraft} or \opt{msgiffinal} if that's part of your workflow)
+% provides a way to easily identify all cases of such checks (failing or
+% passing), and double-check them.  In case the test is passing though, the
+% message is different from that of a failing check, to quickly convey why you
+% are getting the message.  This option can also be set at the local level, if
+% the page in question is known to be problematic, or just atypical.
 %
 %
 % \subsection{Sectioning checks}
@@ -699,6 +699,11 @@
     Control~sequence~named~'#1'~used~in~option~'labelcmd'~is~not~defined.~
     Using~default~value.
   }
+\msg_new:nnn { zref-check } { option-deprecated }
+  {
+    Option~'#1'~has~been~deprecated.\iow_newline:
+    Use~'#2'~as~a~replacement.
+  }
 %    \end{macrocode}
 %
 %
@@ -826,17 +831,29 @@
       { \tl_set:Nn \l_@@_msglevel_tl { info } } ,
     msglevel / none .code:n =
       { \tl_set:Nn \l_@@_msglevel_tl { none } } ,
-    msglevel / obeydraft .code:n =
+    msglevel / infoifdraft .code:n =
       {
         \ifdraft
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
       } ,
-    msglevel / obeyfinal .code:n =
+    msglevel / warniffinal .code:n =
       {
         \ifoptionfinal
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
+      } ,
+    msglevel / obeydraft .code:n =
+      {
+        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
+        \msg_warning:nnnn { zref-check }{ option-deprecated }
+          { msglevel=obeydraft } { msglevel=infoifdraft }
+      } ,
+    msglevel / obeyfinal .code:n =
+      {
+        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
+        \msg_warning:nnnn { zref-check }{ option-deprecated }
+          { msglevel=obeyfinal } { msglevel=warniffinal }
       } ,
     msglevel .value_required:n = true ,
     msglevel .initial:n = warn ,
@@ -876,17 +893,29 @@
       {
         \bool_set_true:N \l_@@_msgonpage_bool
       } ,
-    onpage / obeydraft .code:n =
+    onpage / labelseqifdraft .code:n =
       {
         \ifdraft
           { \bool_set_false:N \l_@@_msgonpage_bool }
           { \bool_set_true:N \l_@@_msgonpage_bool }
       } ,
-    onpage / obeyfinal .code:n =
+    onpage / msgiffinal .code:n =
       {
         \ifoptionfinal
           { \bool_set_true:N \l_@@_msgonpage_bool }
           { \bool_set_false:N \l_@@_msgonpage_bool }
+      } ,
+    onpage / obeydraft .code:n =
+      {
+        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
+        \msg_warning:nnnn { zref-check }{ option-deprecated }
+          { onpage=obeydraft } { onpage=labelseqifdraft }
+      } ,
+    onpage / obeyfinal .code:n =
+      {
+        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
+        \msg_warning:nnnn { zref-check }{ option-deprecated }
+          { onpage=obeyfinal } { onpage=msgiffinal }
       } ,
     onpage .value_required:n = true ,
     onpage .initial:n = labelseq
