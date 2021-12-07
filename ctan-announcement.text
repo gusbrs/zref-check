@@ -1,13 +1,9 @@
-## v0.2.1 (2021-09-16)
+## v0.2.2 (2021-12-07)
 
 ### Changed
-- Use `\msg_line_context:` instead of `\msg_line_number:` for messages.
-- Use more efficient way to set checks as option keys in `\zcheck`.
-- Spare setting end label in `\zcheck` for checks which don't need it.
-- Separate `zref` property lists for checks and targets, so that only the
-  minimum set of required properties for each are used.
-
-### Added
-- New `pagegap` check.
-- Provide infrastructure for integration with `zref-clever`.
+- Option values `msglevel=obeydraft`, `msglevel=obeyfinal`,
+  `onpage=obeydraft`, and `onpage=obeyfinal` have been respectively renamed to
+  `msglevel=infoifdraft`, `msglevel=warniffinal`, `onpage=labelseqifdraft`,
+  and `onpage=msgiffinal`.  Previous values have been deprecated.
+- Spare setting end label for `\zctarget` with empty text argument.
 

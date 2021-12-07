@@ -31,6 +31,7 @@ These files are typeset using LaTeX to produce the PDF documentation for the pac
 Plain text files included as documentation or metadata.
 
 * CHANGELOG.md ‡
+* MANIFEST.md ‡
 * README.md ‡
 * readme-ctan.md 
 * DEPENDS.txt ‡
@@ -116,6 +117,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-msglevel06.lvt 
 * zc-opt-msglevel07.lvt 
 * zc-opt-msglevel08.lvt 
+* zc-opt-msglevel09.lvt 
+* zc-opt-msglevel10.lvt 
 * zc-opt-onpage01.lvt 
 * zc-opt-onpage02.lvt 
 * zc-opt-onpage03.lvt 
@@ -123,6 +126,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-onpage05.lvt 
 * zc-opt-onpage06.lvt 
 * zc-opt-onpage07.lvt 
+* zc-opt-onpage08.lvt 
+* zc-opt-onpage09.lvt 
 * zc-babel01.luatex.tlg 
 * zc-babel01.luatexdev.tlg 
 * zc-babel01.tlg 
@@ -218,6 +223,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-msglevel06.tlg 
 * zc-opt-msglevel07.tlg 
 * zc-opt-msglevel08.tlg 
+* zc-opt-msglevel09.tlg 
+* zc-opt-msglevel10.tlg 
 * zc-opt-onpage01.tlg 
 * zc-opt-onpage02.tlg 
 * zc-opt-onpage03.tlg 
@@ -225,6 +232,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-onpage05.tlg 
 * zc-opt-onpage06.tlg 
 * zc-opt-onpage07.tlg 
+* zc-opt-onpage08.tlg 
+* zc-opt-onpage09.tlg 
 
 
 ## TDS manifest
@@ -251,6 +260,7 @@ All files included in the `zref-check/doc` directory.
 
 * CHANGELOG.md 
 * DEPENDS.txt 
+* MANIFEST.md 
 * README.md 
 * zref-check-code.pdf 
 * zref-check-code.tex 
@@ -266,6 +276,7 @@ The following group lists the files included in the CTAN package.
 
 * CHANGELOG.md 
 * DEPENDS.txt 
+* MANIFEST.md 
 * README.md 
 * zref-check-code.pdf 
 * zref-check-code.tex 
