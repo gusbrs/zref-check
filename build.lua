@@ -13,8 +13,18 @@ typesetfiles = {"*.tex"}
 -- Two runs for label testing
 checkruns = 2
 
--- CTAN upload settings
+-- Use dev formats for regression tests
+-- See https://tex.stackexchange.com/q/611424
+checkengines = {"pdftex","luatex","xetex","pdftexdev","luatexdev","xetexdev"}
+specialformats = specialformats or {}
+specialformats.latex =
+  {
+    pdftexdev = { binary = "pdflatex-dev" , format = "" } ,
+    luatexdev = { binary = "lualatex-dev" , format = "" } ,
+    xetexdev  = { binary = "xelatex-dev"  , format = "" } ,
+  }
 
+-- CTAN upload settings
 uploadconfig = {
   version = "0.2.1", -- first line for tagging
   pkg = "zref-check",
