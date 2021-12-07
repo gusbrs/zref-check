@@ -10,6 +10,59 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  ZC_PACKAGE_LIST: |
+    # The test framework
+    l3build
+    # Build formats
+    latex
+    latex-bin
+    luatex
+    luatexbase
+    xetex
+    # dev kernel
+    latex-bin-dev
+    latex-base-dev
+    latex-amsmath-dev
+    latex-graphics-dev
+    latex-tools-dev
+    latex-firstaid-dev
+    xelatex-dev
+    # Fonts
+    metafont
+    mfware
+    ec
+    # Dependencies
+    alphalph
+    amsfonts
+    amsmath
+    babel-french
+    babel-german
+    babel-portuges
+    babel-spanish
+    booktabs
+    carlisle
+    colortbl
+    csquotes
+    ec
+    enumitem
+    etexcmds
+    fancyvrb
+    hologo
+    hypdoc
+    hyperref
+    infwarerr
+    intcalc
+    kvdefinekeys
+    kvsetkeys
+    ltxcmds
+    makeindex
+    oberdiek
+    psnfss
+    tools
+    underscore
+    zref
+
 jobs:
   check:
     name: Regression tests
@@ -31,33 +84,7 @@ jobs:
       - name: Install TeX Live
         uses: zauguin/install-texlive@v1
         with:
-          packages: |
-            # The test framework
-            l3build
-            # Build formats
-            latex
-            latex-bin
-            luatex
-            xetex
-            # Fonts
-            metafont
-            mfware
-            ec
-            # Dependencies for zref-check
-            zref
-            oberdiek
-            hyperref
-            # Dependencies for zref
-            ltxcmds
-            kvsetkeys
-            kvdefinekeys
-            etexcmds
-            # Dependencies for tests
-            babel-french
-            babel-german
-            babel-portuges
-            babel-spanish
-            carlisle
+          packages: ${{ env.ZC_PACKAGE_LIST }}
       - name: Run tests
         run: l3build check -q -H --show-log-on-error
 
@@ -81,31 +108,6 @@ jobs:
       - name: Install TeX Live
         uses: zauguin/install-texlive@v1
         with:
-          packages: |
-            # The test framework
-            l3build
-            # Build formats
-            latex
-            latex-bin
-            # Fonts
-            metafont
-            mfware
-            # Dependencies for documentation
-            alphalph
-            infwarerr
-            amsfonts
-            amsmath
-            booktabs
-            colortbl
-            csquotes
-            ec
-            enumitem
-            fancyvrb
-            hologo
-            intcalc
-            makeindex
-            psnfss
-            tools
-            underscore
+          packages: ${{ env.ZC_PACKAGE_LIST }}
       - name: Compile documentation
         run: l3build doc -q -H
