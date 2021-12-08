@@ -2,6 +2,11 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.2...HEAD)
 
+### Fixed
+- Use `main` property list for user facing labels in `\zctarget` and
+  `zcregion` environment, so that references made to them with `zref-clever`
+  contain all required properties.
+
 ## [v0.2.2](https://github.com/gusbrs/zref-check/compare/v0.2.1...v0.2.2) (2021-12-07)
 
 ### Changed

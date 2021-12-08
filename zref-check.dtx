@@ -614,19 +614,14 @@
 % These are the lists of properties to be used by \pkg{zref-check}, that is,
 % the list of properties the references and targets store.  This is the
 % minimum set required, more properties may be added according to options.
+% For labels set with \cs{@@_target_label:n}, that is, user facing labels, we
+% must use the \texttt{main} property list, so that \pkg{zref-clever} can also
+% retrieve the properties it needs to refer to them.
 %    \begin{macrocode}
 \zref@newlist { zrefcheck-check }
 \zref@addprops { zrefcheck-check }
   {
     page , % for messages
-    abspage ,
-    zc@abschap ,
-    zc@abssec
-  }
-\zref@newlist { zrefcheck-target }
-\zref@addprops { zrefcheck-target }
-  {
-    page , % so that \zpageref can refer to it
     abspage ,
     zc@abschap ,
     zc@abssec
@@ -798,10 +793,7 @@
     \@ifpackageloaded { hyperref }
       {
         \bool_if:NT \l_@@_use_hyperref_bool
-          {
-            \RequirePackage { zref-hyperref }
-            \zref@addprop { zrefcheck-target } { anchor }
-          }
+          { \RequirePackage { zref-hyperref } }
       }
       {
         \bool_if:NT \l_@@_warn_hyperref_bool
@@ -974,7 +966,7 @@
 %   according to option \opt{labelcmd}.
 %    \begin{macrocode}
 \cs_new_protected:Npn \@@_target_label:n #1
-  { \zref@labelbylist {#1} { zrefcheck-target } }
+  { \zref@label {#1} }
 %    \end{macrocode}
 % \end{macro}
 %
