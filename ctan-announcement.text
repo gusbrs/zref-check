@@ -1,9 +1,7 @@
-## v0.2.2 (2021-12-07)
+## v0.2.3 (2021-12-20)
 
-### Changed
-- Option values `msglevel=obeydraft`, `msglevel=obeyfinal`,
-  `onpage=obeydraft`, and `onpage=obeyfinal` have been respectively renamed to
-  `msglevel=infoifdraft`, `msglevel=warniffinal`, `onpage=labelseqifdraft`,
-  and `onpage=msgiffinal`.  Previous values have been deprecated.
-- Spare setting end label for `\zctarget` with empty text argument.
+### Fixed
+- Use `main` property list for user facing labels in `\zctarget` and
+  `zcregion` environment, so that references made to them with `zref-clever`
+  contain all required properties.
 

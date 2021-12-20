@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.2...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.3...HEAD)
+
+## [v0.2.3](https://github.com/gusbrs/zref-check/compare/v0.2.2...v0.2.3) (2021-12-20)
 
 ### Fixed
 - Use `main` property list for user facing labels in `\zctarget` and
