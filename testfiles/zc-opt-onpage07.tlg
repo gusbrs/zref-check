@@ -4,7 +4,9 @@ Package zref-check Warning: Double-check 'above' for label 'fig:figure-2' on
 (zref-check)                page 2 on line ....
 Package zref-check Warning: Double-check 'above' for label 'fig:figure-3' on
 (zref-check)                page 3 on line ....
-Package zref-check Warning: Option 'onpage=obeydraft' has been deprecated.
-(zref-check)                Use 'onpage=labelseqifdraft' as a replacement.
-Package zref-check Warning: Option 'onpage=obeyfinal' has been deprecated.
-(zref-check)                Use 'onpage=msgiffinal' as a replacement.
+Package zref-check Warning: Option 'onpage=obeydraft' has been deprecated on
+(zref-check)                line 75.
+(zref-check)                Use 'onpage=labelseqifdraft' instead.
+Package zref-check Warning: Option 'onpage=obeyfinal' has been deprecated on
+(zref-check)                line 90.
+(zref-check)                Use 'onpage=msgiffinal' instead.
