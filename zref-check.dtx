@@ -1804,19 +1804,31 @@
                       \@@_check_thispage:nnT
                         {#2} {#3}
                         { \bool_set_true:N \l_@@_onpage_bool }
-                      \@@_check_thispage:nnT
-                        {#2} { \@@_end_lblfmt:n {#3} }
-                        { \bool_set_true:N \l_@@_onpage_bool }
-                      \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
-                        {}
+                      \zref@ifrefundefined { \@@_end_lblfmt:n {#3} }
+                        {
+                          \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                            {}
+                            {
+                              \@@_check_thispage:nnT
+                                { \@@_end_lblfmt:n {#2} } {#3}
+                                { \bool_set_true:N \l_@@_onpage_bool }
+                            }
+                        }
                         {
                           \@@_check_thispage:nnT
-                            { \@@_end_lblfmt:n {#2} } {#3}
+                            {#2} { \@@_end_lblfmt:n {#3} }
                             { \bool_set_true:N \l_@@_onpage_bool }
-                          \@@_check_thispage:nnT
-                            { \@@_end_lblfmt:n {#2} }
-                            { \@@_end_lblfmt:n {#3} }
-                            { \bool_set_true:N \l_@@_onpage_bool }
+                          \zref@ifrefundefined { \@@_end_lblfmt:n {#2} }
+                            {}
+                            {
+                              \@@_check_thispage:nnT
+                                { \@@_end_lblfmt:n {#2} } {#3}
+                                { \bool_set_true:N \l_@@_onpage_bool }
+                              \@@_check_thispage:nnT
+                                { \@@_end_lblfmt:n {#2} }
+                                { \@@_end_lblfmt:n {#3} }
+                                { \bool_set_true:N \l_@@_onpage_bool }
+                            }
                         }
                     }
                   \bool_if:NTF \l_@@_passedcheck_bool
