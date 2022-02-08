@@ -120,6 +120,10 @@
 % \pkg{zref-check} also provides support for this kind of cross-reference,
 % allowing for them to be consistently verified.
 %
+% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
+% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
+% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
+% by this package.
 %
 %
 % \section{Loading the package}
@@ -189,6 +193,13 @@
 %   \end{syntax}
 %   Sets \pkg{zref-check}'s options (see Section~\ref{sec:options}).
 % \end{function}
+%
+% \bigskip{}
+%
+% All user commands of \pkg{zref-check} have their \marg{label} arguments
+% protected for \pkg{babel} active characters using \pkg{zref}'s
+% \cs{zref@wrapper@babel}, so that we should have equivalent support in that
+% regard, as \pkg{zref} itself does.
 %
 %
 % \section{Checks}
@@ -355,69 +366,6 @@
 % Defines the width of the range of pages, relative to the reference, that are
 % considered ``close'' by the \opt{close} check.  Takes a positive integer as
 % value, with default 5.
-%
-%
-% \DescribeOption{labelcmd} %
-% Defines the command used to set the user labels in \cs{zctarget} and
-% \texttt{zcregion}.  Takes a control sequence \emph{name} as value, and the
-% default sets labels with the minimal required properties, those of the
-% \texttt{zrefcheck} property list.  This is a preamble only option.  The
-% specified control sequence must receive one mandatory argument (the
-% \marg{label}) and must generate a \texttt{zref label} with at least the
-% properties in the \texttt{zrefcheck} property list.  The intended use case
-% is that of the user creating a convenience macro which calls both \cs{label}
-% and \cs{zlabel}, as suggested in Section~\ref{sec:labels}, so that the same
-% labels are accessible either from the standard reference system or from
-% \pkg{zref}.  For example:
-%
-% \begin{verbatim}
-%     \NewDocumentCommand\mybothlabels{m}{\label{#1}\zlabel{#1}}
-%     \zrefchecksetup{labelcmd=mybothlabels}
-% \end{verbatim}
-%
-% Note that the value of the underlying counter used for labels in
-% \cs{zctarget} and \texttt{zcregion} -- what you'd get with a plain \cs{ref}
-% here -- is not really meaningful.  But you get to use
-% \cs{pageref}\marg{label}, or \pkg{hyperref}'s
-% \cs{hyperref}\oarg{label}\marg{text} on the labels used in \cs{zctarget} and
-% \texttt{zcregion} with this procedure.
-%
-%
-% \section{Labels}
-% \label{sec:labels}
-%
-% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
-% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
-% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
-% by this package.  This has some advantages, particularly the data
-% flexibility of \pkg{zref}, and the absence of the ubiquitous ``load-order''
-% and compatibility problems which are well known to afflict \LaTeX{} packages
-% of this area of functionality.  On the other hand, the reliance on
-% \pkg{zref} labels may be seen as an inconvenience, since users of the
-% standard cross-reference infrastructure may need to add extra labels for
-% this.  That's true.  But \pkg{zref-check} is not meant to replace the
-% existing functionality of the kernel or of the traditional packages in this
-% area (to my knowledge, it only intersects directly with \pkg{varioref} and,
-% even so, it is quite different in scope).  Indeed, it is easy to see the use
-% in tandem with standard references, for example:
-%
-% \begin{verbatim}
-%     ... Figure~\ref{fig:figure-1}, \zcheck*[nextpage]{fig:figure-1}{on
-%     the next page}.
-% \end{verbatim}
-%
-% Besides, \pkg{zref} does not share the label name-space with the standard
-% labels, so that you can call both \cs{label} and \cs{zlabel} with the same
-% label name (manually, or through a convenience macro), to ease the label set
-% administration.  The example above presumes that was the case.
-%
-% All user commands of \pkg{zref-check} have their \marg{label} arguments
-% protected for \pkg{babel} active characters using \pkg{zref}'s
-% \cs{zref@wrapper@babel}, so that we should have equivalent support in that
-% regard, as \pkg{zref} itself does.  However, \pkg{zref-check} sets labels
-% which either start with \texttt{zrefcheck@} or end with \texttt{@zrefcheck},
-% for internal use.  Label names with either of those are considered reserved
-% by the package.
 %
 %
 % \section{Limitations}
@@ -614,9 +562,9 @@
 % These are the lists of properties to be used by \pkg{zref-check}, that is,
 % the list of properties the references and targets store.  This is the
 % minimum set required, more properties may be added according to options.
-% For labels set with \cs{@@_target_label:n}, that is, user facing labels, we
-% must use the \texttt{main} property list, so that \pkg{zref-clever} can also
-% retrieve the properties it needs to refer to them.
+% For user facing labels, we must use the \texttt{main} property list, so that
+% \pkg{zref-clever} can also retrieve the properties it needs to refer to
+% them.
 %    \begin{macrocode}
 \zref@newlist { zrefcheck-check }
 \zref@addprops { zrefcheck-check }
@@ -704,11 +652,13 @@
     Control~sequence~named~'#1'~used~in~option~'labelcmd'~is~not~defined.~
     Using~default~value.
   }
-\msg_new:nnn { zref-check } { option-deprecated }
+\msg_new:nnn { zref-check } { option-deprecated-with-alternative }
   {
     Option~'#1'~has~been~deprecated~\msg_line_context:.\iow_newline:
     Use~'#2'~instead.
   }
+\msg_new:nnn { zref-check } { option-deprecated }
+  { Option~'#1'~has~been~deprecated~\msg_line_context:. }
 %    \end{macrocode}
 %
 %
@@ -848,13 +798,13 @@
     msglevel / obeydraft .code:n =
       {
         % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated }
+        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
           { msglevel=obeydraft } { msglevel=infoifdraft }
       } ,
     msglevel / obeyfinal .code:n =
       {
         % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated }
+        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
           { msglevel=obeyfinal } { msglevel=warniffinal }
       } ,
     msglevel .value_required:n = true ,
@@ -910,13 +860,13 @@
     onpage / obeydraft .code:n =
       {
         % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated }
+        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
           { onpage=obeydraft } { onpage=labelseqifdraft }
       } ,
     onpage / obeyfinal .code:n =
       {
         % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated }
+        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
           { onpage=obeyfinal } { onpage=msgiffinal }
       } ,
     onpage .value_required:n = true ,
@@ -951,66 +901,18 @@
 %
 % \subsubsection*{\opt{labelcmd} option}
 %
-% \begin{variable}{\l_@@_target_label_tl}
-%   I'd love to receive the macro itself rather than it's name, but this would
-%   bring unwarranted complications:
-%   \url{https://tex.stackexchange.com/a/489570}.
 %    \begin{macrocode}
-\tl_new:N \l_@@_target_label_tl
-\bool_new:N \l_@@_target_label_bool
 \keys_define:nn { zref-check }
   {
     labelcmd .code:n =
       {
-        \tl_set:Nn \l_@@_target_label_tl {#1}
-        \bool_set_true:N \l_@@_target_label_bool
+        % NOTE Option value deprecated in 2022-02-08 for v0.2.4.
+        \msg_warning:nnn { zref-check }{ option-deprecated }
+          { labelcmd }
       } ,
-    labelcmd .value_required:n = true ,
   }
 %    \end{macrocode}
-% \end{variable}
 %
-% \begin{macro}{\@@_target_label:n}
-%   Default definition of the function for user label setting in \cs{zctarget}
-%   and \texttt{zcregion}.  It may be redefined at \texttt{begindocument}
-%   according to option \opt{labelcmd}.
-%    \begin{macrocode}
-\cs_new_protected:Npn \@@_target_label:n #1
-  { \zref@label {#1} }
-%    \end{macrocode}
-% \end{macro}
-%
-%    \begin{macrocode}
-\AddToHook { begindocument }
-  {
-    \bool_if:NT \l_@@_target_label_bool
-      {
-        \tl_if_blank:VT \l_@@_target_label_tl
-          { \tl_clear:N \l_@@_target_label_tl }
-        \cs_if_exist:cTF { \l_@@_target_label_tl }
-          {
-            \cs_set_protected:Npx \@@_target_label:n #1
-              {
-                \exp_not:o
-                  { \cs:w \l_@@_target_label_tl \cs_end: }
-                  {#1}
-              }
-          }
-          {
-            \exp_args:Nnno \msg_warning:nnn { zref-check }
-              { labelcmd-undefined } { \l_@@_target_label_tl }
-          }
-      }
-    \keys_define:nn { zref-check }
-      {
-        labelcmd .code:n =
-          {
-            \msg_warning:nnn { zref-check }
-              { option-preamble-only } { labelcmd }
-          }
-      }
-  }
-%    \end{macrocode}
 %
 %
 % \subsubsection*{Package options}
@@ -1531,7 +1433,7 @@
 %    \begin{macrocode}
     \group_begin:
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \@@_target_label:n {#1}
+    \zref@wrapper@babel \zref@label {#1}
     #2
     \tl_if_empty:nF {#2}
       {
@@ -1553,7 +1455,7 @@
 \NewDocumentEnvironment {zcregion} { m }
   {
     \refstepcounter { zrefcheck }
-    \zref@wrapper@babel \@@_target_label:n {#1}
+    \zref@wrapper@babel \zref@label {#1}
   }
   {
     \zref@wrapper@babel

@@ -2,6 +2,11 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.3...HEAD)
 
+### Deprecated
+- Option `labelcmd` has been deprecated with no replacement.  The originally
+  intended use for this option has been made obsolete by package
+  `zref-clever`.
+
 ## [v0.2.3](https://github.com/gusbrs/zref-check/compare/v0.2.2...v0.2.3) (2021-12-20)
 
 ### Fixed
