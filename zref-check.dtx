@@ -634,6 +634,16 @@
     zc@abssec
   }
 %    \end{macrocode}
+% For \pkg{zref-vario} we only need page information, since we only perform
+% \opt{above} and \opt{below} checks there.
+%    \begin{macrocode}
+\zref@newlist { zrefcheck-zrefvario }
+\zref@addprops { zrefcheck-zrefvario }
+  {
+    page , % for messages
+    abspage ,
+  }
+%    \end{macrocode}
 %
 %
 % \section{Plumbing}
@@ -1853,6 +1863,7 @@
         }
     \group_end:
   }
+\cs_generate_variant:Nn \@@_do_check:nnn { nnV }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2439,6 +2450,32 @@
   }
 %    \end{macrocode}
 % \end{macro}
+%
+%
+%
+% \section{\pkg{zref-vario} integration}
+%
+%
+% \begin{macro}
+%   {
+%     \zrefcheck_zrefvario_label: ,
+%     \zrefcheck_zrefvario_run_check_on_label:n
+%   }
+%    \begin{macrocode}
+\cs_new_protected:Npn \zrefcheck_zrefvario_label:
+  {
+    \int_gincr:N \g_@@_id_int
+    \tl_set:Nx \l_@@_checkbeg_tl
+      { \@@_check_lblfmt:n { \g_@@_id_int } }
+    \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-zrefvario }
+  }
+\cs_new_protected:Npn \zrefcheck_zrefvario_run_check_on_label:nn #1#2
+  { \@@_do_check:nnV {#1} {#2} \l_@@_checkbeg_tl }
+\cs_generate_variant:Nn \zrefcheck_zrefvario_run_check_on_label:nn { Vn }
+%    \end{macrocode}
+% \end{macro}
+%
+%
 %
 %
 %    \begin{macrocode}
