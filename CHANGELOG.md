@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.3...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.4...HEAD)
+
+## [v0.2.4](https://github.com/gusbrs/zref-check/compare/v0.2.3...v0.2.4) (2022-02-08)
 
 ### Added
 - New `otherpage` check.

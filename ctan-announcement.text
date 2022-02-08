@@ -1,7 +1,11 @@
-## v0.2.3 (2021-12-20)
+## v0.2.4 (2022-02-08)
 
-### Fixed
-- Use `main` property list for user facing labels in `\zctarget` and
-  `zcregion` environment, so that references made to them with `zref-clever`
-  contain all required properties.
+### Added
+- New `otherpage` check.
+- Infrastructure support provided for integration with `zref-vario`.
+
+### Deprecated
+- Option `labelcmd` has been deprecated with no replacement.  The originally
+  intended use for this option has been made obsolete by package
+  `zref-clever`.
 
