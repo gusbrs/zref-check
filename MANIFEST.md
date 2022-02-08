@@ -78,6 +78,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-check-nextpage01.lvt 
 * zc-check-nextpage02.lvt 
 * zc-check-nextsec01.lvt 
+* zc-check-otherpage01.lvt 
+* zc-check-otherpage02.lvt 
 * zc-check-pagegap01.lvt 
 * zc-check-pagesafter01.lvt 
 * zc-check-pagesafter02.lvt 
@@ -106,9 +108,6 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-hyperref05.lvt 
 * zc-opt-ignore01.lvt 
 * zc-opt-ignore02.lvt 
-* zc-opt-labelcmd01.lvt 
-* zc-opt-labelcmd02.lvt 
-* zc-opt-labelcmd03.lvt 
 * zc-opt-msglevel01.lvt 
 * zc-opt-msglevel02.lvt 
 * zc-opt-msglevel03.lvt 
@@ -164,6 +163,8 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-check-nextpage01.tlg 
 * zc-check-nextpage02.tlg 
 * zc-check-nextsec01.tlg 
+* zc-check-otherpage01.tlg 
+* zc-check-otherpage02.tlg 
 * zc-check-pagegap01.tlg 
 * zc-check-pagesafter01.tlg 
 * zc-check-pagesafter02.tlg 
@@ -212,9 +213,6 @@ different engines (pdfTeX, XeTeX, LuaTeX, etc.).
 * zc-opt-hyperref05.xetexdev.tlg 
 * zc-opt-ignore01.tlg 
 * zc-opt-ignore02.tlg 
-* zc-opt-labelcmd01.tlg 
-* zc-opt-labelcmd02.tlg 
-* zc-opt-labelcmd03.tlg 
 * zc-opt-msglevel01.tlg 
 * zc-opt-msglevel02.tlg 
 * zc-opt-msglevel03.tlg 
