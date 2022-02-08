@@ -120,11 +120,6 @@
 % \pkg{zref-check} also provides support for this kind of cross-reference,
 % allowing for them to be consistently verified.
 %
-% \pkg{zref-check} depends on \pkg{zref}, as the name entails, which means it
-% is able to work with \pkg{zref} labels, in general created by \cs{zlabel},
-% but also with \cs{zctarget} and the \texttt{zcregion} environment provided
-% by this package.
-%
 %
 % \section{Loading the package}
 % \label{sec:loading-package}
@@ -199,7 +194,10 @@
 % All user commands of \pkg{zref-check} have their \marg{label} arguments
 % protected for \pkg{babel} active characters using \pkg{zref}'s
 % \cs{zref@wrapper@babel}, so that we should have equivalent support in that
-% regard, as \pkg{zref} itself does.
+% regard, as \pkg{zref} itself does.  \pkg{zref-check} depends on \pkg{zref},
+% as the name entails, which means it is able to work with \pkg{zref} labels,
+% in general created by \cs{zlabel}, but also with \cs{zctarget} and the
+% \texttt{zcregion} environment provided by this package.
 %
 %
 % \section{Checks}
