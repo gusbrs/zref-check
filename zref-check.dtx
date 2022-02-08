@@ -240,6 +240,9 @@
 % \item[nextpage] \meta{label} occurs on the next page relative to
 %   \cs{zcheck}.
 %
+% \item[otherpage] \meta{label} occurs on a page different from that of
+%   \cs{zcheck}, that is, it does \emph{not} occur on \opt{thispage}.
+%
 % \item[pagegap] There is a page gap between \meta{label} and \cs{zcheck}, in
 %   other words, \meta{label} does \emph{not} occur on \opt{thispage},
 %   \opt{prevpage} or \opt{nextpage}.
@@ -1560,6 +1563,7 @@
     prevpage ,
     nextpage ,
     facing ,
+    otherpage ,
     pagegap ,
     above ,
     below ,
@@ -1791,7 +1795,7 @@
 %
 % \subsubsection{This page}
 %
-% \begin{macro}{\@@_check_thispage:nn}
+% \begin{macro}{\@@_check_thispage:nn, \@@_check_otherpage:nn}
 %    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_check_thispage:nn #1#2 { T , F , TF }
   {
@@ -1810,12 +1814,18 @@
 % shipped out, will receive value `1'.  So, if we do find `0' here, better
 % signal something is wrong.  This comment extends to all page number checks.
 %    \begin{macrocode}
-            ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-            ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
         }
         { \group_insert_after:N \prg_return_true:  }
         { \group_insert_after:N \prg_return_false: }
     \group_end:
+  }
+\prg_new_protected_conditional:Npnn \@@_check_otherpage:nn #1#2 { T , F , TF }
+  {
+    \@@_check_thispage:nnTF {#1} {#2}
+      { \prg_return_false: }
+      { \prg_return_true:  }
   }
 %    \end{macrocode}
 % \end{macro}

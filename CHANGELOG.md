@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.3...HEAD)
 
+### Added
+- New `otherpage` check.
+
 ### Deprecated
 - Option `labelcmd` has been deprecated with no replacement.  The originally
   intended use for this option has been made obsolete by package

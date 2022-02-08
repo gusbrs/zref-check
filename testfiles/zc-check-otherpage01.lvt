@@ -1,0 +1,72 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+\zcheck[otherpage]{sec:section-1}{this check should fail}
+
+\zcheck[otherpage]{txt:target-1}{this check should fail}
+
+\zcheck[otherpage]{sec:section-2}{this check should pass}
+
+\zcheck[otherpage]{txt:target-2}{this check should pass}
+
+\zcheck[otherpage]{sec:section-3}{this check should pass}
+
+\zcheck[otherpage]{txt:target-3}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec:section-2}
+
+\zctarget{txt:target-2}{Lorem ipsum}
+
+\zcheck[otherpage]{sec:section-1}{this check should pass}
+
+\zcheck[otherpage]{txt:target-1}{this check should pass}
+
+\zcheck[otherpage]{sec:section-2}{this check should fail}
+
+\zcheck[otherpage]{txt:target-2}{this check should fail}
+
+\zcheck[otherpage]{sec:section-3}{this check should pass}
+
+\zcheck[otherpage]{txt:target-3}{this check should pass}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 3}
+\zlabel{sec:section-3}
+
+\zctarget{txt:target-3}{Lorem ipsum}
+
+\zcheck[otherpage]{sec:section-1}{this check should pass}
+
+\zcheck[otherpage]{txt:target-1}{this check should pass}
+
+\zcheck[otherpage]{sec:section-2}{this check should pass}
+
+\zcheck[otherpage]{txt:target-2}{this check should pass}
+
+\zcheck[otherpage]{sec:section-3}{this check should fail}
+
+\zcheck[otherpage]{txt:target-3}{this check should fail}
+
+\OMIT
+
+\end{document}
