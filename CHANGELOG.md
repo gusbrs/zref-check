@@ -4,6 +4,7 @@
 
 ### Added
 - New `otherpage` check.
+- Infrastructure support provided for integration with `zref-vario`.
 
 ### Deprecated
 - Option `labelcmd` has been deprecated with no replacement.  The originally
