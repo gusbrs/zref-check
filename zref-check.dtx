@@ -546,7 +546,7 @@
 \AddToHook { cmd / chapter / before }
   {
     \int_gincr:N \g_@@_abschap_int
-    \int_zero:N \g_@@_abssec_int
+    \int_gzero:N \g_@@_abssec_int
   }
 \zref@newprop { zc@abschap } [0] { \int_use:N \g_@@_abschap_int }
 \zref@addprop \ZREF@mainlist { zc@abschap }
@@ -1033,7 +1033,7 @@
 % \end{variable}
 %
 %    \begin{macrocode}
-\tl_set:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
+\tl_gset:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
 \file_if_exist:nT { \g_tmpa_tl }
   {
 %    \end{macrocode}
@@ -1518,8 +1518,7 @@
 %
 % \begin{variable}{\c_@@_single_label_checks_seq}
 %    \begin{macrocode}
-\seq_new:N \c_@@_single_label_checks_seq
-\seq_set_from_clist:Nn \c_@@_single_label_checks_seq
+\seq_const_from_clist:Nn \c_@@_single_label_checks_seq
   {
     thischap ,
     prevchap ,
@@ -1632,8 +1631,7 @@
 %    \begin{macrocode}
 \bool_new:N \l_@@_passedcheck_bool
 \bool_new:N \l_@@_onpage_bool
-\seq_new:N \c_@@_onpage_checks_seq
-\seq_set_from_clist:Nn \c_@@_onpage_checks_seq
+\seq_const_from_clist:Nn \c_@@_onpage_checks_seq
   { above , below , before , after }
 %    \end{macrocode}
 % \end{variable}
