@@ -2,6 +2,12 @@
 
 \input{regression-test}
 
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
 % The intent of these 'babel' tests is to ensure 'zref's '\zref@wrapper@babel'
 % is working as expected in the 'zref-check' makes of it.  So, we deliberately
 % use 'babel' active characters in the labels.  The '\START' call is made

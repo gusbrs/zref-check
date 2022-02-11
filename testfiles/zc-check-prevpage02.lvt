@@ -2,6 +2,12 @@
 
 \input{regression-test}
 
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
 \newcommand\lipsumi{Lorem ipsum dolor sit amet, consectetuer adipiscing
   elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae,
   felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget,
