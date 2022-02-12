@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.4...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.5...HEAD)
+
+## [v0.2.5](https://github.com/gusbrs/zref-check/compare/v0.2.4...v0.2.5) (2022-02-11)
 
 ### Changed
 - (Internal) Option variables setting was reviewed, ensuring proper scope is

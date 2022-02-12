@@ -1,11 +1,7 @@
-## v0.2.4 (2022-02-08)
+## v0.2.5 (2022-02-11)
 
-### Added
-- New `otherpage` check.
-- Infrastructure support provided for integration with `zref-vario`.
-
-### Deprecated
-- Option `labelcmd` has been deprecated with no replacement.  The originally
-  intended use for this option has been made obsolete by package
-  `zref-clever`.
+### Changed
+- (Internal) Option variables setting was reviewed, ensuring proper scope is
+  in use and that they are always properly declared.  `expl3` debugging
+  enabled in regression tests.
 
