@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.5...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.0...HEAD)
+
+## [v0.3.0](https://github.com/gusbrs/zref-check/compare/v0.2.5...v0.3.0) (2022-04-22)
 
 ### Changed
 - `zref-check` no longer accepts package options to be set a load-time,
