@@ -124,12 +124,14 @@
 % \section{Loading the package}
 % \label{sec:loading-package}
 %
-% As usual:
+% \pkg{zref-check} can be loaded with the usual:
 %
 % \begin{syntax}
-%   \cs{usepackage}\oarg{options}|{zref-check}|
+%   \cs{usepackage}|{zref-check}|
 % \end{syntax}
 %
+% The package does not accept load-time options, package options must be set
+% using \cs{zrefchecksetup} (see Section~\ref{sec:user-interface}).
 %
 %
 % \section{Dependencies}
@@ -664,6 +666,11 @@
   }
 \msg_new:nnn { zref-check } { option-deprecated }
   { Option~'#1'~has~been~deprecated~\msg_line_context:. }
+\msg_new:nnn { zref-check } { load-time-options }
+  {
+    'zref-check'~does~not~accept~load-time~options.~
+    To~configure~package~options,~use~'\iow_char:N\\zrefchecksetup'.
+  }
 %    \end{macrocode}
 %
 %
@@ -922,11 +929,17 @@
 %
 % \subsubsection*{Package options}
 %
-% Process load-time package options
-% (\url{https://tex.stackexchange.com/a/15840}).
+% \pkg{zref-check} does not accept load-time options.  Despite the tradition
+% of so doing, Joseph Wright has a point in recommending otherwise at
+% \url{https://chat.stackexchange.com/transcript/message/60360822#60360822}:
+% separating ``loading the package'' from ``configuring the package'' grants
+% less trouble with ``option clashes'' and with expansion of options at
+% load-time.
 %    \begin{macrocode}
-\RequirePackage { l3keys2e }
-\ProcessKeysOptions { zref-check }
+\bool_lazy_and:nnT
+  { \tl_if_exist_p:c { opt@ zref-check.sty } }
+  { ! \tl_if_empty_p:c { opt@ zref-check.sty } }
+  { \msg_warning:nn { zref-check } { load-time-options } }
 %    \end{macrocode}
 %
 %

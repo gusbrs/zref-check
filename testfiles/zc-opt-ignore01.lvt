@@ -8,7 +8,8 @@
 \debug_on:n { check-declarations , deprecation }
 \ExplSyntaxOff
 
-\usepackage[ignore]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{ignore}
 
 \START
 

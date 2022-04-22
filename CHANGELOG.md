@@ -2,6 +2,13 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.2.5...HEAD)
 
+### Changed
+- `zref-check` no longer accepts package options to be set a load-time,
+  `\zrefchecksetup` must be used instead.  The use of load-time options now
+  results in "Unknown option" LaTeX error.  This change requires that users
+  adjust their documents, and a suitable package warning has been provided so
+  that affected users know of the change directly and how to adjust.
+
 ## [v0.2.5](https://github.com/gusbrs/zref-check/compare/v0.2.4...v0.2.5) (2022-02-11)
 
 ### Changed

@@ -9,7 +9,8 @@
 \ExplSyntaxOff
 
 % 'labelseq' default value, given explicitly.
-\usepackage[onpage=labelseq]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{onpage=labelseq}
 
 \begin{document}
 

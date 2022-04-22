@@ -8,7 +8,8 @@
 \debug_on:n { check-declarations , deprecation }
 \ExplSyntaxOff
 
-\usepackage[onpage=msgiffinal]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{onpage=msgiffinal}
 
 \begin{document}
 

@@ -9,7 +9,8 @@
 \ExplSyntaxOff
 
 % 'warn' default value, given explicitly.
-\usepackage[msglevel=warn]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{msglevel=warn}
 
 \begin{document}
 

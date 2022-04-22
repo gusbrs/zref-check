@@ -8,7 +8,8 @@
 \debug_on:n { check-declarations , deprecation }
 \ExplSyntaxOff
 
-\usepackage[hyperref=false]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{hyperref=false}
 
 \usepackage{hyperref}
 

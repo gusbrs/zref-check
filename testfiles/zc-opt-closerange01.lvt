@@ -8,7 +8,8 @@
 \debug_on:n { check-declarations , deprecation }
 \ExplSyntaxOff
 
-\usepackage[closerange=3]{zref-check}
+\usepackage{zref-check}
+\zrefchecksetup{closerange=3}
 
 \begin{document}
 
