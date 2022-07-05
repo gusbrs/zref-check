@@ -1,9 +1,7 @@
-## v0.3.0 (2022-04-22)
+## v0.3.1 (2022-07-05)
 
 ### Changed
-- `zref-check` no longer accepts package options to be set a load-time,
-  `\zrefchecksetup` must be used instead.  The use of load-time options now
-  results in "Unknown option" LaTeX error.  This change requires that users
-  adjust their documents, and a suitable package warning has been provided so
-  that affected users know of the change directly and how to adjust.
+- Adjust some warning messages to try to improve machine-readability, and thus
+  editor parsing, of the log (see https://tex.stackexchange.com/q/649548).
+- (Internal) Use standard counters to keep track of sections and chapters.
 

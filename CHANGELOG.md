@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.0...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.1...HEAD)
+
+## [v0.3.1](https://github.com/gusbrs/zref-check/compare/v0.3.0...v0.3.1) (2022-07-05)
 
 ### Changed
 - Adjust some warning messages to try to improve machine-readability, and thus
