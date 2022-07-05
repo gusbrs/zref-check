@@ -1,10 +1,10 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Info: Failed check 'nextpage' for label 'sec:section-1' on
-(zref-check)             page 1 on line ....
-Package zref-check Info: Failed check 'below' for label 'txt:target-1' on page
-(zref-check)             1 on line ....
-Package zref-check Info: Failed check 'thispage' for label 'sec:section-2' on
-(zref-check)             page 1 on line ....
-Package zref-check Info: Failed check 'nextchap' for label 'txt:target-2' on
-(zref-check)             page 1 on line ....
+Package zref-check Info: Check failed on line .... Failed check 'nextpage' for
+(zref-check)             label 'sec:section-1' on page 1.
+Package zref-check Info: Check failed on line .... Failed check 'below' for
+(zref-check)             label 'txt:target-1' on page 1.
+Package zref-check Info: Check failed on line .... Failed check 'thispage' for
+(zref-check)             label 'sec:section-2' on page 1.
+Package zref-check Info: Check failed on line .... Failed check 'nextchap' for
+(zref-check)             label 'txt:target-2' on page 1.

@@ -1,9 +1,9 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Double-check 'above' for label 'fig:figure-2' on
-(zref-check)                page 2 on line ....
-Package zref-check Warning: Double-check 'above' for label 'fig:figure-3' on
-(zref-check)                page 3 on line ....
+Package zref-check Warning: Same page check on line .... Double-check 'above'
+(zref-check)                for label 'fig:figure-2' on page 2.
+Package zref-check Warning: Same page check on line .... Double-check 'above'
+(zref-check)                for label 'fig:figure-3' on page 3.
 Package zref-check Warning: Option 'onpage=obeydraft' has been deprecated on
 (zref-check)                line 81.
 (zref-check)                Use 'onpage=labelseqifdraft' instead.

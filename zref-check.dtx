@@ -615,9 +615,15 @@
 %
 %    \begin{macrocode}
 \msg_new:nnn { zref-check } { check-failed }
-  { Failed~check~'#1'~for~label~'#2'~on~page~#3~\msg_line_context:. }
+  {
+    Check~failed~\msg_line_context:.~
+    Failed~check~'#1'~for~label~'#2'~on~page~#3.
+  }
 \msg_new:nnn { zref-check } { double-check }
-  { Double-check~'#1'~for~label~'#2'~on~page~#3~\msg_line_context:. }
+  {
+    Same~page~check~\msg_line_context:.~
+    Double-check~'#1'~for~label~'#2'~on~page~#3.
+  }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -645,7 +651,7 @@
     Use~option~'msglevel'~instead.
   }
 \msg_new:nnn { zref-check } { option-preamble-only }
-  { Option~'#1'~only~available~in~the~preamble~\msg_line_context:. }
+  { Option~'#1'~is~preamble~only~\msg_line_context:. }
 \msg_new:nnn { zref-check } { closerange-not-positive-integer }
   {
     Option~'closerange'~not~a~positive~integer~\msg_line_context:.~

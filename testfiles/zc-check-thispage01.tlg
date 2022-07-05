@@ -1,26 +1,26 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-2'
-(zref-check)                on page 1 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-2'
-(zref-check)                on page 1 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-3'
-(zref-check)                on page 1 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-3'
-(zref-check)                on page 1 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-1'
-(zref-check)                on page 2 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-1'
-(zref-check)                on page 2 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-3'
-(zref-check)                on page 2 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-3'
-(zref-check)                on page 2 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-1'
-(zref-check)                on page 3 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-1'
-(zref-check)                on page 3 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'sec:section-2'
-(zref-check)                on page 3 on line ....
-Package zref-check Warning: Failed check 'thispage' for label 'txt:target-2'
-(zref-check)                on page 3 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-2' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-2' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-3' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-3' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-1' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-1' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-3' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-3' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'sec:section-2' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage'
+(zref-check)                for label 'txt:target-2' on page 3.

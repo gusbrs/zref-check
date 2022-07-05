@@ -1,20 +1,20 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Failed check 'nextpage' for label 'sec:section-1'
-(zref-check)                on page 1 on line ....
-Package zref-check Info: Failed check 'below' for label 'txt:target-1' on page
-(zref-check)             1 on line ....
-Package zref-check Warning: Failed check 'nextchap' for label 'txt:target-2'
-(zref-check)                on page 1 on line ....
-Package zref-check Info: Failed check 'nextchap' for label 'txt:target-3' on
-(zref-check)             page 1 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'nextpage'
+(zref-check)                for label 'sec:section-1' on page 1.
+Package zref-check Info: Check failed on line .... Failed check 'below' for
+(zref-check)             label 'txt:target-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
+(zref-check)                for label 'txt:target-2' on page 1.
+Package zref-check Info: Check failed on line .... Failed check 'nextchap' for
+(zref-check)             label 'txt:target-3' on page 1.
 Package zref-check Warning: Option 'msglevel=obeydraft' has been deprecated on
 (zref-check)                line 33.
 (zref-check)                Use 'msglevel=infoifdraft' instead.
-Package zref-check Warning: Failed check 'nextchap' for label 'txt:target-2'
-(zref-check)                on page 1 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
+(zref-check)                for label 'txt:target-2' on page 1.
 Package zref-check Warning: Option 'msglevel=obeyfinal' has been deprecated on
 (zref-check)                line 35.
 (zref-check)                Use 'msglevel=warniffinal' instead.
-Package zref-check Warning: Failed check 'nextchap' for label 'txt:target-3'
-(zref-check)                on page 1 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
+(zref-check)                for label 'txt:target-3' on page 1.

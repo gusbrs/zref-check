@@ -1,4 +1,4 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Failed check 'above' for label 'fig:figure-2' on
-(zref-check)                page 2 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'above' for
+(zref-check)                label 'fig:figure-2' on page 2.

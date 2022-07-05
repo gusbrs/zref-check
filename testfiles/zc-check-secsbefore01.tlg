@@ -1,150 +1,181 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 1 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 3 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 4 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 5 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 6 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 7 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 9 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.1' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 10 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'txt:target-0-0' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-1' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.1' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.2' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.3' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-1.4' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'cha:chapter-2' on page 11 on line ....
-Package zref-check Warning: Failed check 'secsbefore' for label
-(zref-check)                'sec:section-2.2' on page 11 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'txt:target-0-0' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.2' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.3' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.4' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-2' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.2' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'txt:target-0-0' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.2' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.3' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.4' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-2' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.2' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'txt:target-0-0' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-1' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.1' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.3' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-1.4' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'cha:chapter-2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.1' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
+(zref-check)                for label 'sec:section-2.2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page 5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.2' on page
+(zref-check)                5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.3' on page
+(zref-check)                5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.1' on page
+(zref-check)                5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                5.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page 6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.3' on page
+(zref-check)                6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.1' on page
+(zref-check)                6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                6.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page 7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.1' on page
+(zref-check)                7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                7.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page 9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.1' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.2' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.3' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.1' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                9.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.1' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.2' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.3' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.1' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                10.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'txt:target-0-0' on page
+(zref-check)                11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-1' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.1' on page
+(zref-check)                11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.2' on page
+(zref-check)                11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.3' on page
+(zref-check)                11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-1.4' on page
+(zref-check)                11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'cha:chapter-2' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check
+(zref-check)                'secsbefore' for label 'sec:section-2.2' on page
+(zref-check)                11.

@@ -1,6 +1,6 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Failed check 'prevpage' for label 'txt:target-2'
-(zref-check)                on page 4 on line ....
-Package zref-check Warning: Failed check 'prevpage' for label 'txt:target-2'
-(zref-check)                on page 5 on line ....
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
+(zref-check)                for label 'txt:target-2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
+(zref-check)                for label 'txt:target-2' on page 5.

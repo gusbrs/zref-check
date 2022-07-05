@@ -3,6 +3,8 @@
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.0...HEAD)
 
 ### Changed
+- Adjust some warning messages to try to improve machine-readability, and thus
+  editor parsing, of the log (see https://tex.stackexchange.com/q/649548).
 - (Internal) Use standard counters to keep track of sections and chapters.
 
 ## [v0.3.0](https://github.com/gusbrs/zref-check/compare/v0.2.5...v0.3.0) (2022-04-22)
