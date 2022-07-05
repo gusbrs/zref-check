@@ -539,8 +539,8 @@
 %   suggestions at TeX.SX about the proper place to make the hooks for this
 %   purpose.
 %    \begin{macrocode}
-\int_new:N \g_@@_abschap_int
-\int_new:N \g_@@_abssec_int
+\newcounter { zc@abschap }
+\newcounter { zc@abssec } [ zc@abschap ]
 %    \end{macrocode}
 % \end{variable}
 %
@@ -550,18 +550,15 @@
 % one never reset.
 %    \begin{macrocode}
 \AddToHook { cmd / chapter / before }
-  {
-    \int_gincr:N \g_@@_abschap_int
-    \int_gzero:N \g_@@_abssec_int
-  }
-\zref@newprop { zc@abschap } [0] { \int_use:N \g_@@_abschap_int }
+  { \stepcounter { zc@abschap } }
+\zref@newprop { zc@abschap } [0] { \int_use:N \c@zc@abschap }
 \zref@addprop \ZREF@mainlist { zc@abschap }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \AddToHook { cmd / section / before }
-  { \int_gincr:N \g_@@_abssec_int }
-\zref@newprop { zc@abssec } [0] { \int_use:N \g_@@_abssec_int }
+  { \stepcounter { zc@abssec } }
+\zref@newprop { zc@abssec } [0] { \int_use:N \c@zc@abssec }
 \zref@addprop \ZREF@mainlist { zc@abssec }
 %    \end{macrocode}
 %

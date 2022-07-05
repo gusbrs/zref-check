@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.0...HEAD)
 
+### Changed
+- (Internal) Use standard counters to keep track of sections and chapters.
+
 ## [v0.3.0](https://github.com/gusbrs/zref-check/compare/v0.2.5...v0.3.0) (2022-04-22)
 
 ### Changed
