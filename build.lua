@@ -24,7 +24,7 @@ specialformats.latex.xetexdev  = { binary = "xelatex-dev"  , format = "" }
 
 -- CTAN upload settings
 uploadconfig = {
-  version = "0.3.1", -- first line for tagging
+  version = "0.3.2", -- first line for tagging
   pkg = "zref-check",
   author = "Gustavo Barros",
   uploader = "Gustavo Barros",

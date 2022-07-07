@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.1...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.2...HEAD)
+
+## [v0.3.2](https://github.com/gusbrs/zref-check/compare/v0.3.1...v0.3.2) (2022-07-07)
 
 ### Fixed
 - Recompiled documentation with workaround for upstream `l3doc` bug.
