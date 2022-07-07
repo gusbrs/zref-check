@@ -531,18 +531,15 @@
 %
 % \section{\pkg{zref} setup}
 %
-% \begin{variable}{\g_@@_abschap_int, \g_@@_abssec_int}
-%   Provide absolute counters for section and chapter, and respective
-%   \pkg{zref} properties, so that we can make checks about relation of
-%   chapters/sections regardless of internal counters, since we don't get
-%   those for the unnumbered (starred) ones.  Thanks Ulrike Fischer for
-%   suggestions at TeX.SX about the proper place to make the hooks for this
-%   purpose.
+% Provide absolute counters for section and chapter, and respective \pkg{zref}
+% properties, so that we can make checks about relation of chapters/sections
+% regardless of internal counters, since we don't get those for the unnumbered
+% (starred) ones.  Thanks Ulrike Fischer for suggestions at TeX.SX about the
+% proper place to make the hooks for this purpose.
 %    \begin{macrocode}
 \newcounter { zc@abschap }
 \newcounter { zc@abssec } [ zc@abschap ]
 %    \end{macrocode}
-% \end{variable}
 %
 %
 % If the documentclass does not define \cs{chapter} the only thing that
