@@ -2,7 +2,7 @@ This is a generated file for the l3build validation system.
 Don't change this file in any respect.
 > \box...=
 \hbox(6.94444+0.0)x33.77786
-.\write1{\zref@newlabel{zrefcheck@1}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
+.\write1{\zref@newlabel{zrefcheck@1}{\page{\Z@C@page }\abspage{\Z@C@abspage }\zc@abschap{0}\zc@abssec{1}}}
 .\pdfstartlink(*+*)x* attr{/Border[0 0 1]/H/I/C[1 0 0]} action goto name{section.1}
 .\OT1/cmr/m/n/10 F
 .\kern-0.83334
@@ -18,7 +18,7 @@ Don't change this file in any respect.
 l. ...\showbox0
 > \box...=
 \hbox(6.94444+0.0)x33.77786
-.\write1{\zref@newlabel{zrefcheck@2}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
+.\write1{\zref@newlabel{zrefcheck@2}{\page{\Z@C@page }\abspage{\Z@C@abspage }\zc@abschap{0}\zc@abssec{1}}}
 .\OT1/cmr/m/n/10 F
 .\kern-0.83334
 .\OT1/cmr/m/n/10 o

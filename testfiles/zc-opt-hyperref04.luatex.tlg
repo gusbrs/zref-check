@@ -21,30 +21,30 @@ LaTeX Font Info:    ... okay on input line ....
 Package zref-check Warning: Missing 'hyperref' package.
 (zref-check)                Setting 'hyperref=false'.
 > \box...=
-\hbox(6.94+0.11)x33.79, direction TLT
-.\write1{\zref@newlabel{zrefcheck@1}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
-.\TU/lmr/m/n/10 F
-.\kern-0.83 (font)
-.\TU/lmr/m/n/10 o
-.\kern0.28 (font)
-.\TU/lmr/m/n/10 o
-.\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-.\TU/lmr/m/n/10 b
-.\TU/lmr/m/n/10 a
-.\TU/lmr/m/n/10 r
+\hbox(6.94444+0.0)x33.77786, direction TLT
+.\write1{\zref@newlabel{zrefcheck@1}{\page{\Z@C@page }\abspage{\Z@C@abspage }\zc@abschap{0}\zc@abssec{1}}}
+.\OT1/cmr/m/n/10 F
+.\kern-0.83334 (font)
+.\OT1/cmr/m/n/10 o
+.\kern0.27779 (font)
+.\OT1/cmr/m/n/10 o
+.\glue(\spaceskip) 3.33333 plus 1.66666 minus 1.11111
+.\OT1/cmr/m/n/10 b
+.\OT1/cmr/m/n/10 a
+.\OT1/cmr/m/n/10 r
 ! OK.
 l. ...\showbox0
 > \box...=
-\hbox(6.94+0.11)x33.79, direction TLT
-.\write1{\zref@newlabel{zrefcheck@2}{\page{\Z@C@page }\abspage{\Z@C@abspage }\\ETC.}
-.\TU/lmr/m/n/10 F
-.\kern-0.83 (font)
-.\TU/lmr/m/n/10 o
-.\kern0.28 (font)
-.\TU/lmr/m/n/10 o
-.\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-.\TU/lmr/m/n/10 b
-.\TU/lmr/m/n/10 a
-.\TU/lmr/m/n/10 r
+\hbox(6.94444+0.0)x33.77786, direction TLT
+.\write1{\zref@newlabel{zrefcheck@2}{\page{\Z@C@page }\abspage{\Z@C@abspage }\zc@abschap{0}\zc@abssec{1}}}
+.\OT1/cmr/m/n/10 F
+.\kern-0.83334 (font)
+.\OT1/cmr/m/n/10 o
+.\kern0.27779 (font)
+.\OT1/cmr/m/n/10 o
+.\glue(\spaceskip) 3.33333 plus 1.66666 minus 1.11111
+.\OT1/cmr/m/n/10 b
+.\OT1/cmr/m/n/10 a
+.\OT1/cmr/m/n/10 r
 ! OK.
 l. ...\showbox1

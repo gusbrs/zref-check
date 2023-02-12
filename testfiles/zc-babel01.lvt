@@ -44,9 +44,9 @@
 
 \usepackage{zref-check}
 
-\START
-
 \begin{document}
+
+\START
 
 \section{Section 1}
 \zlabel{sec:section-1}
