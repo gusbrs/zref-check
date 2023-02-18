@@ -1,113 +1,57 @@
 # Based on:
+# https://github.com/pgf-tikz/pgf/blob/master/.github/workflows/check.yml
+# See also:
+# https://github.com/gusbrs/zref-clever/pull/15#issue-1590334483
+# https://gitlab.com/islandoftex/images/texlive
+# https://tex.stackexchange.com/a/459486
+
+# For an alternative to the IoT docker images:
 # https://github.com/josephwright/siunitx/blob/main/.github/workflows/main.yaml
 # https://github.com/zauguin/install-texlive
 # https://github.com/moewew/biblatex-ext/blob/dev/.github/workflows/l3build.yml
 
-name: CI l3build tests
+name: CI l3build test suite
 
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
-
-env:
-  ZC_PACKAGE_LIST: |
-    # The test framework
-    l3build
-    # Build formats
-    latex
-    latex-bin
-    luatex
-    luatexbase
-    xetex
-    # dev kernel
-    latex-bin-dev
-    latex-base-dev
-    latex-amsmath-dev
-    latex-graphics-dev
-    latex-tools-dev
-    latex-firstaid-dev
-    xelatex-dev
-    # Fonts
-    metafont
-    mfware
-    ec
-    # Dependencies
-    alphalph
-    amsfonts
-    amsmath
-    babel-french
-    babel-german
-    babel-portuges
-    babel-spanish
-    booktabs
-    carlisle
-    colortbl
-    csquotes
-    ec
-    enumitem
-    etexcmds
-    fancyvrb
-    hologo
-    hypdoc
-    hyperref
-    infwarerr
-    intcalc
-    kvdefinekeys
-    kvsetkeys
-    ltxcmds
-    makeindex
-    oberdiek
-    psnfss
-    tools
-    underscore
-    zref
+on: [push, pull_request]
 
 jobs:
-  check:
+  tests:
     name: Regression tests
+
     runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:latest
+
     steps:
+      - name: Update TeX Live
+        run: tlmgr update --self --all
+
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Generate unique ID
-        id: get-id
-        run: |
-          echo -n ::set-output name=id::
-          cat /proc/sys/kernel/random/uuid
-      - name: Load cache
-        uses: actions/cache@v2
-        with:
-          path: ~/texlive
-          key: texlive-v0-${{ steps.get-id.outputs.id }}
-          restore-keys: texlive-v0-
-      - name: Install TeX Live
-        uses: zauguin/install-texlive@v1
-        with:
-          packages: ${{ env.ZC_PACKAGE_LIST }}
+        uses: actions/checkout@v3
+
       - name: Run tests
-        run: l3build check -q -H --show-log-on-error
+        run: l3build check -q --show-log-on-error
+
+      - name: Archive failed test output
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-diff-files
+          path: build/test*/*.diff
 
   doc:
     name: Documentation
+
     runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:latest
+
     steps:
+      - name: Update TeX Live
+        run: tlmgr update --self --all
+
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Generate unique ID
-        id: get-id
-        run: |
-          echo -n ::set-output name=id::
-          cat /proc/sys/kernel/random/uuid
-      - name: Load cache
-        uses: actions/cache@v2
-        with:
-          path: ~/texlive
-          key: texlive-v0-${{ steps.get-id.outputs.id }}
-          restore-keys: texlive-v0-
-      - name: Install TeX Live
-        uses: zauguin/install-texlive@v1
-        with:
-          packages: ${{ env.ZC_PACKAGE_LIST }}
+        uses: actions/checkout@v3
+
       - name: Compile documentation
-        run: l3build doc -q -H
+        run: l3build doc -q
