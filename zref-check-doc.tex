@@ -49,6 +49,10 @@
 
 \NewDocumentCommand\opt{m}{\texttt{#1}}
 
+\makeatletter
+\newcommand{\zcrequiredkernel}{\zrefcheck@required@kernel}
+\makeatother
+
 \begin{document}
 
 \GetFileInfo{zref-check.sty}
@@ -165,10 +169,9 @@ using \cs{zrefchecksetup} (see Section~\ref{sec:user-interface}).
 \pkg{zref} is required, of course, but in particular, its modules
 \pkg{zref-user} and \pkg{zref-abspage} are loaded by default.  \pkg{ifdraft}
 (from the \pkg{oberdiek} bundle) is also loaded by default.  A \LaTeX{} kernel
-later than 2021-06-01 is required, since we rely on the new hook system from
-\pkg{ltcmdhooks} for the sectioning checks.  If \pkg{hyperref} is loaded and
-option \pkg{hyperref} is given, \pkg{zref-check} makes use of it, but it does
-not load the package for you.
+later than \zcrequiredkernel{} is required as well.  If \pkg{hyperref} is
+loaded and option \pkg{hyperref} is given, \pkg{zref-check} makes use of it,
+but it does not load the package for you.
 
 
 \section{User interface}

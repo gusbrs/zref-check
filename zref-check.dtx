@@ -72,14 +72,15 @@
 % the new hook system in \pkg{ltcmdhooks}, which was released with the
 % 2021/06/01 \LaTeX{} kernel.
 %    \begin{macrocode}
-\NeedsTeXFormat{LaTeX2e}[2021-06-01]
+\def\zrefcheck@required@kernel{2021-06-01}
+\NeedsTeXFormat{LaTeX2e}[\zrefcheck@required@kernel]
 \providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
-\IfFormatAtLeastTF{2021-06-01}
+\IfFormatAtLeastTF{\zrefcheck@required@kernel}
   {}
   {%
     \PackageError{zref-check}{LaTeX kernel too old}
       {%
-        'zref-check' requires a LaTeX kernel newer than 2021-06-01.%
+        'zref-check' requires a LaTeX kernel \zrefcheck@required@kernel\space or newer.%
       }%
   }%
 %    \end{macrocode}
