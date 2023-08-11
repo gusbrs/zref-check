@@ -1,0 +1,82 @@
+\documentclass{book}
+
+\input{regression-test}
+
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+
+\START
+
+\zcheck[thispage]{}{this check should fail}
+
+\zcheck[prevpage]{}{this check should fail}
+
+\zcheck[prevpage]{cha:chapter-1,}{these checks should fail}
+
+\zcheck[nextpage]{}{this check should fail}
+
+\zcheck[nextpage]{cha:chapter-1,}{these checks should fail}
+
+\zcheck[otherpage]{}{this check should fail}
+
+\zcheck[otherpage]{cha:chapter-1,}{these checks should fail}
+
+\zcheck[pagegap]{}{this check should fail}
+
+\zcheck[pagegap]{cha:chapter-1,}{these checks should fail}
+
+\zcheck[facing]{}{this check should fail}
+
+\zcheck[above]{}{this check should fail}
+
+\zcheck[below]{}{this check should fail}
+
+\zcheck[pagesbefore]{}{this check should fail}
+
+\zcheck[ppbefore]{}{this check should fail}
+
+\zcheck[pagesafter]{}{this check should fail}
+
+\zcheck[ppafter]{}{this check should fail}
+
+\zcheck[before]{}{this check should fail}
+
+\zcheck[after]{}{this check should fail}
+
+\zcheck[thischap]{}{this check should fail}
+
+\zcheck[prevchap]{}{this check should fail}
+
+\zcheck[nextchap]{}{this check should fail}
+
+\zcheck[chapsbefore]{}{this check should fail}
+
+\zcheck[chapsafter]{}{this check should fail}
+
+\zcheck[thissec]{}{this check should fail}
+
+\zcheck[prevsec]{}{this check should fail}
+
+\zcheck[nextsec]{}{this check should fail}
+
+\zcheck[secsbefore]{}{this check should fail}
+
+\zcheck[secsafter]{}{this check should fail}
+
+\zcheck[close]{}{this check should fail}
+
+\zcheck[far]{}{this check should fail}
+
+\OMIT
+
+\end{document}
