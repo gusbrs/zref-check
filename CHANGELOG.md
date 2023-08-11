@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.3...HEAD)
 
+### Added
+- Support for empty labels in `\zcheck`.
+
 ## [v0.3.3](https://github.com/gusbrs/zref-check/compare/v0.3.2...v0.3.3) (2023-06-14)
 
 ### Changed
