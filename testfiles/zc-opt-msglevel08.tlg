@@ -8,13 +8,3 @@ Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
 (zref-check)                for label 'txt:target-2' on page 1.
 Package zref-check Info: Check failed on line .... Failed check 'nextchap' for
 (zref-check)             label 'txt:target-3' on page 1.
-Package zref-check Warning: Option 'msglevel=obeydraft' has been deprecated on
-(zref-check)                line 33.
-(zref-check)                Use 'msglevel=infoifdraft' instead.
-Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
-(zref-check)                for label 'txt:target-2' on page 1.
-Package zref-check Warning: Option 'msglevel=obeyfinal' has been deprecated on
-(zref-check)                line 35.
-(zref-check)                Use 'msglevel=warniffinal' instead.
-Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
-(zref-check)                for label 'txt:target-3' on page 1.

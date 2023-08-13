@@ -29,11 +29,6 @@
 
 \zcheck[nextchap, msglevel=warniffinal]{txt:target-3}{this check should fail}
 
-% deprecated option values
-\zcheck[nextchap, msglevel=obeydraft]{txt:target-2}{this check should fail}
-
-\zcheck[nextchap, msglevel=obeyfinal]{txt:target-3}{this check should fail}
-
 \OMIT
 \clearpage{}
 \TIMO
