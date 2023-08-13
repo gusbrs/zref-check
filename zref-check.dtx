@@ -603,30 +603,30 @@
 %    \begin{macrocode}
     \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
     \group_begin:
-      \int_zero:N \l_tmpa_int
-      \tl_clear:N \l_tmpa_tl
-      \tl_clear:N \l_tmpb_tl
-      \bool_set_false:N \l_tmpa_bool
-      \ior_map_variable:NNn \g_tmpa_ior \l_tmpa_tl
-        {
-          \tl_map_variable:NNn \l_tmpa_tl \l_tmpb_tl
-            {
-              \tl_if_eq:NnTF \l_tmpb_tl { \zref@newlabel }
-                {
+    \int_zero:N \l_tmpa_int
+    \tl_clear:N \l_tmpa_tl
+    \tl_clear:N \l_tmpb_tl
+    \bool_set_false:N \l_tmpa_bool
+    \ior_map_variable:NNn \g_tmpa_ior \l_tmpa_tl
+      {
+        \tl_map_variable:NNn \l_tmpa_tl \l_tmpb_tl
+          {
+            \tl_if_eq:NnTF \l_tmpb_tl { \zref@newlabel }
+              {
 %    \end{macrocode}
 % Found a \cs{zref@label}, signal it.
 %    \begin{macrocode}
-                  \bool_set_true:N \l_tmpa_bool
-                }
-                {
-                  \bool_if:NTF \l_tmpa_bool
-                    {
-                      \bool_set_false:N \l_tmpa_bool
-                      \int_incr:N \l_tmpa_int
-                      \prop_gput:Nxx \g_@@_auxfile_lblseq_prop
-                        { \l_tmpb_tl } { \int_use:N \l_tmpa_int }
-                    }
-                    {
+                \bool_set_true:N \l_tmpa_bool
+              }
+              {
+                \bool_if:NTF \l_tmpa_bool
+                  {
+                    \bool_set_false:N \l_tmpa_bool
+                    \int_incr:N \l_tmpa_int
+                    \prop_gput:Nxx \g_@@_auxfile_lblseq_prop
+                      { \l_tmpb_tl } { \int_use:N \l_tmpa_int }
+                  }
+                  {
 %    \end{macrocode}
 % If there is not a match of the first token with \cs{zref@newlabel}, break
 % the loop and discard the rest of the line, to ensure no babel calls to
@@ -634,11 +634,11 @@
 % loop and discards the rest of the \cs{zref@newlabel} lines after we got the
 % label we wanted, since we reset \cs{l_tmpa_bool} in the \texttt{T} branch.
 %    \begin{macrocode}
-                      \tl_map_break:
-                    }
-                }
-            }
-        }
+                    \tl_map_break:
+                  }
+              }
+          }
+      }
     \group_end:
     \ior_close:N \g_tmpa_ior
   }
@@ -918,64 +918,64 @@
 % \cs{l_@@_zcheck_labels_seq} -- instead of \cs{seq_set_from_clist:Nn} -- to
 % support empty labels.
 %    \begin{macrocode}
-      \keys_set:nn { zref-check / zcheck } {#3}
-      \seq_set_split:Nnn \l_@@_zcheck_labels_seq { , } {#1}
+    \keys_set:nn { zref-check / zcheck } {#3}
+    \seq_set_split:Nnn \l_@@_zcheck_labels_seq { , } {#1}
 %    \end{macrocode}
 % Names of the labels for this zcheck call.
 %    \begin{macrocode}
-      \int_gincr:N \g_@@_id_int
-      \tl_set:Nx \l_@@_checkbeg_tl
-        { \@@_check_lblfmt:n { \g_@@_id_int } }
+    \int_gincr:N \g_@@_id_int
+    \tl_set:Nx \l_@@_checkbeg_tl
+      { \@@_check_lblfmt:n { \g_@@_id_int } }
 %    \end{macrocode}
 % Set checkbeg label.
 %    \begin{macrocode}
-      \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-check }
+    \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-check }
 %    \end{macrocode}
 % Typeset \marg{text}, with hyperlink when appropriate.  Even though the first
 % argument can receive a list of labels, there is no meaningful way to set
 % links to multiple targets.  Hence, only the first one is considered for
 % hyperlinking.
 %    \begin{macrocode}
-      \seq_get:NN \l_@@_zcheck_labels_seq \l_@@_link_label_tl
-      \bool_set:Nn \l_@@_link_star_bool {#2}
-      \zref@ifrefundefined { \l_@@_link_label_tl }
+    \seq_get:NN \l_@@_zcheck_labels_seq \l_@@_link_label_tl
+    \bool_set:Nn \l_@@_link_star_bool {#2}
+    \zref@ifrefundefined { \l_@@_link_label_tl }
 %    \end{macrocode}
 % If the reference is undefined, just typeset.
 %    \begin{macrocode}
-        {#4}
-        {
-          \bool_if:nTF
-            {
-              \l_@@_use_hyperref_bool &&
-              ! \l_@@_link_star_bool
-            }
-            {
-              \exp_args:Nx \zrefcheck_get_astl:nnn
-                { \l_@@_link_label_tl }
-                { anchor } { \l_@@_link_anchor_tl }
-              \hyperlink { \l_@@_link_anchor_tl } {#4}
-            }
-            {#4}
-        }
+      {#4}
+      {
+        \bool_if:nTF
+          {
+            \l_@@_use_hyperref_bool &&
+            ! \l_@@_link_star_bool
+          }
+          {
+            \exp_args:Nx \zrefcheck_get_astl:nnn
+              { \l_@@_link_label_tl }
+              { anchor } { \l_@@_link_anchor_tl }
+            \hyperlink { \l_@@_link_anchor_tl } {#4}
+          }
+          {#4}
+      }
 %    \end{macrocode}
 % Set checkend label.
 %    \begin{macrocode}
-      \bool_if:NT \l_@@_zcheck_end_label_bool
-        {
-          \zref@labelbylist
-            { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
-            { zrefcheck-end }
-        }
+    \bool_if:NT \l_@@_zcheck_end_label_bool
+      {
+        \zref@labelbylist
+          { \@@_end_lblfmt:n { \l_@@_checkbeg_tl } }
+          { zrefcheck-end }
+      }
 %    \end{macrocode}
 % Check if \meta{labels} are defined.
 %    \begin{macrocode}
-      \seq_map_inline:Nn \l_@@_zcheck_labels_seq
-        { \tl_if_empty:nF {##1} { \zref@refused {##1} } }
+    \seq_map_inline:Nn \l_@@_zcheck_labels_seq
+      { \tl_if_empty:nF {##1} { \zref@refused {##1} } }
 %    \end{macrocode}
 % Run the checks.
 %    \begin{macrocode}
-      \@@_run_checks:nnx { \l_@@_zcheck_checks_seq }
-        { \l_@@_zcheck_labels_seq } { \l_@@_checkbeg_tl }
+    \@@_run_checks:nnx { \l_@@_zcheck_checks_seq }
+      { \l_@@_zcheck_labels_seq } { \l_@@_checkbeg_tl }
     \group_end:
   }
 %    \end{macrocode}
@@ -1376,25 +1376,25 @@
 \prg_new_protected_conditional:Npnn \@@_check_thispage:nn #1#2 { T , F , TF }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int } &&
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
 % `0' is the default value of \texttt{abspage}, but this value should not
 % happen normally for this property, since even the first page, after it gets
 % shipped out, will receive value `1'.  So, if we do find `0' here, better
 % signal something is wrong.  This comment extends to all page number checks.
 %    \begin{macrocode}
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_otherpage:nn #1#2 { T , F , TF }
@@ -1414,23 +1414,23 @@
 \prg_new_protected_conditional:Npnn \@@_check_above:nn #1#2 { F , TF }
   {
     \group_begin:
-      \@@_check_thispage:nnTF {#1} {#2}
-        {
-          \bool_set_true:N \l_@@_integer_bool
-          \zrefcheck_get_asint:nnn {#1} { lblseq } { \l_@@_lbl_int }
-          \zrefcheck_get_asint:nnn {#2} { lblseq } { \l_@@_ref_int }
-          \bool_lazy_and:nnTF
-            { \l_@@_integer_bool }
-            {
-              \int_compare_p:nNn
-                { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-              ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-              ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-            }
-            { \group_insert_after:N \prg_return_true:  }
-            { \group_insert_after:N \prg_return_false: }
-        }
-        { \group_insert_after:N \prg_return_false: }
+    \@@_check_thispage:nnTF {#1} {#2}
+      {
+        \bool_set_true:N \l_@@_integer_bool
+        \zrefcheck_get_asint:nnn {#1} { lblseq } { \l_@@_lbl_int }
+        \zrefcheck_get_asint:nnn {#2} { lblseq } { \l_@@_ref_int }
+        \bool_lazy_and:nnTF
+          { \l_@@_integer_bool }
+          {
+            \int_compare_p:nNn
+              { \l_@@_lbl_int } < { \l_@@_ref_int } &&
+            ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+            ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+          }
+          { \group_insert_after:N \prg_return_true:  }
+          { \group_insert_after:N \prg_return_false: }
+      }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_below:nn #1#2 { F , TF }
@@ -1492,128 +1492,128 @@
 \prg_new_protected_conditional:Npnn \@@_check_nextpage:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_prevpage:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_pagesbefore:nn #1#2 { F , TF }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } < { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \cs_new_eq:NN \@@_check_ppbefore:nnF \@@_check_pagesbefore:nnF
 \prg_new_protected_conditional:Npnn \@@_check_pagesafter:nn #1#2 { F , TF }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } > { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \cs_new_eq:NN \@@_check_ppafter:nnF \@@_check_pagesafter:nnF
 \prg_new_protected_conditional:Npnn \@@_check_pagegap:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } } > { 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } } > { 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_facing:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
 %    \end{macrocode}
 % There exists no ``facing'' page if the document is not twoside.
 %    \begin{macrocode}
-          \legacy_if_p:n { @twoside } &&
+        \legacy_if_p:n { @twoside } &&
 %    \end{macrocode}
 % Now we test ``facing''.
 %    \begin{macrocode}
+        (
           (
-            (
-              \int_if_odd_p:n { \l_@@_ref_int } &&
-              \int_compare_p:nNn
-                { \l_@@_lbl_int } = { \l_@@_ref_int - 1 }
-            ) ||
-            (
-              \int_if_even_p:n { \l_@@_ref_int } &&
-              \int_compare_p:nNn
-                { \l_@@_lbl_int } = { \l_@@_ref_int + 1 }
-            )
-          ) &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+            \int_if_odd_p:n { \l_@@_ref_int } &&
+            \int_compare_p:nNn
+              { \l_@@_lbl_int } = { \l_@@_ref_int - 1 }
+          ) ||
+          (
+            \int_if_even_p:n { \l_@@_ref_int } &&
+            \int_compare_p:nNn
+              { \l_@@_lbl_int } = { \l_@@_ref_int + 1 }
+          )
+        ) &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 %    \end{macrocode}
@@ -1627,21 +1627,21 @@
 \prg_new_protected_conditional:Npnn \@@_check_close:nn #1#2 { F , TF }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } }
-            <
-            { \l_@@_close_range_int + 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { abspage } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { abspage } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \int_abs:n { \l_@@_lbl_int - \l_@@_ref_int } }
+          <
+          { \l_@@_close_range_int + 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_far:nn #1#2 { F }
@@ -1668,14 +1668,14 @@
 \prg_new_protected_conditional:Npnn \@@_check_thischap:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int } &&
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
 % `0' is the default value of \texttt{zc@abschap} property, and means here no
 % \cs{chapter} has yet been issued, therefore it cannot be ``this chapter'',
@@ -1684,81 +1684,81 @@
 % not require the ``current'' one to exist.  This comment extends to all
 % chapter checks.
 %    \begin{macrocode}
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_nextchap:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_prevchap:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_chapsafter:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } > { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_chapsbefore:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } < { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 %    \end{macrocode}
@@ -1779,18 +1779,18 @@
 \prg_new_protected_conditional:Npnn \@@_check_thissec:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int } &&
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int } &&
 %    \end{macrocode}
 % `0' is the default value of \texttt{zc@abssec} property, and means here no
 % \cs{section} has yet been issued since its counter has been reset, which
@@ -1799,97 +1799,97 @@
 % about the need of the ``current'' section to exist to be able to refer to a
 % ``future'' one also holds.  This comment extends to all section checks.
 %    \begin{macrocode}
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_nextsec:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int + 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_prevsec:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } = { \l_@@_ref_int - 1 } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_secsafter:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } > { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } > { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 \prg_new_protected_conditional:Npnn \@@_check_secsbefore:nn #1#2 { F }
   {
     \group_begin:
-      \bool_set_true:N \l_@@_integer_bool
-      \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
-      \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
-      \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
-      \bool_lazy_and:nnTF
-        { \l_@@_integer_bool }
-        {
-          \int_compare_p:nNn
-            { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
-          \int_compare_p:nNn
-            { \l_@@_lbl_int } < { \l_@@_ref_int } &&
-          ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
-          ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
-        }
-        { \group_insert_after:N \prg_return_true:  }
-        { \group_insert_after:N \prg_return_false: }
+    \bool_set_true:N \l_@@_integer_bool
+    \zrefcheck_get_asint:nnn {#1} { zc@abssec  } { \l_@@_lbl_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abssec  } { \l_@@_ref_int }
+    \zrefcheck_get_asint:nnn {#1} { zc@abschap } { \l_@@_lbl_b_int }
+    \zrefcheck_get_asint:nnn {#2} { zc@abschap } { \l_@@_ref_b_int }
+    \bool_lazy_and:nnTF
+      { \l_@@_integer_bool }
+      {
+        \int_compare_p:nNn
+          { \l_@@_lbl_b_int } = { \l_@@_ref_b_int } &&
+        \int_compare_p:nNn
+          { \l_@@_lbl_int } < { \l_@@_ref_int } &&
+        ! \int_compare_p:nNn { \l_@@_lbl_int } = { 0 } &&
+        ! \int_compare_p:nNn { \l_@@_ref_int } = { 0 }
+      }
+      { \group_insert_after:N \prg_return_true:  }
+      { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
 %    \end{macrocode}
