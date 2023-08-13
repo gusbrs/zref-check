@@ -4,6 +4,7 @@
 
 ### Added
 - Support for empty labels in `\zcheck`.
+- New alias `ok` of `msglevel=none` for local use.
 
 ### Changed
 - Calls to `\zcheck` with no checks issue a message, also subject to the

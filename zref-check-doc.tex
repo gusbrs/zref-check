@@ -366,9 +366,9 @@ terminal and to the log file, \opt{info} issues messages to the log file only,
 \opt{info} if option \opt{draft} is passed to \cs{documentclass}, and to
 \opt{warn} otherwise.  \opt{warniffinal} corresponds to \opt{warn} if option
 \opt{final} is (explicitly) passed to \cs{documentclass} and \opt{info}
-otherwise.  \opt{ignore} is provided as convenience alias for
+otherwise.  \opt{ignore} and \opt{ok} are provided as convenience aliases for
 \opt{msglevel=none} for local use only.  This option only affects the messages
-issued by the checks in \cs{zcheck}, not other messages or warnings of the
+related to the checks in \cs{zcheck}, not other messages or warnings of the
 package.  In particular, it does not affect warnings issued for undefined
 labels, which just use \cs{zref@refused} and thus are the same as standard
 \LaTeX{} ones for this purpose.

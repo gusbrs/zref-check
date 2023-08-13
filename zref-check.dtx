@@ -220,9 +220,9 @@
   }
 \msg_new:nnn { zref-check } { missing-hyperref }
   { Missing~'hyperref'~package. \iow_newline: Setting~'hyperref=false'. }
-\msg_new:nnn { zref-check } { ignore-document-only }
+\msg_new:nnn { zref-check } { ignore-ok-document-only }
   {
-    Option~'ignore'~only~available~in~the~document. \iow_newline:
+    Option~'#1'~only~available~in~the~document. \iow_newline:
     Use~option~'msglevel'~instead.
   }
 \msg_new:nnn { zref-check } { option-preamble-only }
@@ -400,12 +400,15 @@
     msglevel .value_required:n = true ,
     msglevel .initial:n = warn ,
 %    \end{macrocode}
-% \opt{ignore} is a convenience alias for \opt{msglevel=none}, but only for
-% use in the document body.
+% \opt{ignore} and \opt{ok} are convenience aliases for \opt{msglevel=none},
+% but only for use in the document body.
 %    \begin{macrocode}
     ignore .code:n =
-      { \msg_warning:nn { zref-check } { ignore-document-only } } ,
-    ignore .value_forbidden:n = true
+      { \msg_warning:nnn { zref-check } { ignore-ok-document-only } { ignore } } ,
+    ignore .value_forbidden:n = true ,
+    ok .code:n =
+      { \msg_warning:nnn { zref-check } { ignore-ok-document-only } { ok } } ,
+    ok .value_forbidden:n = true ,
   }
 %    \end{macrocode}
 % \end{variable}
@@ -414,7 +417,10 @@
 \AddToHook { begindocument }
   {
     \keys_define:nn { zref-check }
-      { ignore .meta:n = { msglevel = none } }
+      {
+        ignore .meta:n = { msglevel = none } ,
+        ok .meta:n = { msglevel = none } ,
+      }
   }
 %    \end{macrocode}
 %
