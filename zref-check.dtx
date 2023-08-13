@@ -385,18 +385,6 @@
           { \tl_set:Nn \l_@@_msglevel_tl { warning } }
           { \tl_set:Nn \l_@@_msglevel_tl { info } }
       } ,
-    msglevel / obeydraft .code:n =
-      {
-        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
-          { msglevel=obeydraft } { msglevel=infoifdraft }
-      } ,
-    msglevel / obeyfinal .code:n =
-      {
-        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
-          { msglevel=obeyfinal } { msglevel=warniffinal }
-      } ,
     msglevel .value_required:n = true ,
     msglevel .initial:n = warn ,
 %    \end{macrocode}
@@ -452,18 +440,6 @@
         \ifoptionfinal
           { \bool_set_true:N \l_@@_msgonpage_bool }
           { \bool_set_false:N \l_@@_msgonpage_bool }
-      } ,
-    onpage / obeydraft .code:n =
-      {
-        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
-          { onpage=obeydraft } { onpage=labelseqifdraft }
-      } ,
-    onpage / obeyfinal .code:n =
-      {
-        % NOTE Option value deprecated in 2021-12-07 for v0.2.2.
-        \msg_warning:nnnn { zref-check }{ option-deprecated-with-alternative }
-          { onpage=obeyfinal } { onpage=msgiffinal }
       } ,
     onpage .value_required:n = true ,
     onpage .initial:n = labelseq
