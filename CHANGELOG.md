@@ -5,6 +5,10 @@
 ### Added
 - Support for empty labels in `\zcheck`.
 
+### Changed
+- Calls to `\zcheck` with no checks issue a message, also subject to the
+  `msglevel` option.
+
 ## [v0.3.3](https://github.com/gusbrs/zref-check/compare/v0.3.2...v0.3.3) (2023-06-14)
 
 ### Changed

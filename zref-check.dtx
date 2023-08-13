@@ -197,6 +197,8 @@
     Check~failed~\msg_line_context:.~
     Failed~check~'#1'~for~empty~label.
   }
+\msg_new:nnn { zref-check } { no-checks }
+  { No~checks~for~'\iow_char:N\\zcheck'~\msg_line_context:. }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1208,8 +1210,12 @@
     \group_begin:
     \seq_map_inline:Nn #2
       {
-        \seq_map_inline:Nn #1
-          { \@@_do_check:nnn {####1} {##1} {#3} }
+        \seq_if_empty:NTF #1
+          { \@@_message:nnnn { no-checks } { } { } { } }
+          {
+            \seq_map_inline:Nn #1
+              { \@@_do_check:nnn {####1} {##1} {#3} }
+          }
       }
     \group_end:
   }
