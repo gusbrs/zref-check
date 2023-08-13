@@ -1,0 +1,24 @@
+\documentclass{book}
+
+\input{regression-test}
+
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\chapter{Chapter 1}
+\zlabel{cha:chapter-1}
+
+\START
+
+\zcheck[manual]{cha:chapter-1}{this check should fail}
+
+\OMIT
+
+\end{document}

@@ -1134,6 +1134,7 @@
     nextsec ,
     secsbefore ,
     secsafter ,
+    manual ,
   }
 %    \end{macrocode}
 % \end{variable}
@@ -1186,6 +1187,7 @@
     secsafter ,
     close ,
     far ,
+    manual ,
   }
   {
     \keys_define:nn { zref-check / zcheck }
@@ -1930,6 +1932,17 @@
         { \group_insert_after:N \prg_return_false: }
     \group_end:
   }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \subsubsection{Manual}
+%
+% \begin{macro}{ \@@_check_manual:nn }
+%    \begin{macrocode}
+\prg_new_protected_conditional:Npnn \@@_check_manual:nn #1#2 { F }
+  { \prg_return_false: }
 %    \end{macrocode}
 % \end{macro}
 %
