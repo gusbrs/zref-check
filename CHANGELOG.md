@@ -15,6 +15,9 @@
 - Option values `msglevel=obeydraft`, `msglevel=obeyfinal`,
   `onpage=obeydraft`, and `onpage=obeyfinal`, which had been deprecated since
   v0.2.2 (2021-12-07), have been removed.
+- Option `labelcmd`, which had been deprecated since v0.2.4 (2022-02-08), has
+  been removed.
+
 ## [v0.3.3](https://github.com/gusbrs/zref-check/compare/v0.3.2...v0.3.3) (2023-06-14)
 
 ### Changed
