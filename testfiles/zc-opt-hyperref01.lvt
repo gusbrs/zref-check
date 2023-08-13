@@ -26,10 +26,10 @@
 
 \START
 
-\setbox0=\hbox{\zcheck{sec:section-1}{Foo bar}}
+\setbox0=\hbox{\zcheck[ignore]{sec:section-1}{Foo bar}}
 \showbox0
 
-\setbox1=\hbox{\zcheck*{sec:section-1}{Foo bar}}
+\setbox1=\hbox{\zcheck*[ignore]{sec:section-1}{Foo bar}}
 \showbox1
 
 \OMIT
