@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
+\usepackage{zref-check}
+\zrefchecksetup{ok}
+
+\START
+
+% Moving '\START' to before the '\usepackage{zref-check}' would be required
+% for us to get the "document only" error message for the 'ok option, but
+% that would make the test hypersensitive to any unrelated change in the code.
+% So we run the option here explicitly and in isolation.
+\ExplSyntaxOn
+\keys_set:nn { zref-check } { ok }
+\ExplSyntaxOff
+
+\OMIT
+\begin{document}
+\TIMO
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+\zcheck[nextpage]{sec:section-1}{this check should fail}
+
+\zcheck[below]{txt:target-1}{this check should fail}
+
+\zcheck[thispage]{sec:section-2}{this check should fail}
+
+\zcheck[nextchap]{txt:target-2}{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec:section-2}
+
+\zctarget{txt:target-2}{Lorem ipsum}
+
+\OMIT
+
+\end{document}

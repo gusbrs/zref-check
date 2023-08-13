@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\input{regression-test}
+
+\RequirePackage[enable-debug]{expl3}
+
+\ExplSyntaxOn
+\debug_on:n { check-declarations , deprecation }
+\ExplSyntaxOff
+
+\usepackage{zref-check}
+
+\begin{document}
+
+\START
+
+\section{Section 1}
+\zlabel{sec:section-1}
+
+\zctarget{txt:target-1}{Lorem ipsum}
+
+\zcheck[nextpage, ok]{sec:section-1}{this check should fail}
+
+\zcheck[below, ok]{txt:target-1}{this check should fail}
+
+\zcheck[thispage, ok]{sec:section-2}{this check should fail}
+
+\zcheck[nextchap, ok]{txt:target-2}{this check should fail}
+
+\OMIT
+\clearpage{}
+\TIMO
+
+\section{Section 2}
+\zlabel{sec:section-2}
+
+\zctarget{txt:target-2}{Lorem ipsum}
+
+\OMIT
+
+\end{document}
