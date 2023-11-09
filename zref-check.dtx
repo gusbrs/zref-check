@@ -168,6 +168,28 @@
 %
 % \section{Plumbing}
 %
+% \subsection{Auxiliary}
+%
+% \begin{macro}
+%   {
+%      \l_@@_tmpa_tl ,
+%      \l_@@_tmpb_tl ,
+%      \g_@@_tmpa_tl ,
+%      \l_@@_tmpa_int ,
+%      \l_@@_tmpa_bool ,
+%      \g_@@_tmpa_ior ,
+%   }
+%   Temporary scratch variables.
+%    \begin{macrocode}
+\tl_new:N \l_@@_tmpa_tl
+\tl_new:N \l_@@_tmpb_tl
+\tl_new:N \g_@@_tmpa_tl
+\int_new:N \l_@@_tmpa_int
+\bool_new:N \l_@@_tmpa_bool
+\ior_new:N \g_@@_tmpa_ior
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Messages}
 %
 % \begin{macro}{\@@_message:nnnn, \@@_message:nnnx}
@@ -594,37 +616,38 @@
 % \end{variable}
 %
 %    \begin{macrocode}
-\tl_gset:Nn \g_tmpa_tl { \c_sys_jobname_str .aux }
-\file_if_exist:nT { \g_tmpa_tl }
+\tl_gset:Nn \g_@@_tmpa_tl { \c_sys_jobname_str .aux }
+\file_if_exist:nT { \g_@@_tmpa_tl }
   {
 %    \end{macrocode}
 % Retrieve the information from the \file{.aux} file, and store it in a
 % property list, so that the sequence can be retrieved in key-value fashion.
 %    \begin{macrocode}
-    \ior_open:Nn \g_tmpa_ior { \g_tmpa_tl }
+    \ior_open:Nn \g_@@_tmpa_ior { \g_@@_tmpa_tl }
     \group_begin:
-    \int_zero:N \l_tmpa_int
-    \tl_clear:N \l_tmpa_tl
-    \tl_clear:N \l_tmpb_tl
-    \bool_set_false:N \l_tmpa_bool
-    \ior_map_variable:NNn \g_tmpa_ior \l_tmpa_tl
+    \int_zero:N \l_@@_tmpa_int
+    \tl_clear:N \l_@@_tmpa_tl
+    \tl_clear:N \l_@@_tmpb_tl
+    \bool_set_false:N \l_@@_tmpa_bool
+    \ior_map_variable:NNn \g_@@_tmpa_ior \l_@@_tmpa_tl
       {
-        \tl_map_variable:NNn \l_tmpa_tl \l_tmpb_tl
+        \tl_map_variable:NNn \l_@@_tmpa_tl \l_@@_tmpb_tl
           {
-            \tl_if_eq:NnTF \l_tmpb_tl { \zref@newlabel }
+            \tl_if_eq:NnTF \l_@@_tmpb_tl { \zref@newlabel }
               {
 %    \end{macrocode}
 % Found a \cs{zref@label}, signal it.
 %    \begin{macrocode}
-                \bool_set_true:N \l_tmpa_bool
+                \bool_set_true:N \l_@@_tmpa_bool
               }
               {
-                \bool_if:NTF \l_tmpa_bool
+                \bool_if:NTF \l_@@_tmpa_bool
                   {
-                    \bool_set_false:N \l_tmpa_bool
-                    \int_incr:N \l_tmpa_int
+                    \bool_set_false:N \l_@@_tmpa_bool
+                    \int_incr:N \l_@@_tmpa_int
                     \prop_gput:Nxx \g_@@_auxfile_lblseq_prop
-                      { \l_tmpb_tl } { \int_use:N \l_tmpa_int }
+                      { \l_@@_tmpb_tl }
+                      { \int_use:N \l_@@_tmpa_int }
                   }
                   {
 %    \end{macrocode}
@@ -632,7 +655,8 @@
 % the loop and discard the rest of the line, to ensure no babel calls to
 % \cs{catcode} in the \file{.aux} file get expanded.  This also breaks the
 % loop and discards the rest of the \cs{zref@newlabel} lines after we got the
-% label we wanted, since we reset \cs{l_tmpa_bool} in the \texttt{T} branch.
+% label we wanted, since we reset \cs{l_@@_tmpa_bool} in the \texttt{T}
+% branch.
 %    \begin{macrocode}
                     \tl_map_break:
                   }
@@ -640,7 +664,7 @@
           }
       }
     \group_end:
-    \ior_close:N \g_tmpa_ior
+    \ior_close:N \g_@@_tmpa_ior
   }
 %    \end{macrocode}
 %

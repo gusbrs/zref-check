@@ -2,6 +2,9 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.4...HEAD)
 
+### Changed
+- Don't use `expl3` public scratch temporary variables.
+
 ## [v0.3.4](https://github.com/gusbrs/zref-check/compare/v0.3.3...v0.3.4) (2023-08-13)
 
 ### Added
