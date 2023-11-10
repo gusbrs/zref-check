@@ -2,8 +2,8 @@
 
 **Flexible LaTeX cross-references with contextual checks based on zref**
 
-Author: Gustavo Barros
-Maintainer: Gustavo Barros
+Author: gusbrs
+Maintainer: gusbrs
 
 `zref-check` provides an user interface for making LaTeX cross-references
 flexibly, while allowing to have them checked for consistency with the
