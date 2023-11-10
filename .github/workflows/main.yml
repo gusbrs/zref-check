@@ -1,36 +1,89 @@
 # Based on:
-# https://github.com/pgf-tikz/pgf/blob/master/.github/workflows/check.yml
-# See also:
-# https://github.com/gusbrs/zref-clever/pull/15#issue-1590334483
-# https://gitlab.com/islandoftex/images/texlive
-# https://tex.stackexchange.com/a/459486
-
-# For an alternative to the IoT docker images:
 # https://github.com/josephwright/siunitx/blob/main/.github/workflows/main.yaml
 # https://github.com/zauguin/install-texlive
 # https://github.com/moewew/biblatex-ext/blob/dev/.github/workflows/l3build.yml
+# https://github.com/CTeX-org/ctex-kit/blob/master/.github/workflows/test.yml
+# See also:
+# https://github.com/gusbrs/zref-clever/issues/20
+# https://github.com/gusbrs/zref-clever/pull/15
 
-name: CI l3build test suite
+name: CI l3build tests
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 12 * * 5" # Every Friday at 12:00 UTC
+
+env:
+  ZC_PACKAGE_LIST: |
+    # The test framework
+    l3build
+    # Build formats
+    latex
+    latex-bin
+    luatex
+    luatexbase
+    xetex
+    # dev kernel
+    latex-bin-dev
+    latex-base-dev
+    latex-amsmath-dev
+    latex-graphics-dev
+    latex-tools-dev
+    latex-firstaid-dev
+    xelatex-dev
+    # Fonts
+    metafont
+    mfware
+    ec
+    # Dependencies
+    alphalph
+    amsfonts
+    amsmath
+    babel-french
+    babel-german
+    babel-portuges
+    babel-spanish
+    booktabs
+    carlisle
+    colortbl
+    csquotes
+    ec
+    enumitem
+    etexcmds
+    fancyvrb
+    hologo
+    hypdoc
+    hyperref
+    infwarerr
+    intcalc
+    kvdefinekeys
+    kvsetkeys
+    ltxcmds
+    makeindex
+    oberdiek
+    psnfss
+    tools
+    underscore
+    zref
 
 jobs:
-  tests:
+  check:
     name: Regression tests
-
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/islandoftex/images/texlive:latest
 
     steps:
-      - name: Update TeX Live
-        run: tlmgr update --self --all
+      - name: Install TeX Live
+        uses: zauguin/install-texlive@v3
+        with:
+          packages: ${{ env.ZC_PACKAGE_LIST }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run tests
-        run: l3build check -q --show-log-on-error
+        run: l3build check -q
 
       - name: Archive failed test output
         if: failure()
@@ -41,17 +94,23 @@ jobs:
 
   doc:
     name: Documentation
-
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/islandoftex/images/texlive:latest
 
     steps:
-      - name: Update TeX Live
-        run: tlmgr update --self --all
+      - name: Install TeX Live
+        uses: zauguin/install-texlive@v3
+        with:
+          packages: ${{ env.ZC_PACKAGE_LIST }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Compile documentation
-        run: l3build doc -q
+        run: l3build doc -q -H
+
+      - name: Archive documentation
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: build/doc/*.pdf
