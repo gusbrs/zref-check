@@ -17,20 +17,6 @@ checkruns = 2
 -- See https://tex.stackexchange.com/q/674844#comment1676566_674846
 maxprintline = 1000
 
--- Use dev formats for regression tests
--- See https://tex.stackexchange.com/q/611424
--- But only for pdftexdev and luatexdev, because it is possible to ensure
--- equal .tlgs for luatex and pdftex by using the same font for all engines,
--- but any xetex test with a hyperlink will result in different logs.  So, we
--- can have most tests with two .tlgs and, besides, five engines is probably
--- already overkill.
-checkengines = {"pdftex","luatex","xetex","pdftexdev","luatexdev"}
-specialformats = specialformats or {}
-specialformats.latex = specialformats.latex or { }
-specialformats.latex.pdftexdev = { binary = "pdflatex-dev" , format = "" }
-specialformats.latex.luatexdev = { binary = "lualatex-dev" , format = "" }
-specialformats.latex.xetexdev  = { binary = "xelatex-dev"  , format = "" }
-
 -- CTAN upload settings
 uploadconfig = {
   version = "0.3.4", -- first line for tagging
