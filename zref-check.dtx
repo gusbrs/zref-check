@@ -69,9 +69,11 @@
 %
 % For the \texttt{chapter} and \texttt{section} checks, \pkg{zref-check} uses
 % the new hook system in \pkg{ltcmdhooks}, which was released with the
-% 2021/06/01 \LaTeX{} kernel.
+% 2021/06/01 \LaTeX{} kernel.  And, since we followed the move to
+% \texttt{e}-type expansion, to play safe we require the 2023-11-01 kernel or
+% newer.
 %    \begin{macrocode}
-\def\zrefcheck@required@kernel{2021-06-01}
+\def\zrefcheck@required@kernel{2023-11-01}
 \NeedsTeXFormat{LaTeX2e}[\zrefcheck@required@kernel]
 \providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
 \IfFormatAtLeastTF{\zrefcheck@required@kernel}
