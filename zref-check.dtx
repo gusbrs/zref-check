@@ -191,14 +191,14 @@
 %
 % \subsection{Messages}
 %
-% \begin{macro}{\@@_message:nnnn, \@@_message:nnnx}
+% \begin{macro}{\@@_message:nnnn, \@@_message:nnne}
 %    \begin{macrocode}
 \cs_new_protected:Npn \@@_message:nnnn #1#2#3#4
   {
     \use:c { msg_ \l_@@_msglevel_tl :nnnnn }
       { zref-check } {#1} {#2} {#3} {#4}
   }
-\cs_generate_variant:Nn \@@_message:nnnn { nnnx }
+\cs_generate_variant:Nn \@@_message:nnnn { nnne }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -644,7 +644,7 @@
                   {
                     \bool_set_false:N \l_@@_tmpa_bool
                     \int_incr:N \l_@@_tmpa_int
-                    \prop_gput:Nxx \g_@@_auxfile_lblseq_prop
+                    \prop_gput:Nee \g_@@_auxfile_lblseq_prop
                       { \l_@@_tmpb_tl }
                       { \int_use:N \l_@@_tmpa_int }
                   }
@@ -801,7 +801,7 @@
               {
                 \zref@ifrefcontainsprop {#1} {#2}
                   {
-                    \tl_set:Nx #3
+                    \tl_set:Ne #3
                       { \zref@extractdefault {#1} {#2} { \c_empty_tl } }
                   }
                   {
@@ -947,7 +947,7 @@
 % Names of the labels for this zcheck call.
 %    \begin{macrocode}
     \int_gincr:N \g_@@_id_int
-    \tl_set:Nx \l_@@_checkbeg_tl
+    \tl_set:Ne \l_@@_checkbeg_tl
       { \@@_check_lblfmt:n { \g_@@_id_int } }
 %    \end{macrocode}
 % Set checkbeg label.
@@ -973,7 +973,7 @@
             ! \l_@@_link_star_bool
           }
           {
-            \exp_args:Nx \zrefcheck_get_astl:nnn
+            \exp_args:Ne \zrefcheck_get_astl:nnn
               { \l_@@_link_label_tl }
               { anchor } { \l_@@_link_anchor_tl }
             \hyperlink { \l_@@_link_anchor_tl } {#4}
@@ -997,7 +997,7 @@
 %    \end{macrocode}
 % Run the checks.
 %    \begin{macrocode}
-    \@@_run_checks:nnx { \l_@@_zcheck_checks_seq }
+    \@@_run_checks:nne { \l_@@_zcheck_checks_seq }
       { \l_@@_zcheck_labels_seq } { \l_@@_checkbeg_tl }
     \group_end:
   }
@@ -1210,7 +1210,7 @@
       }
     \group_end:
   }
-\cs_generate_variant:Nn \@@_run_checks:nnn { nnx }
+\cs_generate_variant:Nn \@@_run_checks:nnn { nne }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1354,7 +1354,7 @@
             \l_@@_onpage_bool
           }
           {
-            \@@_message:nnnx { double-check } {#1} {#2}
+            \@@_message:nnne { double-check } {#1} {#2}
               { \zref@extractdefault {#3} {page} {'unknown'} }
           }
       }
@@ -1362,7 +1362,7 @@
         \bool_if:NTF \l_@@_empty_label_bool
           { \@@_message:nnnn { empty-label } {#1} { } { } }
           {
-            \@@_message:nnnx { check-failed } {#1} {#2}
+            \@@_message:nnne { check-failed } {#1} {#2}
               { \zref@extractdefault {#3} {page} {'unknown'} }
           }
       }
@@ -1952,7 +1952,7 @@
 \cs_new_protected:Npn \zrefcheck_zcref_beg_label:
   {
     \int_gincr:N \g_@@_id_int
-    \tl_set:Nx \l_@@_checkbeg_tl
+    \tl_set:Ne \l_@@_checkbeg_tl
       { \@@_check_lblfmt:n { \g_@@_id_int } }
     \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-check }
   }
@@ -1967,7 +1967,7 @@
   }
 \cs_new_protected:Npn \zrefcheck_zcref_run_checks_on_labels:n #1
   {
-    \@@_run_checks:nnx
+    \@@_run_checks:nne
       { \l_@@_zcheck_checks_seq } {#1} { \l_@@_checkbeg_tl }
   }
 %    \end{macrocode}
@@ -1987,7 +1987,7 @@
 \cs_new_protected:Npn \zrefcheck_zrefvario_label:
   {
     \int_gincr:N \g_@@_id_int
-    \tl_set:Nx \l_@@_checkbeg_tl
+    \tl_set:Ne \l_@@_checkbeg_tl
       { \@@_check_lblfmt:n { \g_@@_id_int } }
     \zref@labelbylist { \l_@@_checkbeg_tl } { zrefcheck-zrefvario }
   }
