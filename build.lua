@@ -19,7 +19,7 @@ maxprintline = 1000
 
 -- CTAN upload settings
 uploadconfig = {
-  version = "0.3.4", -- first line for tagging
+  version = "0.3.5", -- first line for tagging
   pkg = "zref-check",
   author = "gusbrs",
   uploader = "gusbrs",
