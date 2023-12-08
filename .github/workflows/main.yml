@@ -81,14 +81,20 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: test-diff-files
-          path: build/test*/*.diff
+          name: test-logs-diff-files
+          path: |
+            build/test*/*.diff
+            build/test*/*.log
+          retention-days: 5
 
   doc:
     name: Documentation
     runs-on: ubuntu-latest
 
     steps:
+      # avoid clash in simultaneous attempts to update TeXLive on the same cache
+      - run: sleep 90s
+
       - name: Install TeX Live
         uses: zauguin/install-texlive@v3
         with:
@@ -106,3 +112,11 @@ jobs:
         with:
           name: documentation
           path: build/doc/*.pdf
+
+      - name: Archive failed doc logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: doc-logs
+          path: build/doc/*.log
+          retention-days: 5
