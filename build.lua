@@ -13,10 +13,6 @@ typesetfiles = {"*.tex"}
 -- Two runs for label testing
 checkruns = 2
 
--- Don't wrap/truncate lines in test logs
--- See https://tex.stackexchange.com/q/674844#comment1676566_674846
-maxprintline = 1000
-
 -- CTAN upload settings
 uploadconfig = {
   version = "0.3.5", -- first line for tagging
