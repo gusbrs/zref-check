@@ -1,8 +1,5 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for label 'txt:target-03' on page 4.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for label 'txt:target-04' on page 4.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for label 'txt:target-05' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for label 'txt:target-03' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for label 'txt:target-04' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for label 'txt:target-05' on page 4.

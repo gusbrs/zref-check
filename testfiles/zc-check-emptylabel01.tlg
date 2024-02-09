@@ -1,70 +1,36 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Check failed on line .... Failed check 'thispage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'cha:chapter-1' on page 1.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'nextpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'nextpage'
-(zref-check)                for label 'cha:chapter-1' on page 1.
-Package zref-check Warning: Check failed on line .... Failed check 'nextpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'otherpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'otherpage'
-(zref-check)                for label 'cha:chapter-1' on page 1.
-Package zref-check Warning: Check failed on line .... Failed check 'otherpage'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for label 'cha:chapter-1' on page 1.
-Package zref-check Warning: Check failed on line .... Failed check 'pagegap'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'facing' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'above' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'below' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check
-(zref-check)                'pagesbefore' for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'ppbefore'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'pagesafter'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'ppafter'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'before' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'after' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'thischap'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'prevchap'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'nextchap'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check
-(zref-check)                'chapsbefore' for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'chapsafter'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'thissec'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'prevsec'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'nextsec'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'secsbefore'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'secsafter'
-(zref-check)                for empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                empty label.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'thispage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'cha:chapter-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'nextpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'nextpage' for label 'cha:chapter-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'nextpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'otherpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'otherpage' for label 'cha:chapter-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'otherpage' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for label 'cha:chapter-1' on page 1.
+Package zref-check Warning: Check failed on line .... Failed check 'pagegap' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'facing' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'above' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'below' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'pagesbefore' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'ppbefore' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'pagesafter' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'ppafter' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'before' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'after' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'thischap' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'prevchap' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'nextchap' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'chapsbefore' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'chapsafter' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'thissec' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'prevsec' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'nextsec' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'secsbefore' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'secsafter' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for empty label.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for empty label.

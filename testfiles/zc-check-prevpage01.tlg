@@ -1,26 +1,14 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-2' on page 2.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-2' on page 2.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-3' on page 2.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-3' on page 2.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-1' on page 3.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-1' on page 3.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-3' on page 3.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-3' on page 3.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-1' on page 4.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-1' on page 4.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'sec:section-2' on page 4.
-Package zref-check Warning: Check failed on line .... Failed check 'prevpage'
-(zref-check)                for label 'txt:target-2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-2' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-2' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-3' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-3' on page 2.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-1' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-3' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-3' on page 3.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-1' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-1' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'sec:section-2' on page 4.
+Package zref-check Warning: Check failed on line .... Failed check 'prevpage' for label 'txt:target-2' on page 4.

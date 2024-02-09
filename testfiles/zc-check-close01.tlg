@@ -1,22 +1,12 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-01' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-02' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-03' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-04' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-05' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-17' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-18' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-19' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-20' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'close' for
-(zref-check)                label 'txt:target-21' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-01' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-02' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-03' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-04' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-05' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-17' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-18' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-19' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-20' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'close' for label 'txt:target-21' on page 11.

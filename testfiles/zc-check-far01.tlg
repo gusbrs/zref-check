@@ -1,24 +1,13 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-06' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-07' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-08' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-09' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-10' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-11' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-12' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-13' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-14' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-15' on page 11.
-Package zref-check Warning: Check failed on line .... Failed check 'far' for
-(zref-check)                label 'txt:target-16' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-06' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-07' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-08' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-09' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-10' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-11' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-12' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-13' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-14' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-15' on page 11.
+Package zref-check Warning: Check failed on line .... Failed check 'far' for label 'txt:target-16' on page 11.
