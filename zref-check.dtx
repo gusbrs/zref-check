@@ -336,7 +336,7 @@
 %    \begin{macrocode}
 \bool_new:N \l_@@_use_hyperref_bool
 \bool_new:N \l_@@_warn_hyperref_bool
-\keys_define:nn { zref-check }
+\keys_define:nn { zref-check/setup }
   {
     hyperref .choice: ,
     hyperref / auto .code:n =
@@ -373,7 +373,7 @@
           { \msg_warning:nn { zref-check } { missing-hyperref } }
         \bool_set_false:N \l_@@_use_hyperref_bool
       }
-    \keys_define:nn { zref-check }
+    \keys_define:nn { zref-check/setup }
       {
         hyperref .code:n =
           { \msg_warning:nn { zref-check } { hyperref-preamble-only } }
@@ -387,7 +387,7 @@
 % \begin{variable}{\l_@@_msglevel_tl}
 %    \begin{macrocode}
 \tl_new:N \l_@@_msglevel_tl
-\keys_define:nn { zref-check }
+\keys_define:nn { zref-check/setup }
   {
     msglevel .choice: ,
     msglevel / warn .code:n =
@@ -427,7 +427,7 @@
 %    \begin{macrocode}
 \AddToHook { begindocument }
   {
-    \keys_define:nn { zref-check }
+    \keys_define:nn { zref-check/setup }
       {
         ignore .meta:n = { msglevel = none } ,
         ok .meta:n = { msglevel = none } ,
@@ -441,7 +441,7 @@
 % \begin{variable}{\l_@@_msgonpage_bool}
 %    \begin{macrocode}
 \bool_new:N \l_@@_msgonpage_bool
-\keys_define:nn { zref-check }
+\keys_define:nn { zref-check/setup }
   {
     onpage .choice: ,
     onpage / labelseq .code:n =
@@ -476,7 +476,7 @@
 % \begin{variable}{\l_@@_close_range_int}
 %    \begin{macrocode}
 \int_new:N \l_@@_close_range_int
-\keys_define:nn { zref-check }
+\keys_define:nn { zref-check/setup }
   {
     closerange .code:n =
       {
@@ -514,7 +514,7 @@
 %   Provide \cs{zrefchecksetup}.
 %    \begin{macrocode}
 \NewDocumentCommand \zrefchecksetup { m }
-  { \keys_set:nn { zref-check } {#1} }
+  { \keys_set:nn { zref-check/setup } {#1} }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1140,7 +1140,7 @@
 % zcheck}. See \url{https://github.com/latex3/latex3/issues/1254}.
 % ^^A zref-check/zcheck
 %    \begin{macrocode}
-\keys_define:nn { zref-check } { zcheck .inherit:n = zref-check }
+\keys_define:nn { zref-check } { zcheck .inherit:n = zref-check/setup }
 %    \end{macrocode}
 %
 % Then we add the checks to it.

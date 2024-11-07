@@ -16,7 +16,7 @@
 % that would make the test hypersensitive to any unrelated change in the code.
 % So we run the option here explicitly and in isolation.
 \ExplSyntaxOn
-\keys_set:nn { zref-check } { ignore }
+\keys_set:nn { zref-check/setup } { ignore }
 \ExplSyntaxOff
 
 \OMIT
