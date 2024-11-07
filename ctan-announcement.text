@@ -1,7 +1,6 @@
-## v0.3.5 (2023-11-14)
+## v0.3.6 (2024-11-07)
 
 ### Changed
-- Don't use `expl3` public scratch temporary variables.
-- Prefer `e-type` expansion.
-- Require 2023-11-01 LaTeX kernel.
+- Preemptively avoid empty module when setting l3keys `.inherit:n`
+  (https://github.com/latex3/latex3/issues/1254).
 

@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.5...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.6...HEAD)
+
+## [v0.3.6](https://github.com/gusbrs/zref-check/compare/v0.3.5...v0.3.6) (2024-11-07)
 
 ### Changed
 - Preemptively avoid empty module when setting l3keys `.inherit:n`
