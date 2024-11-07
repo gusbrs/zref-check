@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.5...HEAD)
 
+### Changed
+- Preemptively avoid empty module when setting l3keys `.inherit:n`
+  (https://github.com/latex3/latex3/issues/1254).
+
 ## [v0.3.5](https://github.com/gusbrs/zref-check/compare/v0.3.4...v0.3.5) (2023-11-14)
 
 ### Changed
