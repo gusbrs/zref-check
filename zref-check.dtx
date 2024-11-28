@@ -803,7 +803,7 @@
               {
                 \zref@ifrefcontainsprop {#1} {#2}
                   {
-                    \tl_set:Ne #3
+                    \exp_args:NNNo \exp_args:NNo \tl_set:Nn #3
                       { \zref@extractdefault {#1} {#2} { \c_empty_tl } }
                   }
                   {
