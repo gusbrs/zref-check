@@ -1,6 +1,5 @@
-## v0.3.6 (2024-11-07)
+## v0.3.7 (2024-11-28)
 
-### Changed
-- Preemptively avoid empty module when setting l3keys `.inherit:n`
-  (https://github.com/latex3/latex3/issues/1254).
+### Fixed
+- Control expansion when extracting property at `\zrefcheck_get_astl:nnn`.
 

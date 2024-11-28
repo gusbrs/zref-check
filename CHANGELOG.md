@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.6...HEAD)
+## [Unreleased](https://github.com/gusbrs/zref-check/compare/v0.3.7...HEAD)
+
+## [v0.3.7](https://github.com/gusbrs/zref-check/compare/v0.3.6...v0.3.7) (2024-11-28)
 
 ### Fixed
 - Control expansion when extracting property at `\zrefcheck_get_astl:nnn`.
